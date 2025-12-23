@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/font/nunito/Nunito-Bold.ttf") format("truetype"),;
+}
+@font-face {
+  font-family: "SourceSans3";
+  src: url("./assets/font/SourceSans3/Source_Sans_3/SourceSans3-VariableFont_wght.ttf")
+    format("truetype"),;
+}
 :root {
   --primary: #0da2e7;
   --background: #f8fafc;
@@ -8,4 +17,7 @@
   --accent-blue: #075578;
 
   --color-text: #0f1729;
+
+  --font-title: "Nunito";
+  --font-body: "SourceSans3";
 }
