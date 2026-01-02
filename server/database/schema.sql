@@ -49,7 +49,7 @@ CREATE TABLE student (
     born_at DATE NOT NULL,
     classroom_id INT unsigned NOT NULL,
     parent_id INT unsigned NOT NULL,
-    FOREIGN KEY (class_id) REFERENCES class(id),
+    FOREIGN KEY (class_id) REFERENCES classroom_id(id),
     FOREIGN KEY (parent_id) REFERENCES parent(id)
     
 );
