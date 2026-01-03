@@ -1,0 +1,43 @@
+@font-face {
+  font-family: "Nunito-title";
+  src: url("./assets/fonts/Nunito/Nunito-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito-Subtitle";
+  src: url("./assets/fonts/Nunito/Nunito-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Source-Sans-3-Regular";
+  src: url("./assets/fonts/Source-sans-3/SourceSans3-Regular.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Source-Sans-3-Bold";
+  src: url("./assets/fonts/Source-sans-3/SourceSans3-Bold.ttf")
+    format("truetype");
+}
+
+:root {
+  --font-family-title: "Nunito-Subtitle", sans-serif;
+  --font-family-body: "Source-Sans-3-Regular", sans-serif;
+
+  --font-size-h1: 4rem;
+  --font-size-h2: 2.5rem;
+  --font-size-text: 1rem;
+
+  --font-weight-h1: 600;
+  --font-weight-h2: 600;
+
+  --font-weight-text: 400;
+  --font-weight-text-strong: 600;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-h1: 3rem;
+    --font-size-h2: 2rem;
+  }
+}

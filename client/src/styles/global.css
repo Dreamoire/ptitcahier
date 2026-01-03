@@ -1,0 +1,25 @@
+.primary-title {
+  font-family: var(--font-family-title);
+  font-weight: var(--font-weight-h1);
+  font-size: var(--font-size-h1);
+}
+
+.secondary-title {
+  font-family: var(--font-family-title);
+  font-weight: var(--font-weight-h2);
+  font-size: var(--font-size-h2);
+}
+
+.text-body {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-text);
+  font-size: var(--font-size-text);
+  color: var(--color-text);
+}
+
+.text-body-strong {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-text-strong);
+  font-size: var(--font-size-text);
+  color: var(--color-text);
+}
