@@ -16,12 +16,12 @@ CREATE TABLE parent (
 
 CREATE TABLE announcement_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE classroom (
@@ -68,6 +68,7 @@ CREATE TABLE ticket (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
+	school_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (parent_id) REFERENCES parent(id),
     FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id)
 );
