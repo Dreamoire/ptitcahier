@@ -1,12 +1,10 @@
 import AbstractSeeder from "./AbstractSeeder";
-import SchoolSeeder from "./SchoolSeeder";
 
 class AnnouncementSeeder extends AbstractSeeder {
   constructor() {
     super({
       table: "announcement",
       truncate: true,
-      dependencies: [SchoolSeeder],
     });
   }
 
@@ -35,10 +33,10 @@ class AnnouncementSeeder extends AbstractSeeder {
       ],
     };
 
-    for (let i = 0; i < 2; i += 1) {
-      const school = this.getRef(`school_${i}`);
+    for (let i = 1; i < 3; i += 1) {
+      const school = i;
 
-      for (let i = 0; i < 10; i += 1) {
+      for (let j = 0; j < 5; j += 1) {
         const category = Number(
           this.faker.helpers.arrayElement(Object.keys(sortedFakeTitles)),
         );
@@ -46,7 +44,7 @@ class AnnouncementSeeder extends AbstractSeeder {
           title: this.faker.helpers.arrayElement(sortedFakeTitles[category]),
           content: this.faker.lorem.sentences({ min: 1, max: 3 }),
           announcement_category_id: category,
-          school_id: school.insertId,
+          school_id: school,
         };
 
         this.insert(fakeAnnouncement);

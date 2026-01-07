@@ -67,10 +67,8 @@ CREATE TABLE ticket (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
-	school_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (parent_id) REFERENCES parent(id),
-    FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id),
-    FOREIGN KEY (school_id) REFERENCES school(id)
+    FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id)
 );
 
 CREATE TABLE ticket_student ( 
@@ -105,7 +103,6 @@ VALUES
 ("pleroy143@gmail.com", "plKJ43!lmno", "Leroy", "Patricia", "F"),
 ("joijeofij@hotmail.com", "Jio43!lmno", "Perrin", "Jean", "M"),
 ("Turin3498@gmail.com", "Turin!4309", "Turin", "Isabelle", "F");
-
 
 INSERT INTO classroom (classroom_name, school_id)
 VALUES
