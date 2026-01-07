@@ -10,7 +10,8 @@ CREATE TABLE parent (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    first_name VARCHAR(100) NOT NULL
+    first_name VARCHAR(100) NOT NULL,
+    genre VARCHAR(1) NOT NULL
 );
 
 CREATE TABLE announcement_category (
@@ -50,7 +51,6 @@ CREATE TABLE student (
     parent_id INT unsigned NOT NULL,
     FOREIGN KEY (classroom_id) REFERENCES classroom(id),
     FOREIGN KEY (parent_id) REFERENCES parent(id)
-    
 );
 
 CREATE TABLE announcement_student (
@@ -69,7 +69,7 @@ CREATE TABLE ticket (
     ticket_category_id INT UNSIGNED NOT NULL,
 	school_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (parent_id) REFERENCES parent(id),
-    FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id)
+    FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id),
     FOREIGN KEY (school_id) REFERENCES school(id)
 );
 
@@ -94,4 +94,38 @@ VALUES
 ("Information urgente"),
 ("Demande d'information");
 
+INSERT INTO school (email, password, school_name)
+VALUES
+("contact@greenvalley.edu", "GreenValley123!", "Ecole Primaire Emile Zola"),
+("admin@riverside-intl.edu", "Riverside2024$", "Ecole Primaire Voltaire");
+
+INSERT INTO parent (email, password, last_name, first_name, genre)
+VALUES
+("mlaurent@aol.fr", "po3?JioL@143ij", "Martin", "Laurent", "M"),
+("pleroy143@gmail.com", "plKJ43!lmno", "Leroy", "Patricia", "F"),
+("joijeofij@hotmail.com", "Jio43!lmno", "Perrin", "Jean", "M"),
+("Turin3498@gmail.com", "Turin!4309", "Turin", "Isabelle", "F");
+
+
+INSERT INTO classroom (classroom_name, school_id)
+VALUES
+("CP", 1), 
+("CE1", 1), 
+("CE2", 1),
+("CM1", 1),
+("CM2", 1), 
+("CP", 2),
+("CE1", 2), 
+("CE2", 2),
+("CM1", 2),
+("CM2", 2);
+
+INSERT INTO student (last_name, first_name, born_at, classroom_id, parent_id)
+VALUES
+("Martin", "Sophie", "2014-05-14", 1, 1),
+("Martin", "Lucas", "2012-09-22", 2, 1),
+("Leroy", "Emma", "2013-11-30", 3, 2),
+("Perrin", "Lucie", "2016-03-24", 6, 3),
+("Turin", "Michel", "2012-09-22", 7, 4),
+("Turin", "Emma", "2013-11-30", 8, 4);
 
