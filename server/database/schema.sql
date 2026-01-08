@@ -1,21 +1,128 @@
-create table user (
-  id int unsigned primary key auto_increment not null,
-  email varchar(255) not null unique,
-  password varchar(255) not null
+CREATE TABLE school (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    school_name VARCHAR(100) NOT NULL
 );
 
-create table item (
-  id int unsigned primary key auto_increment not null,
-  title varchar(255) not null,
-  user_id int unsigned not null,
-  foreign key(user_id) references user(id)
+CREATE TABLE parent (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    genre VARCHAR(1) NOT NULL
 );
 
-insert into user(id, email, password)
-values
-  (1, "jdoe@mail.com", "123456");
+CREATE TABLE announcement_category (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
 
-insert into item(id, title, user_id)
-values
-  (1, "Stuff", 1),
-  (2, "Doodads", 1);
+CREATE TABLE ticket_category (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE classroom (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    classroom_name VARCHAR(100) NOT NULL,
+    school_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (school_id) REFERENCES school(id)
+);
+
+CREATE TABLE announcement (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    content VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        
+    announcement_category_id INT UNSIGNED NOT NULL,
+    school_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (announcement_category_id) REFERENCES announcement_category(id),
+    FOREIGN KEY (school_id) REFERENCES school(id)
+);
+
+CREATE TABLE student (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    last_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    born_at DATE NOT NULL,
+    classroom_id INT unsigned NOT NULL,
+    parent_id INT unsigned NOT NULL,
+    FOREIGN KEY (classroom_id) REFERENCES classroom(id),
+    FOREIGN KEY (parent_id) REFERENCES parent(id)
+);
+
+CREATE TABLE announcement_student (
+    announcement_id INT UNSIGNED NOT NULL,
+    student_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (announcement_id, student_id),
+    FOREIGN KEY (announcement_id) REFERENCES announcement(id),
+    FOREIGN KEY (student_id) REFERENCES student(id)
+);
+
+CREATE TABLE ticket (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    content VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    parent_id INT UNSIGNED NOT NULL,
+    ticket_category_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (parent_id) REFERENCES parent(id),
+    FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id)
+);
+
+CREATE TABLE ticket_student ( 
+    ticket_id INT UNSIGNED NOT NULL,
+    student_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (ticket_id, student_id),
+    FOREIGN KEY (ticket_id) REFERENCES ticket(id),
+    FOREIGN KEY (student_id) REFERENCES student(id)
+);
+
+INSERT INTO announcement_category (name)
+VALUES
+("Vie de l'école"),
+("Administratif"),
+("Evénement");
+
+INSERT INTO ticket_category (name)
+VALUES
+("Absence"),
+("Autorisation"),
+("Information urgente"),
+("Demande d'information");
+
+INSERT INTO school (email, password, school_name)
+VALUES
+("contact@greenvalley.edu", "GreenValley123!", "Ecole Primaire Emile Zola"),
+("admin@riverside-intl.edu", "Riverside2024$", "Ecole Primaire Voltaire");
+
+INSERT INTO parent (email, password, last_name, first_name, genre)
+VALUES
+("mlaurent@aol.fr", "po3?JioL@143ij", "Martin", "Laurent", "M"),
+("pleroy143@gmail.com", "plKJ43!lmno", "Leroy", "Patricia", "F"),
+("joijeofij@hotmail.com", "Jio43!lmno", "Perrin", "Jean", "M"),
+("Turin3498@gmail.com", "Turin!4309", "Turin", "Isabelle", "F");
+
+INSERT INTO classroom (classroom_name, school_id)
+VALUES
+("CP", 1), 
+("CE1", 1), 
+("CE2", 1),
+("CM1", 1),
+("CM2", 1), 
+("CP", 2),
+("CE1", 2), 
+("CE2", 2),
+("CM1", 2),
+("CM2", 2);
+
+INSERT INTO student (last_name, first_name, born_at, classroom_id, parent_id)
+VALUES
+("Martin", "Sophie", "2014-05-14", 1, 1),
+("Martin", "Lucas", "2012-09-22", 2, 1),
+("Leroy", "Emma", "2013-11-30", 3, 2),
+("Perrin", "Lucie", "2016-03-24", 6, 3),
+("Turin", "Michel", "2012-09-22", 7, 4),
+("Turin", "Emma", "2013-11-30", 8, 4);
+
