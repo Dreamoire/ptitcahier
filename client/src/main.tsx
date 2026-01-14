@@ -2,6 +2,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router";
+import Announcements from "./pages/Announcements/Announcements";
 
 /* ************************************************************************* */
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/", // The root path
     element: <App />, // Renders the App component for the home page
+  },
+  {
+    path: "/announcements",
+    element: <Announcements />,
   },
   // Try adding a new route! For example, "/about" with an About component
 ]);
@@ -56,8 +61,10 @@ createRoot(rootElement).render(
  *        path: "/about",
  *        element: <About />,  // Renders the About component
  *      }
- *
- * 2. Try Nested Routes:
+ */
+
+/**
+  2. Try Nested Routes:
  *    For more complex applications, you can nest routes. This lets you have sub-pages within a main page.
  *    Documentation: https://reactrouter.com/en/main/start/tutorial#nested-routes
  *
