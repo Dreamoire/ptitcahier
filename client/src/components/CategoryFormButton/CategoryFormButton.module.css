@@ -1,0 +1,39 @@
+.radio_button {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio_button_label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: none;
+  cursor: pointer;
+  width: 180px;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+}
+
+.radio_button:checked + .radio_button_label {
+  border: 5px solid purple;
+  color: purple;
+}
+
+.radio_button_label_Urgence {
+  background-color: red;
+}
+
+.radio_button_label_Autorisation {
+  background-color: blue;
+}
+
+.radio_button_label_Divers {
+  background-color: green;
+}
+
+.radio_button_label_Absence {
+  background-color: orange;
+}

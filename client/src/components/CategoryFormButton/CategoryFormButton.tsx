@@ -1,12 +1,46 @@
+import {
+  CalendarCheck,
+  NotebookPen,
+  OctagonAlert,
+  ShieldUser,
+} from "lucide-react";
+import type { JSX } from "react";
+import type { TicketCategory } from "../../types/ticketCategoryType";
+import styles from "./CategoryFormButton.module.css";
+
 interface CategoryFormButtonProps {
-  categoryName: string;
+  category: TicketCategory;
+  formName: string;
 }
 
-function CategoryFormButton({ categoryName }: CategoryFormButtonProps) {
+const categoryButtonIcons: Record<string, JSX.Element> = {
+  Urgence: <OctagonAlert />,
+  Absence: <CalendarCheck />,
+  Divers: <NotebookPen />,
+  Autorisation: <ShieldUser />,
+};
+
+function CategoryFormButton({ category, formName }: CategoryFormButtonProps) {
+  const { id, ticket_category_name } = category;
+
   return (
     <div>
-      <input type="radio" id="1" name="autorisation" value="1" checked />
-      <label htmlFor="1">{categoryName}</label>
+      <input
+        type="radio"
+        id={ticket_category_name}
+        name={formName}
+        value={id}
+        className={styles.radio_button}
+      />
+      <label
+        htmlFor={ticket_category_name}
+        className={`${styles.radio_button_label} ${
+          styles[`radio_button_label_${ticket_category_name}`]
+        }`}
+      >
+        {categoryButtonIcons[ticket_category_name]}
+        {ticket_category_name}
+      </label>
     </div>
   );
 }

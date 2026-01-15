@@ -1,0 +1,4 @@
+.category_container {
+  display: flex;
+  gap: 1rem;
+}

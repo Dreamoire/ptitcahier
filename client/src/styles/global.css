@@ -23,3 +23,15 @@
   font-size: var(--font-size-text);
   color: var(--color-text);
 }
+
+.parent-rainbow-light {
+  background: #dff2fb;
+  background: linear-gradient(
+    135deg,
+    #dff2fb 0%,
+    #ffe6d6 35%,
+    #fff3c4 65%,
+    #def3e8 100%
+  );
+  height: 100vh;
+}

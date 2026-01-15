@@ -7,7 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 
 // Import the main app component
 import App from "./App";
-import TicketNew from "./pages/TicketNew";
+import TicketNew from "./pages/TicketNew/TicketNew";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder
@@ -44,7 +44,7 @@ if (rootElement == null) {
 createRoot(rootElement).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 );
 
 /**

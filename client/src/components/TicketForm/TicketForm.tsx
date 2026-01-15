@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
+import type { TicketCategory } from "../../types/ticketCategoryType";
+import type { Ticket } from "../../types/ticketType";
 import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
+import styles from "./TicketForm.module.css";
 
-interface ticketCategory {
-  id: number;
-  name: string;
+interface TicketFormProps {
+  children: ReactNode;
+  defaultValue: Ticket;
+  onSubmit: (ticket: Ticket) => void;
 }
 
-function TicketForm() {
-  const [ticketCategories, setTicketCategories] = useState<ticketCategory[]>(
-    [],
+function TicketForm({ children, defaultValue, onSubmit }: TicketFormProps) {
+  const [ticketCategories, setTicketCategories] = useState<TicketCategory[]>(
+    []
   );
 
   useEffect(() => {
@@ -19,24 +23,51 @@ function TicketForm() {
       });
   }, []);
 
+  console.log(ticketCategories);
+  // à supprimer
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+
+        const content = formData.get("content") as string;
+        const parent_id = 1;
+        const ticket_category_id = Number(
+          formData.get("ticket_category_id")
+        ) as number;
+
+        onSubmit({
+          content,
+          parent_id,
+          ticket_category_id,
+        });
       }}
     >
       <h1>Nouvelle Demande</h1>
-      <ul>
+      <ul className={styles.category_container}>
         {ticketCategories.map((category) => (
           <li key={category.id}>
-            <CategoryFormButton categoryName={category.name} />
+            <CategoryFormButton
+              category={category}
+              formName="ticket_category_id"
+            />
           </li>
         ))}
       </ul>
 
-      <label htmlFor="">Message</label>
-      <input type="text" id="message" />
-      <button type="submit">Submit</button>
+      <label htmlFor="content">Message</label>
+      <input
+        type="text"
+        id="content"
+        name="content"
+        defaultValue={defaultValue.content}
+        placeholder="Placeholder messsage..."
+        required
+      />
+
+      <button type="button">Annuler</button>
+      <button type="submit">{children}</button>
     </form>
   );
 }
