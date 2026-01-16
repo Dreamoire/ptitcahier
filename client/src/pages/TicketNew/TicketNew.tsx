@@ -3,12 +3,12 @@ import TicketForm from "../../components/TicketForm/TicketForm";
 function TicketNew() {
   const newTicket = {
     content: "",
-    parent_id: 1,
-    ticket_category_id: 1,
+    parent_id: undefined,
+    ticket_category_id: undefined,
   };
 
   return (
-    <main>
+    <main className="parent-rainbow-light">
       <TicketForm
         defaultValue={newTicket}
         onSubmit={(ticketData) => {

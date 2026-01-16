@@ -5,12 +5,13 @@ import {
   ShieldUser,
 } from "lucide-react";
 import type { JSX } from "react";
-import type { TicketCategory } from "../../types/ticketCategoryType";
+import type { TicketCategory } from "../../types/TicketCategoryType";
 import styles from "./CategoryFormButton.module.css";
 
 interface CategoryFormButtonProps {
   category: TicketCategory;
   formName: string;
+  defaultChecked?: boolean;
 }
 
 const categoryButtonIcons: Record<string, JSX.Element> = {
@@ -20,7 +21,11 @@ const categoryButtonIcons: Record<string, JSX.Element> = {
   Autorisation: <ShieldUser />,
 };
 
-function CategoryFormButton({ category, formName }: CategoryFormButtonProps) {
+function CategoryFormButton({
+  category,
+  formName,
+  defaultChecked,
+}: CategoryFormButtonProps) {
   const { id, ticket_category_name } = category;
 
   return (
@@ -31,6 +36,7 @@ function CategoryFormButton({ category, formName }: CategoryFormButtonProps) {
         name={formName}
         value={id}
         className={styles.radio_button}
+        defaultChecked={defaultChecked}
       />
       <label
         htmlFor={ticket_category_name}

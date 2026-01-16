@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect, useState } from "react";
-import type { TicketCategory } from "../../types/ticketCategoryType";
-import type { Ticket } from "../../types/ticketType";
+import type { TicketCategory } from "../../types/TicketCategoryType";
+import type { Ticket } from "../../types/TicketType";
 import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./TicketForm.module.css";
 
@@ -12,7 +12,7 @@ interface TicketFormProps {
 
 function TicketForm({ children, defaultValue, onSubmit }: TicketFormProps) {
   const [ticketCategories, setTicketCategories] = useState<TicketCategory[]>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -27,6 +27,7 @@ function TicketForm({ children, defaultValue, onSubmit }: TicketFormProps) {
   // à supprimer
   return (
     <form
+      className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -34,7 +35,7 @@ function TicketForm({ children, defaultValue, onSubmit }: TicketFormProps) {
         const content = formData.get("content") as string;
         const parent_id = 1;
         const ticket_category_id = Number(
-          formData.get("ticket_category_id")
+          formData.get("ticket_category_id"),
         ) as number;
 
         onSubmit({
@@ -46,28 +47,32 @@ function TicketForm({ children, defaultValue, onSubmit }: TicketFormProps) {
     >
       <h1>Nouvelle Demande</h1>
       <ul className={styles.category_container}>
-        {ticketCategories.map((category) => (
+        {ticketCategories.map((category, index) => (
           <li key={category.id}>
             <CategoryFormButton
               category={category}
               formName="ticket_category_id"
+              defaultChecked={index === 0}
             />
           </li>
         ))}
       </ul>
 
-      <label htmlFor="content">Message</label>
-      <input
-        type="text"
-        id="content"
-        name="content"
-        defaultValue={defaultValue.content}
-        placeholder="Placeholder messsage..."
-        required
-      />
-
-      <button type="button">Annuler</button>
-      <button type="submit">{children}</button>
+      <label htmlFor="content">
+        Message:{" "}
+        <input
+          type="text"
+          id="content"
+          name="content"
+          defaultValue={defaultValue.content}
+          placeholder="Placeholder message..."
+          required
+        />
+      </label>
+      <div>
+        <button type="button">Annuler</button>
+        <button type="submit">{children}</button>
+      </div>
     </form>
   );
 }
