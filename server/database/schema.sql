@@ -16,12 +16,12 @@ CREATE TABLE parent (
 
 CREATE TABLE announcement_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    announcement_category_name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    ticket_category_name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE classroom (

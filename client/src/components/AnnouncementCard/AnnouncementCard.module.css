@@ -1,3 +1,21 @@
+.an_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 1rem;
+  border: 1px solid #f0f0f0;
+  width: 100%;
+  max-width: 850px;
+  height: auto;
+  min-height: 300px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
+    rgba(0, 0, 0, 0.04);
+  background-color: var(--background-white);
+}
+
 .an_card_h3 {
   color: var(--dark-blue);
   font-family: var(--font-family-h3);
@@ -10,18 +28,88 @@
   font-size: var(--font-body-size);
   font-weight: var(--font-weight-body);
 }
-.an_card {
+.an_badge_school_life,
+.an_badge_admin,
+.an_badge_event,
+.an_badge_default,
+.an_student_tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-family: var(--font-family-body);
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-text);
+  font-size: var(--font-size-text);
+  width: 100%;
+  max-width: 120px;
+  height: 30px;
+  gap: 5px;
+  padding: 0 10px;
+  border-radius: 1rem;
+  box-shadow: 0 25px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
+    rgba(0, 0, 0, 0.04);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.an_card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.an_badges_container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin-top: 10px;
-  gap: 20px;
-  padding: 10px;
-  border-radius: 0.5rem;
-  border: 2px solid #ffffff;
-  width: 800px;
-  height: 200px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
-    rgba(0, 0, 0, 0.04);
-  background-color: var(--background-white);
+  align-items: flex-end;
+  gap: 5px;
+  min-width: max-content;
+}
+.an_badge_school_life {
+  background-color: var(--purple);
+}
+
+.an_badge_admin {
+  background-color: var(--green);
+}
+
+.an_badge_event {
+  background-color: var(--blue);
+}
+
+.an_badge_default {
+  background-color: #f3f4f6;
+}
+.an_student_tag {
+  background-color: var(--dark-blue);
+}
+
+@media (max-width: 600px) {
+  .an_card_header {
+    align-items: flex-start;
+  }
+
+  .an_badges_container {
+    align-items: flex-end;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .an_card {
+    padding: 5px;
+    height: auto;
+  }
+  .an_card_h3 {
+    font-size: 1.1rem;
+  }
+  .an_badge_school_life,
+  .an_badge_admin,
+  .an_badge_event,
+  .an_badge_default,
+  .an_student_tag {
+    font-size: 0.7rem;
+    width: auto;
+    height: 1rem;
+  }
 }

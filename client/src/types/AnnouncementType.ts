@@ -3,7 +3,7 @@ export interface Announcement {
   title: string;
   content: string;
   created_at: string;
-  first_name: string;
+  student_names: string;
   announcement_category_name: string;
   school_id: number;
 }
