@@ -10,6 +10,7 @@ const addTicket: RequestHandler = async (req, res, next) => {
     };
 
     console.log(newTicket);
+    // à supprimer
 
     const insertNewTicketId = await ticketRepository.createTicket(newTicket);
 
