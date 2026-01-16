@@ -79,18 +79,18 @@ CREATE TABLE ticket_student (
     FOREIGN KEY (student_id) REFERENCES student(id)
 );
 
-INSERT INTO announcement_category (name)
+INSERT INTO announcement_category (id, name)
 VALUES
-("Vie de l'école"),
-("Administratif"),
-("Evénement");
+(1, "Vie de l'école"),
+(2, "Administratif"),
+(3, "Evénement");
 
-INSERT INTO ticket_category (name)
+INSERT INTO ticket_category (id, name)
 VALUES
-("Absence"),
-("Autorisation"),
-("Information urgente"),
-("Demande d'information");
+(1, "Urgence"),
+(2, "Absence"),
+(3, "Divers"),
+(4, "Autorisation");
 
 INSERT INTO school (email, password, school_name)
 VALUES
@@ -122,7 +122,6 @@ VALUES
 ("Martin", "Sophie", "2014-05-14", 1, 1),
 ("Martin", "Lucas", "2012-09-22", 2, 1),
 ("Leroy", "Emma", "2013-11-30", 3, 2),
-("Perrin", "Lucie", "2016-03-24", 6, 3),
-("Turin", "Michel", "2012-09-22", 7, 4),
-("Turin", "Emma", "2013-11-30", 8, 4);
-
+("Perrin", "Lucie", "2016-03-24", 6, 3), 
+("Perin", "Michel", "2012-09-22", 7, 4), 
+("Turin", "Julie", "2013-11-30", 8, 4); 

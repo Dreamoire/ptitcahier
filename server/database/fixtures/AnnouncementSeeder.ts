@@ -45,6 +45,7 @@ class AnnouncementSeeder extends AbstractSeeder {
           content: this.faker.lorem.sentences({ min: 1, max: 3 }),
           announcement_category_id: category,
           school_id: school,
+          refName: `announcement_${school}_${j}`,
         };
 
         this.insert(fakeAnnouncement);
