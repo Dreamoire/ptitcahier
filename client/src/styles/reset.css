@@ -21,43 +21,18 @@ html {
   /* On force la hauteur pour que les pourcentages enfants fonctionnent */
   height: 100%;
   width: 100%;
-
-  /* CRITICAL : On tue le scroll natif du navigateur ici */
-  overflow: hidden;
-
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
   padding: 0;
   border: 0;
-
-  /* CRITICAL : Le body prend tout l'écran mais NE SCROLLE PAS.
-       C'est 'main' (dans global.css) qui s'en chargera. */
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-
-  line-height: 1.6;
-  background-color: var(--color-bg-primary, #121212); /* Fallback si variable non chargée */
 }
 
 /* ===== Fix pour #root (React) ===== */
 #root {
   margin: 0;
   padding: 0;
-
-  /* Le conteneur React doit remplir le body sans déborder */
-  height: 100%;
-  width: 100%;
-
-  /* Isole le contexte de formatage */
-  isolation: isolate;
-  overflow: hidden;
 }
 
 /* ===== Typographie ===== */
@@ -196,30 +171,4 @@ section {
     transition-duration: 0.01ms;
     scroll-behavior: auto;
   }
-}
-
-/* ===== Scrollbar personnalisée (Webkit) ===== */
-/* Note: Sera appliquée au 'main' car html/body sont hidden */
-::-webkit-scrollbar {
-  width: 8px; /* Un peu plus fin pour l'élégance */
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(136, 136, 136, 0.5); /* Semi-transparent */
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(136, 136, 136, 0.8);
-}
-
-/* ===== Focus visible ===== */
-:focus-visible {
-  outline: 2px solid var(--color-accent-light, #3b82f6);
-  outline-offset: 2px;
 }

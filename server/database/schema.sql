@@ -16,12 +16,12 @@ CREATE TABLE parent (
 
 CREATE TABLE announcement_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE
+    announcement_category_name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE
+    ticket_category_name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE classroom (
@@ -79,13 +79,13 @@ CREATE TABLE ticket_student (
     FOREIGN KEY (student_id) REFERENCES student(id)
 );
 
-INSERT INTO announcement_category (name)
+INSERT INTO announcement_category (announcement_category_name)
 VALUES
 ("Vie de l'école"),
 ("Administratif"),
 ("Evénement");
 
-INSERT INTO ticket_category (name)
+INSERT INTO ticket_category (ticket_category_name)
 VALUES
 ("Absence"),
 ("Autorisation"),

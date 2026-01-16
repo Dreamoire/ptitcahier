@@ -1,4 +1,20 @@
-.h1 {
-  color: black;
-  font-size: 10rem;
+.an_section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 0.5rem;
+}
+.an_title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+.an_title h1 {
+  color: var(--dark-blue);
+  font-family: var(--font-family-h1);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-h1);
 }
