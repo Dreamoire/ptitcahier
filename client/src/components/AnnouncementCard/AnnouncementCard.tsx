@@ -1,5 +1,5 @@
-import styles from "./AnnouncementCard.module.css";
 import type { Announcement } from "../../types/AnnouncementType";
+import styles from "./AnnouncementCard.module.css";
 
 function AnnouncementCard({
   title,

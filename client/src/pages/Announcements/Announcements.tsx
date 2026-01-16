@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import styles from "./Announcements.module.css";
+import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/AnnouncementType";
-import logo_site from "../../assets/images/logo_site.png";
+import styles from "./Announcements.module.css";
+
 function Announcements() {
   const [announcementList, setAnnouncementList] = useState<Announcement[]>([]);
 
