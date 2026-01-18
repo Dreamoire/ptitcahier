@@ -1,0 +1,27 @@
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 10px 18px;
+  border-radius: 999px;
+
+  background: var(--background);
+  color: var(--accent-blue);
+
+  border: 1px solid rgba(7, 85, 120, 0.6);
+
+  font-family: var(--font-family-title);
+  font-weight: var(--font-weight-text-strong);
+  font-size: 1rem;
+
+  cursor: pointer;
+}
+
+.pillActive {
+  background: var(--accent-blue);
+  color: var(--background);
+  border-color: var(--accent-blue);
+}
