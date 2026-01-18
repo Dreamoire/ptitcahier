@@ -1,4 +1,4 @@
-import client, { type Rows } from "../../../database/client";
+import client, { type Result, type Rows } from "../../../database/client";
 
 export type AnnouncementCategory = {
   id: number;
@@ -11,6 +11,13 @@ export type ClassroomStudentRow = {
   studentId: number;
   studentFirstName: string;
   studentLastName: string;
+};
+
+export type CreateAnnouncementPayload = {
+  schoolId: number;
+  title: string;
+  content: string;
+  categoryId: number;
 };
 
 const findAnnouncementCategories = async (): Promise<
@@ -46,4 +53,39 @@ const findClassroomsWithStudents = async (
   return rows as ClassroomStudentRow[];
 };
 
-export { findAnnouncementCategories, findClassroomsWithStudents };
+const createAnnouncement = async (
+  payload: CreateAnnouncementPayload,
+): Promise<number> => {
+  const { schoolId, title, content, categoryId } = payload;
+
+  const [result] = await client.query<Result>(
+    `INSERT INTO announcement (title, content, announcement_category_id, school_id)
+		VALUES (?, ?, ?, ?)`,
+    [title, content, categoryId, schoolId],
+  );
+
+  return result.insertId;
+};
+
+const addAnnouncementTargets = async (
+  announcementId: number,
+  studentIds: number[],
+): Promise<void> => {
+  if (studentIds.length === 0) {
+    throw new Error("studentIds array must not be empty");
+  }
+
+  const values = studentIds.map((studentId) => [announcementId, studentId]);
+
+  await client.query<Result>(
+    "INSERT INTO announcement_student (announcement_id, student_id) VALUES ?",
+    [values],
+  );
+};
+
+export {
+  findAnnouncementCategories,
+  findClassroomsWithStudents,
+  createAnnouncement,
+  addAnnouncementTargets,
+};

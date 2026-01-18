@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
 import announcementAction from "./modules/announcement/announcementAction";
 import announcementCategoryAction from "./modules/announcement/announcementCategoryAction";
 import classroomAction from "./modules/classroom/classroomAction";
+import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
 
 const router = Router();
 
