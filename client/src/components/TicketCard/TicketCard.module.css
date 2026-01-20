@@ -3,9 +3,12 @@
   width: 100%;
   overflow: hidden;
 
+  border: 0;
   border-radius: 16px;
   background: var(--background-white);
   box-shadow: 0 12px 28px rgba(15, 23, 41, 0.14);
+
+  transform: translateZ(0);
 }
 
 .leftPanel {
@@ -16,7 +19,7 @@
   align-items: center;
   justify-content: center;
 
-  background: var(--orange);
+  border: 0;
 }
 
 .iconCircle {
@@ -27,8 +30,12 @@
   align-items: center;
   justify-content: center;
 
+  border: 0;
   border-radius: 999px;
   background: rgba(248, 250, 252, 0.25);
+
+  box-shadow: none;
+  outline: none;
 }
 
 .icon {
@@ -40,6 +47,9 @@
 .body {
   flex: 1;
   padding: 18px 20px;
+
+  border: 0;
+  background: transparent;
 }
 
 .header {
@@ -71,14 +81,17 @@
   padding: 0 14px;
 
   border-radius: 999px;
-  border: 2px solid var(--dark-blue);
+  border: 2px solid var(--light-grey);
 
   font-family: var(--font-family-body);
   font-weight: var(--font-weight-text-strong);
   font-size: 0.95rem;
-  color: var(--dark-blue);
+  color: var(--primary-color-title);
 
   white-space: nowrap;
+
+  background: transparent;
+  outline: none;
 }
 
 .content {
@@ -107,21 +120,28 @@
   color: var(--dark-grey);
 }
 
-/* Type -> left color (use with: <article data-type="urgent|events|news|notice" ...>) */
+/* Type -> left color */
 .card[data-type="urgent"] .leftPanel {
   background: var(--red);
 }
 
 .card[data-type="events"] .leftPanel {
-  background: var(--blue);
-}
-
-.card[data-type="news"] .leftPanel {
   background: var(--orange);
 }
 
+.card[data-type="news"] .leftPanel {
+  background: var(--green);
+}
+
 .card[data-type="notice"] .leftPanel {
-  background: var(--dark-blue);
+  background: var(--blue);
+}
+
+/* Prevent any inner hairline corners (common on some browsers) */
+.card,
+.leftPanel,
+.body {
+  background-clip: padding-box;
 }
 
 @media (max-width: 768px) {
