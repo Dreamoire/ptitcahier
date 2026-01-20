@@ -1,10 +1,10 @@
 @font-face {
-  font-family: "Nunito-title";
+  font-family: "Nunito-Bold";
   src: url("./assets/fonts/Nunito/Nunito-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Nunito-Subtitle";
+  font-family: "Nunito-SemiBold";
   src: url("./assets/fonts/Nunito/Nunito-SemiBold.ttf") format("truetype");
 }
 
@@ -21,15 +21,18 @@
 }
 
 :root {
-  --font-family-title: "Nunito-Subtitle", sans-serif;
+  --font-family-h1: "Nunito-Bold", sans-serif;
   --font-family-body: "Source-Sans-3-Regular", sans-serif;
+  --font-family-h3: "Nunito-SemiBold", sans-serif;
 
   --font-size-h1: 4rem;
   --font-size-h2: 2.5rem;
+  --font-size-h3: 1.5rem;
   --font-size-text: 1rem;
 
   --font-weight-h1: 600;
   --font-weight-h2: 600;
+  --font-weight-h3: 600;
 
   --font-weight-text: 400;
   --font-weight-text-strong: 600;
