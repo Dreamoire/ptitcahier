@@ -25,4 +25,6 @@
   --primary-color-text: var(--black);
   --primary-color-items-school: var(--dark-blue);
   --primary-color-items-parent: var(--orange);
+
+  --border-radius: 15px;
 }

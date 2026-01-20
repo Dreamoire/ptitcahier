@@ -26,28 +26,29 @@ function CategoryFormButton({
   formName,
   defaultChecked,
 }: CategoryFormButtonProps) {
-  const { id, ticket_category_name } = category;
+  const { id, name, description } = category;
 
   return (
-    <div>
+    <>
       <input
         type="radio"
-        id={ticket_category_name}
+        id={name}
         name={formName}
         value={id}
         className={styles.radio_button}
         defaultChecked={defaultChecked}
       />
-      <label
-        htmlFor={ticket_category_name}
-        className={`${styles.radio_button_label} ${
-          styles[`radio_button_label_${ticket_category_name}`]
-        }`}
-      >
-        {categoryButtonIcons[ticket_category_name]}
-        {ticket_category_name}
+      <label htmlFor={name} className={styles.radio_button_label}>
+        <span className={`${styles.icon} ${styles[`icon_${name}`]}`}>
+          {categoryButtonIcons[name]}
+        </span>
+        <div>
+          <h3>{name}</h3>
+
+          <p>{description}</p>
+        </div>
       </label>
-    </div>
+    </>
   );
 }
 

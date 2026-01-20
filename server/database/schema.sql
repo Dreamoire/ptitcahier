@@ -21,7 +21,8 @@ CREATE TABLE announcement_category (
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(120)
 );
 
 CREATE TABLE classroom (
@@ -85,12 +86,12 @@ VALUES
 (2, "Administratif"),
 (3, "Evénement");
 
-INSERT INTO ticket_category (id, name)
+INSERT INTO ticket_category (id, name, description)
 VALUES
-(1, "Urgence"),
-(2, "Absence"),
-(3, "Divers"),
-(4, "Autorisation");
+(1, "Urgence", "Informer d'une situation nécessitant une action rapide (Changement de personne, incident…)"),
+(2, "Absence", "Signaler une absence prévue ou imprévue (Maladie, rendez-vous médical, retard…)"),
+(3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)"),
+(4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)");
 
 INSERT INTO school (email, password, school_name)
 VALUES
