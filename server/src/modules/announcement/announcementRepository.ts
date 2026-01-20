@@ -1,11 +1,11 @@
 import client, { type Result, type Rows } from "../../../database/client";
 
-export type AnnouncementCategory = {
+type AnnouncementCategory = {
   id: number;
   name: string;
 };
 
-export type ClassroomStudentRow = {
+type ClassroomStudentRow = {
   classroomId: number;
   classroomName: string;
   studentId: number;
@@ -13,11 +13,15 @@ export type ClassroomStudentRow = {
   studentLastName: string;
 };
 
-export type CreateAnnouncementPayload = {
+type AnnouncementPayload = {
   schoolId: number;
   title: string;
   content: string;
   categoryId: number;
+};
+
+type AnnouncementWithStudentsPayload = AnnouncementPayload & {
+  studentIds: number[];
 };
 
 const findAnnouncementCategories = async (): Promise<
@@ -54,7 +58,7 @@ const findClassroomsWithStudents = async (
 };
 
 const createAnnouncement = async (
-  payload: CreateAnnouncementPayload,
+  payload: AnnouncementPayload,
 ): Promise<number> => {
   const { schoolId, title, content, categoryId } = payload;
 
@@ -67,13 +71,11 @@ const createAnnouncement = async (
   return result.insertId;
 };
 
-const addAnnouncementTargets = async (
+const createStudentAnnouncement = async (
   announcementId: number,
   studentIds: number[],
 ): Promise<void> => {
-  if (studentIds.length === 0) {
-    throw new Error("studentIds array must not be empty");
-  }
+  if (studentIds.length === 0) return;
 
   const values = studentIds.map((studentId) => [announcementId, studentId]);
 
@@ -83,9 +85,48 @@ const addAnnouncementTargets = async (
   );
 };
 
+// alternative implementation with transaction for production use (more robust), use by POST /announcements/ later
+
+const createStudentAnnouncementTransaction = async (
+  payload: AnnouncementWithStudentsPayload,
+): Promise<number> => {
+  const { schoolId, title, content, categoryId, studentIds } = payload;
+
+  const connection = await client.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [result] = await connection.query<Result>(
+      `INSERT INTO announcement (title, content, announcement_category_id, school_id)
+			VALUES (?, ?, ?, ?)`,
+      [title, content, categoryId, schoolId],
+    );
+
+    const announcementId = result.insertId;
+
+    const values = studentIds.map((studentId) => [announcementId, studentId]);
+
+    await connection.query<Result>(
+      "INSERT INTO announcement_student (announcement_id, student_id) VALUES ?",
+      [values],
+    );
+
+    await connection.commit();
+    return announcementId;
+  } catch (err) {
+    await connection.rollback();
+    throw err;
+  } finally {
+    connection.release();
+  }
+};
+
 export {
   findAnnouncementCategories,
   findClassroomsWithStudents,
   createAnnouncement,
-  addAnnouncementTargets,
+  createStudentAnnouncement,
 };
+
+export { createStudentAnnouncementTransaction };
