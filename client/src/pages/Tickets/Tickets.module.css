@@ -1,81 +1,65 @@
 .page {
   min-height: 100vh;
-  background: var(--background-school);
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 32px 24px;
+
+  background: var(--background-grey);
 }
 
 .container {
-  width: min(980px, 100%);
-  margin: 0 auto;
-  padding: 28px 20px 40px;
+  width: 100%;
+  max-width: 1100px;
+
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.statusRow {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.statusPill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 10px;
-  border: 1px solid rgba(7, 85, 120, 0.25);
-
-  background: var(--background);
-  color: var(--accent-blue);
-
-  height: 44px;
-  min-width: 220px;
-  padding: 0 12px;
-
-  font-family: var(--font-family-body);
-  font-weight: var(--font-weight-text-strong);
-  font-size: var(--font-size-text);
-}
-
-.statusPillActive {
-  background: var(--accent-blue);
-  color: var(--background);
-  border-color: var(--accent-blue);
-}
-
-.statusLabel {
-  flex: 1;
-  text-align: center;
-}
-
-.statusDivider {
-  width: 1px;
-  height: 60%;
-  background: currentColor;
-  opacity: 0.35;
-}
-
-.statusCount {
-  width: 56px;
-  text-align: center;
-}
-
 .contentArea {
+  width: 100%;
+
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .list {
-  list-style: none;
+  margin: 0;
   padding: 0;
-  margin: 16px 0 0;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
+
+  list-style: none;
 }
 
 .listItem {
-  margin: 0;
+  width: 100%;
+
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .container {
+    gap: 14px;
+  }
+
+  .list {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 20px 12px;
+  }
 }

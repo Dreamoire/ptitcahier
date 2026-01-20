@@ -64,6 +64,7 @@ CREATE TABLE announcement_student (
 CREATE TABLE ticket (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     content VARCHAR(1000) NOT NULL,
+    is_done BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
