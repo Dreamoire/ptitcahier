@@ -43,8 +43,8 @@ function TicketCard({ ticket }: TicketCardProps) {
         <header className={styles.header}>
           <h2 className={styles.parentName}>{parentFullName}</h2>
 
-          <span className={styles.category} aria-label="Catégorie">
-            {ticket.category_name}
+          <span className={styles.category} aria-label="Statut">
+            {ticket.is_done ? "Traité" : "Non traité"}
           </span>
         </header>
 

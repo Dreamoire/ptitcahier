@@ -9,6 +9,13 @@
   box-shadow: 0 12px 28px rgba(15, 23, 41, 0.14);
 
   transform: translateZ(0);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(15, 23, 41, 0.18), 0 0 0 2px
+    rgba(13, 162, 231, 0.15);
 }
 
 .leftPanel {
@@ -20,6 +27,10 @@
   justify-content: center;
 
   border: 0;
+  transition: filter 180ms ease;
+}
+.card:hover .leftPanel {
+  filter: brightness(1.06);
 }
 
 .iconCircle {
@@ -47,7 +58,6 @@
 .body {
   flex: 1;
   padding: 18px 20px;
-
   border: 0;
   background: transparent;
 }
@@ -76,7 +86,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
+  width: 132px;
   height: 32px;
   padding: 0 14px;
 
@@ -103,6 +113,7 @@
   color: var(--primary-color-text);
 
   line-height: 1.45;
+  max-width: calc(100% - 160px);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -150,6 +161,10 @@
     min-width: 92px;
   }
 
+  .content {
+    max-width: calc(100% - 140px);
+  }
+
   .iconCircle {
     width: 56px;
     height: 56px;
@@ -182,6 +197,7 @@
   }
 
   .content {
+    max-width: calc(100% - 120px);
     -webkit-line-clamp: 3;
   }
 }

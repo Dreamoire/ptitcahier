@@ -10,6 +10,7 @@ class TicketRepository {
         t.id,
         t.content,
         t.created_at,
+        t.is_done,
         tc.name AS category_name,
         p.first_name AS parent_first_name,
         p.last_name AS parent_last_name,
