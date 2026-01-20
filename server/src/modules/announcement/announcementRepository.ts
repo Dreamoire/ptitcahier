@@ -1,5 +1,5 @@
 import databaseClient from "../../../database/client";
-import type { Result, Rows } from "../../../database/client";
+import type { Rows } from "../../../database/client";
 
 type Announcement = {
   id: number;
@@ -12,7 +12,7 @@ type Announcement = {
 };
 
 class AnnouncementRepository {
-  async readAllByParent() {
+  async readAllByParent(parentId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
           a.id,
@@ -28,9 +28,10 @@ class AnnouncementRepository {
           ON a.id = ann_stu.announcement_id
           INNER JOIN student AS s
           ON ann_stu.student_id = s.id
-          WHERE parent_id="1"
+          WHERE parent_id= ?
           GROUP BY a.id, ac.name
-          ORDER BY a.created_at ASC`,
+          ORDER BY a.created_at DESC`,
+      [parentId],
     );
     return rows as Announcement[];
   }
