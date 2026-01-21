@@ -26,5 +26,24 @@
   --primary-color-items-school: var(--dark-blue);
   --primary-color-items-parent: var(--orange);
 
-  --border-radius: 15px;
+  --font-family-primary-title: "Nunito-Bold", sans-serif;
+  --font-family-card-title: "Nunito-SemiBold", sans-serif;
+  --font-family-text: "Source-Sans-3-Regular", sans-serif;
+
+  --font-size-primary-title: 4rem;
+  --font-size-card-title: 1.5rem;
+  --font-size-text: 1rem;
+
+  --font-weight-primary-title: 600;
+  --font-weight-card-title: 500;
+  --font-weight-text: 400;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-primary-title: 2rem;
+    --font-size-card-title: 1rem;
+    --font-size-card-title: 0.75rem;
+    --font-size-text: 0.5rem;
+  }
 }
