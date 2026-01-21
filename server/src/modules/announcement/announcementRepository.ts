@@ -24,6 +24,22 @@ type AnnouncementWithStudentsPayload = AnnouncementPayload & {
   studentIds: number[];
 };
 
+const countStudentsBelongingToSchool = async (
+  schoolId: number,
+  studentIds: number[],
+): Promise<number> => {
+  const [rows] = await client.query<Rows>(
+    `SELECT COUNT(*) AS count
+		FROM student s
+		JOIN classroom c ON c.id = s.classroom_id
+		WHERE c.school_id = ?
+		AND s.id IN (?)`,
+    [schoolId, studentIds],
+  );
+
+  return Number((rows[0] as { count: number }).count);
+};
+
 const findAnnouncementCategories = async (): Promise<
   AnnouncementCategory[]
 > => {
@@ -55,6 +71,16 @@ const findClassroomsWithStudents = async (
   );
 
   return rows as ClassroomStudentRow[];
+};
+
+const announcementCategoryExists = async (
+  categoryId: number,
+): Promise<boolean> => {
+  const [rows] = await client.query<Rows>(
+    "SELECT id FROM announcement_category WHERE id = ?",
+    [categoryId],
+  );
+  return rows.length > 0;
 };
 
 const createAnnouncement = async (
@@ -123,8 +149,10 @@ const createStudentAnnouncementTransaction = async (
 };
 
 export {
+  countStudentsBelongingToSchool,
   findAnnouncementCategories,
   findClassroomsWithStudents,
+  announcementCategoryExists,
   createAnnouncement,
   createStudentAnnouncement,
 };

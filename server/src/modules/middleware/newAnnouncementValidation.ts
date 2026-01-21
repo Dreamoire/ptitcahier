@@ -1,10 +1,11 @@
 import type { RequestHandler } from "express";
 
-const newAnnouncementValidation: RequestHandler = (req, res, next) => {
-  const { studentIds, classroomIds, classroomId } = req.body as {
+const newAnnouncementValidation: RequestHandler = async (req, res, next) => {
+  const { studentIds, classroomIds, classroomId, categoryId } = req.body as {
     studentIds?: unknown;
     classroomId?: unknown;
     classroomIds?: unknown;
+    categoryId?: unknown;
   };
 
   if (classroomIds !== undefined || classroomId !== undefined) {
@@ -12,6 +13,11 @@ const newAnnouncementValidation: RequestHandler = (req, res, next) => {
       message:
         "Send only studentIds. Classroom targeting must be resolved on the frontend.",
     });
+    return;
+  }
+
+  if (!Number.isInteger(categoryId)) {
+    res.status(400).json({ message: "categoryId must be an integer." });
     return;
   }
 
