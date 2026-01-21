@@ -5,10 +5,9 @@ type Announcement = {
   id: number;
   created_at: Date;
   announcement_category_name: string;
-  first_name: string;
+  student_names: string;
   title: string;
   content: string;
-  school_id: number;
 };
 
 class AnnouncementRepository {
@@ -22,8 +21,7 @@ class AnnouncementRepository {
           ac.name AS announcement_category_name,
           GROUP_CONCAT(s.first_name SEPARATOR ', ') AS student_names
           FROM ptit_cahier.announcement AS a
-          INNER JOIN ptit_cahier.announcement_category AS ac
-          ON a.announcement_category_id = ac.id
+          INNER JOIN ptit_cahier.announcement_category AS ac ON a.announcement_category_id = ac.id
           INNER JOIN ptit_cahier.announcement_student AS ann_stu
           ON a.id = ann_stu.announcement_id
           INNER JOIN student AS s

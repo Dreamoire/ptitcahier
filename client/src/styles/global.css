@@ -1,11 +1,11 @@
 .primary-title {
-  font-family: var(--font-family-title);
+  font-family: var(--font-family-h1);
   font-weight: var(--font-weight-h1);
   font-size: var(--font-size-h1);
 }
 
 .secondary-title {
-  font-family: var(--font-family-title);
+  font-family: var(--font-family-h1);
   font-weight: var(--font-weight-h2);
   font-size: var(--font-size-h2);
 }

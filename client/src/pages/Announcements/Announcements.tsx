@@ -8,11 +8,21 @@ function Announcements() {
   const [announcementList, setAnnouncementList] = useState<Announcement[]>([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/announcements`)
+    const apiUrl = import.meta.env.VITE_API_URL;
+    if (!apiUrl) {
+      console.error(
+        "Configuration manquante : VITE_API_URL n'est pas définie.",
+      );
+      return;
+    }
+    fetch(`${apiUrl}/api/announcements`)
       .then((response) => response.json())
       .then((data) => {
         setAnnouncementList(data);
-      });
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des annonces :", error),
+      );
   }, []);
 
   return (

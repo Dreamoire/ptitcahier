@@ -1,5 +1,5 @@
 import type { Announcement } from "../../types/AnnouncementType";
-import styles from "../AnnouncementCard/AnnouncementCard.module.css";
+import styles from "./AnnouncementCard.module.css";
 
 function AnnouncementCard({
   title,
@@ -8,7 +8,7 @@ function AnnouncementCard({
   student_names,
   announcement_category_name,
 }: Announcement) {
-  const formatDate = new Date(created_at).toLocaleDateString("fr-FR", {
+  const formattedDate = new Date(created_at).toLocaleDateString("fr-FR", {
     dateStyle: "medium",
   });
   const categoryStyle = (category: string) => {
@@ -35,17 +35,19 @@ function AnnouncementCard({
             <span className="sr-only">Catégorie des annonces : </span>
             {announcement_category_name}
           </span>
-          <span className={styles.an_student_tag}>
-            <span className="sr-only">nom de l'enfant : </span>
-            {student_names}
-          </span>
+          {student_names && (
+            <span className={styles.an_student_tag}>
+              <span className="sr-only">nom de l'enfant : </span>
+              {student_names}
+            </span>
+          )}
         </div>
       </header>
 
       <p className={styles.an_card_p}>{content}</p>
 
       <footer>
-        <time>{formatDate}</time>
+        <time dateTime={created_at}>{formattedDate}</time>
       </footer>
     </article>
   );
