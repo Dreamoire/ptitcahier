@@ -1,16 +1,18 @@
-import type { Announcement } from "../../types/AnnouncementType";
+import type { Announcement } from "../../types/Announcement";
 import styles from "./AnnouncementCard.module.css";
 
-function AnnouncementCard({
-  title,
-  content,
-  created_at,
-  student_names,
-  announcement_category_name,
-}: Announcement) {
-  const formattedDate = new Date(created_at).toLocaleDateString("fr-FR", {
-    dateStyle: "medium",
-  });
+type AnnouncementCardProps = {
+  announcement: Announcement;
+};
+
+function AnnouncementCard({ announcement }: AnnouncementCardProps) {
+  const formattedDate = new Date(announcement.created_at).toLocaleDateString(
+    "fr-FR",
+    {
+      dateStyle: "medium",
+    },
+  );
+
   const categoryStyle = (category: string) => {
     switch (category) {
       case "Vie de l'école":
@@ -27,27 +29,27 @@ function AnnouncementCard({
   return (
     <article className={styles.an_card}>
       <header className={styles.an_card_header}>
-        <h3 className={styles.an_card_h3}>{title}</h3>
+        <h2 className="card-title">{announcement.title}</h2>
         <div className={styles.an_badges_container}>
           <span
-            className={`${styles.an_badge} ${categoryStyle(announcement_category_name)}`}
+            className={`${styles.an_badge} ${categoryStyle(announcement.announcement_category_name)}`}
           >
             <span className="sr-only">Catégorie des annonces : </span>
-            {announcement_category_name}
+            {announcement.announcement_category_name}
           </span>
-          {student_names && (
+          {announcement.student_names && (
             <span className={styles.an_student_tag}>
               <span className="sr-only">nom de l'enfant : </span>
-              {student_names}
+              {announcement.student_names}
             </span>
           )}
         </div>
       </header>
-
-      <p className={styles.an_card_p}>{content}</p>
-
-      <footer>
-        <time dateTime={created_at}>{formattedDate}</time>
+      <p className="text">{announcement.content}</p>
+      <footer className={styles.an_card_footer}>
+        <time className={styles.an_date} dateTime={announcement.created_at}>
+          {formattedDate}
+        </time>
       </footer>
     </article>
   );
