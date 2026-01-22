@@ -61,7 +61,7 @@ const findClassroomsWithStudents = async (
 			s.first_name AS studentFirstName,
 			s.last_name AS studentLastName
 		FROM classroom c
-		INNER JOIN student s ON s.classroom_id = c.id
+		JOIN student s ON s.classroom_id = c.id
 		WHERE c.school_id = ?
 		ORDER BY
 			c.classroom_name ASC,

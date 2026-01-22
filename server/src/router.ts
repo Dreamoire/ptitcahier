@@ -3,15 +3,21 @@ import { Router } from "express";
 import announcementAction from "./modules/announcement/announcementAction";
 import announcementCategoryAction from "./modules/announcement/announcementCategoryAction";
 import classroomAction from "./modules/classroom/classroomAction";
-import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
+import newAnnouncementDataBaseValidation from "./modules/middleware/newAnnouncementDataBaseValidation";
+import {
+  newAnnouncementContentValidation,
+  newAnnouncementTypageValidation,
+} from "./modules/middleware/newAnnouncementValidation";
 
 const router = Router();
 
-router.get("/announcements", announcementAction.browse);
+router.get("/announcements", announcementAction.browseBySchool);
 
 router.post(
   "/announcements",
-  newAnnouncementValidation,
+  newAnnouncementTypageValidation,
+  newAnnouncementContentValidation,
+  newAnnouncementDataBaseValidation,
   announcementAction.add,
 );
 

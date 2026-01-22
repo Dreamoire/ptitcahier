@@ -1,46 +1,50 @@
 import type { RequestHandler } from "express";
 import { findClassroomsWithStudents } from "../announcement/announcementRepository";
 
+type Classroom = {
+  classroomId: number;
+  classroomName: string;
+  students: {
+    studentId: number;
+    studentFirstName: string;
+    studentLastName: string;
+  }[];
+};
+
 const browse: RequestHandler = async (req, res) => {
   try {
     if (req.query.include !== "students") {
-      res
-        .status(400)
-        .json({ message: "Query parameter include=students is required" });
+      res.status(400).json({ message: "Query parameter required students" });
       return;
     }
 
     const schoolId = 1; //step 9 config later
+
     const rows = await findClassroomsWithStudents(schoolId);
 
-    const map = new Map<
-      number,
-      {
-        classroomId: number;
-        classroomName: string;
-        students: {
-          studentId: number;
-          studentFirstName: string;
-          studentLastName: string;
-        }[];
-      }
-    >();
+    const classrooms: Classroom[] = [];
+
     for (const row of rows) {
-      if (!map.has(row.classroomId)) {
-        map.set(row.classroomId, {
+      let classroom = classrooms.find((c) => c.classroomId === row.classroomId);
+
+      if (!classroom) {
+        classroom = {
           classroomId: row.classroomId,
           classroomName: row.classroomName,
           students: [],
-        });
+        };
+
+        classrooms.push(classroom);
       }
-      map.get(row.classroomId)?.students.push({
+
+      classroom.students.push({
         studentId: row.studentId,
         studentFirstName: row.studentFirstName,
         studentLastName: row.studentLastName,
       });
     }
 
-    res.status(200).json(Array.from(map.values()));
+    res.status(200).json(classrooms);
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
   }

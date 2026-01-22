@@ -6,7 +6,7 @@ import {
 
 const SCHOOL_ID = 1; // Assuming a fixed school ID for validation purposes
 
-const newAnnouncementBusinessValidation: RequestHandler = async (
+const newAnnouncementDataBaseValidation: RequestHandler = async (
   req,
   res,
   next,
@@ -16,7 +16,7 @@ const newAnnouncementBusinessValidation: RequestHandler = async (
     studentIds: number[];
   };
 
-  const categoryExists = await announcementCategoryExists(categoryId as number);
+  const categoryExists = await announcementCategoryExists(categoryId);
   if (!categoryExists) {
     res.status(400).json({ message: "Invalid categoryId." });
     return;
@@ -36,4 +36,4 @@ const newAnnouncementBusinessValidation: RequestHandler = async (
   next();
 };
 
-export default newAnnouncementBusinessValidation;
+export default newAnnouncementDataBaseValidation;
