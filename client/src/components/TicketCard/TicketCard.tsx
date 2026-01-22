@@ -1,8 +1,6 @@
 import type { Ticket } from "../../types/ticket";
-
-import TicketIcon, { type TicketIconType } from "./TicketIcon";
-
 import styles from "./TicketCard.module.css";
+import TicketIcon, { type TicketIconType } from "./TicketIcon";
 
 type TicketCardProps = {
   ticket: Ticket;
@@ -42,10 +40,6 @@ function TicketCard({ ticket }: TicketCardProps) {
       <div className={styles.body}>
         <header className={styles.header}>
           <h2 className={styles.parentName}>{parentFullName}</h2>
-
-          <span className={styles.category} aria-label="Statut">
-            {ticket.is_done ? "Traité" : "Non traité"}
-          </span>
         </header>
 
         <p className={styles.content}>{ticket.content}</p>

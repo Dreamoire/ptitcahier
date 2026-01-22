@@ -5,8 +5,6 @@ import type { Ticket } from "../../types/ticket";
 
 import styles from "./Tickets.module.css";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 function Tickets() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -16,15 +14,15 @@ function Tickets() {
     setIsLoading(true);
     setHasError(false);
 
-    fetch(`${API_URL}/api/tickets`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/tickets`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }
         return response.json() as Promise<Ticket[]>;
       })
-      .then((data) => {
-        setTickets(data);
+      .then((tickets) => {
+        setTickets(tickets);
       })
       .catch(() => {
         setHasError(true);
@@ -37,10 +35,12 @@ function Tickets() {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
-        <h1 className="secondary-title">Tickets</h1>
+        <h1 className="primary-title">Tickets</h1>
 
         <section className={styles.contentArea} aria-label="Liste des tickets">
-          {isLoading ? <p className="text-body">Chargement...</p> : null}
+          {isLoading ? (
+            <p className="text-body">Chargement en cours...</p>
+          ) : null}
 
           {hasError ? (
             <p className="text-body">Erreur lors du chargement des tickets.</p>
