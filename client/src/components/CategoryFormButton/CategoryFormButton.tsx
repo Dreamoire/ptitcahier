@@ -8,11 +8,10 @@ import type { JSX } from "react";
 import type { TicketCategory } from "../../types/TicketCategoryType";
 import styles from "./CategoryFormButton.module.css";
 
-interface CategoryFormButtonProps {
+type CategoryFormButtonProps = {
   category: TicketCategory;
   formName: string;
-  defaultChecked?: boolean;
-}
+};
 
 const categoryButtonIcons: Record<string, JSX.Element> = {
   Urgence: <OctagonAlert />,
@@ -21,12 +20,8 @@ const categoryButtonIcons: Record<string, JSX.Element> = {
   Autorisation: <ShieldUser />,
 };
 
-function CategoryFormButton({
-  category,
-  formName,
-  defaultChecked,
-}: CategoryFormButtonProps) {
-  const { id, name, description } = category;
+function CategoryFormButton({ category, formName }: CategoryFormButtonProps) {
+  const { id, name } = category;
 
   return (
     <>
@@ -36,17 +31,16 @@ function CategoryFormButton({
         name={formName}
         value={id}
         className={styles.radio_button}
-        defaultChecked={defaultChecked}
+        aria-required="true"
       />
       <label htmlFor={name} className={styles.radio_button_label}>
-        <span className={`${styles.icon} ${styles[`icon_${name}`]}`}>
-          {categoryButtonIcons[name]}
-        </span>
-        <div>
-          <h3>{name}</h3>
-
-          <p>{description}</p>
+        <div
+          className={`${styles.icon_wrapper} ${styles[`icon_wrapper_${name}`]}`}
+        >
+          <span className={styles.icon}>{categoryButtonIcons[name]}</span>
         </div>
+
+        <h2>{name}</h2>
       </label>
     </>
   );

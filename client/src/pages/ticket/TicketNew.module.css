@@ -1,0 +1,34 @@
+.confirmation_form {
+  background: rgba(248, 250, 252, 0.8);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.confirmation_form p {
+  color: var(--primary-color-title);
+  font-family: var(--font-family-primary-title);
+  font-size: var(--font-size-primary-title);
+  margin: 0 auto;
+  text-align: center;
+  max-width: 20ch;
+}
+
+.ticket_buttons_container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ticket_buttons_container button {
+  flex: 1;
+  max-width: 350px;
+}
