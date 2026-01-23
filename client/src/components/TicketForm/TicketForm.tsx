@@ -1,10 +1,10 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import type { Student } from "../../types/Student";
 import type { TicketCategory } from "../../types/TicketCategory";
 import type { TicketNew } from "../../types/TicketNew";
 import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./TicketForm.module.css";
-import type { Student } from "../../types/Student";
 
 type TicketFormProps = {
   children: ReactNode;

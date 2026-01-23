@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
-import ticketRepository from "./ticketRepository";
 import type { TicketNew } from "../../types/express/TicketNew";
+import ticketRepository from "./ticketRepository";
 
 // const validateTicket: RequestHandler = async (req, res, next) => {
 //   try {

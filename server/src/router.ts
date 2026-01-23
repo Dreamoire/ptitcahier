@@ -2,9 +2,9 @@ import express from "express";
 
 const router = express.Router();
 
+import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
 import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
-import studentActions from "./modules/student/studentActions";
 
 router.get(
   "/ticket-categories",
