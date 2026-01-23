@@ -14,7 +14,7 @@ function Tickets() {
     setIsLoading(true);
     setHasError(false);
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/tickets`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/tickets`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
