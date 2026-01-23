@@ -1,11 +1,49 @@
 :root {
-  --primary: #0da2e7;
-  --background: #f8fafc;
+  --background-grey: #eef2f7;
+  --background-white: #f8fafc;
+  --background-rainbow-light: linear-gradient(
+    120deg,
+    #d4f0fc 0%,
+    #fddcc8 35%,
+    #fcf2ca 65%,
+    #d0fce5 100%
+  );
 
-  --accent-orange: #f97015;
-  --accent-green: #16a249;
-  --accent-yellow: #e7b008;
-  --accent-blue: #075578;
+  --black: #0f1729;
+  --blue: #0da2e7;
+  --dark-blue: #075578;
+  --dark-grey: #898888;
+  --green: #16a249;
+  --light-grey: #cccccc;
+  --orange: #f97015;
+  --purple: #6d5bd0;
+  --red: #e5484d;
+  --yellow: #e7b008;
+  --white: #f8fafc;
 
-  --color-text: #0f1729;
+  --primary-color-title: var(--dark-blue);
+  --primary-color-text: var(--black);
+  --primary-color-items-school: var(--dark-blue);
+  --primary-color-items-parent: var(--orange);
+
+  --font-family-primary-title: "Nunito-Bold", sans-serif;
+  --font-family-card-title: "Nunito-SemiBold", sans-serif;
+  --font-family-text: "Source-Sans-3-Regular", sans-serif;
+
+  --font-size-primary-title: 4rem;
+  --font-size-card-title: 1.5rem;
+  --font-size-text: 1rem;
+
+  --font-weight-primary-title: 600;
+  --font-weight-card-title: 500;
+  --font-weight-text: 400;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-primary-title: 2rem;
+    --font-size-card-title: 1rem;
+    --font-size-card-title: 0.75rem;
+    --font-size-text: 0.5rem;
+  }
 }

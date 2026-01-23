@@ -1,25 +1,34 @@
 .primary-title {
-  font-family: var(--font-family-title);
-  font-weight: var(--font-weight-h1);
-  font-size: var(--font-size-h1);
+  font-family: var(--font-family-primary-title);
+  font-weight: var(--font-weight-primary-title);
+  font-size: var(--font-size-primary-title);
+  color: var(--primary-color-title);
 }
 
-.secondary-title {
-  font-family: var(--font-family-title);
-  font-weight: var(--font-weight-h2);
-  font-size: var(--font-size-h2);
+.card-title {
+  color: var(--dark-blue);
+  font-family: var(--font-family-card-title);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-cart-title);
 }
 
-.text-body {
-  font-family: var(--font-family-body);
+.text {
+  color: var(--primary-color-text);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
   font-weight: var(--font-weight-text);
-  font-size: var(--font-size-text);
-  color: var(--color-text);
 }
 
-.text-body-strong {
-  font-family: var(--font-family-body);
-  font-weight: var(--font-weight-text-strong);
-  font-size: var(--font-size-text);
-  color: var(--color-text);
+.parent-background {
+  background: var(--background-rainbow-light);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.school-background {
+  background-color: var(--grey-background);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
