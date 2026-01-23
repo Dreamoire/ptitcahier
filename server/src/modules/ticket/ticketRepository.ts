@@ -1,38 +1,42 @@
 import databaseClient from "../../../database/client";
 
-import type { Result, Rows } from "../../../database/client";
-
-interface Ticket {
-  id: number;
-  content: string;
-  parent_id: number;
-  ticket_category_id: number;
-  student_ids: string[];
-}
+import type { Result } from "../../../database/client";
+import type { TicketNew } from "../../types/express/TicketNew";
 
 class TicketRepository {
-  async createTicket(newTicket: Omit<Ticket, "id">) {
-    const { content, parent_id, ticket_category_id, student_ids } = newTicket;
+  async createTicket(newTicket: TicketNew, parentId: number) {
+    const { content, ticketCategoryId, studentIds } = newTicket;
 
     const [result] = await databaseClient.query<Result>(
       "INSERT INTO ticket (content, parent_id, ticket_category_id) VALUES (?, ?, ?)",
-      [content, parent_id, ticket_category_id],
+      [content, parentId, ticketCategoryId],
     );
 
     const newTicketId = result.insertId;
 
-    const ticket_studentValues = student_ids.map((student_id) => [
+    const ticketStudentValues = studentIds.map((studentId) => [
       newTicketId,
-      Number(student_id),
+      studentId,
     ]);
 
     await databaseClient.query(
       "INSERT INTO ticket_student (ticket_id, student_id) VALUES ?",
-      [ticket_studentValues],
+      [ticketStudentValues],
     );
 
     return newTicketId;
   }
+
+  // async readStudentIdsByParentId(
+  //   parent_id,
+  //   student_ids: Omit<Ticket, "id", content>,
+  // ) {
+  // const [rows] = await databaseClient.query<Rows>(
+  //   "select * from tile where coord_x = ? AND coord_y = ?",
+  //   [coordX, coordY],
+  // );
+  //   return rows;
+  // }
 }
 
 export default new TicketRepository();

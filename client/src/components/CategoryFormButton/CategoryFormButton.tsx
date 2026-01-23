@@ -5,7 +5,7 @@ import {
   ShieldUser,
 } from "lucide-react";
 import type { JSX } from "react";
-import type { TicketCategory } from "../../types/TicketCategoryType";
+import type { TicketCategory } from "../../types/TicketCategory";
 import styles from "./CategoryFormButton.module.css";
 
 type CategoryFormButtonProps = {

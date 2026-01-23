@@ -1,19 +1,15 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import type { TicketCategory } from "../../types/TicketCategoryType";
-import type { Ticket } from "../../types/TicketType";
+import type { TicketCategory } from "../../types/TicketCategory";
+import type { TicketNew } from "../../types/TicketNew";
 import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./TicketForm.module.css";
+import type { Student } from "../../types/Student";
 
 type TicketFormProps = {
   children: ReactNode;
   // defaultValue: Ticket;
-  onSubmit: (ticket: Ticket) => void;
-};
-
-type Student = {
-  id: number;
-  first_name: string;
+  onSubmit: (ticket: TicketNew) => void;
 };
 
 function TicketForm({ children, onSubmit }: TicketFormProps) {
@@ -32,7 +28,7 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
         setTicketCategories(data);
       });
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/students`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`)
       .then((response) => response.json())
       .then((students) => {
         setStudents(students);
@@ -47,19 +43,17 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
         const formData = new FormData(event.currentTarget);
 
         const content = formData.get("content") as string;
-        const parent_id = 1;
-        //parent Id hard coded for now
-        const ticket_category_id = Number(
+        const ticketCategoryId = Number(
           formData.get("ticket_category_id"),
         ) as number;
-        const student_ids = (formData.getAll("student_ids[]") as string[]).map(
+        const studentIds = (formData.getAll("student_ids[]") as string[]).map(
           Number,
         );
 
         if (
           content.length === 0 ||
-          student_ids.length === 0 ||
-          !ticket_category_id
+          studentIds.length === 0 ||
+          !ticketCategoryId
         ) {
           setValidateWarning(true);
           return;
@@ -67,9 +61,8 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
 
         onSubmit({
           content,
-          parent_id,
-          ticket_category_id,
-          student_ids,
+          ticketCategoryId,
+          studentIds,
         });
       }}
     >

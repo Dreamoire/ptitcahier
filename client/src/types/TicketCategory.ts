@@ -1,5 +1,5 @@
-export interface TicketCategory {
+export type TicketCategory = {
   id: number;
   name: string;
   description: string;
-}
+};

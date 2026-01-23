@@ -1,6 +1,7 @@
 import databaseClient from "../../../database/client";
 
-import type { Result, Rows } from "../../../database/client";
+import type { Rows } from "../../../database/client";
+import type { TicketCategory } from "../../types/express/TicketCategory";
 
 class TicketCategoryRepository {
   async readAll() {
@@ -8,7 +9,7 @@ class TicketCategoryRepository {
       "select * from ticket_category order by id",
     );
 
-    return rows;
+    return rows as TicketCategory[];
   }
 }
 

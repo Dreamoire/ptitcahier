@@ -4,12 +4,15 @@ const router = express.Router();
 
 import ticketActions from "./modules/ticket/ticketActions";
 import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
+import studentActions from "./modules/student/studentActions";
 
 router.get(
-  "/api/ticket-categories",
+  "/ticket-categories",
   ticketCategoryActions.browseAllTicketCategories,
 );
 
-router.post("/api/tickets", ticketActions.addTicket);
+router.post("/tickets", ticketActions.addTicket);
+
+router.get("/parents/me/students", studentActions.browseAllStudents);
 
 export default router;
