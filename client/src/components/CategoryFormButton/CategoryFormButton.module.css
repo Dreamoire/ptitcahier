@@ -9,6 +9,8 @@
   background-color: var(--white);
   display: flex;
   align-items: center;
+  padding-right: 0.5rem;
+  gap: 0.5rem;
   cursor: pointer;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -28,19 +30,55 @@
   background-color: #c2d9f0;
 }
 
-.radio_button_label h2 {
-  flex: 1;
-  text-align: center;
-  color: var(--black);
-  font-family: var(--font-family-card-title);
-  font-size: 1.3rem;
-}
-
 .icon_wrapper {
-  padding: 1rem 1.5rem;
-  align-self: stretch;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: margin-left 0.3s ease;
+}
+
+.text_wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 100%;
+}
+
+.ticket_category_name,
+.ticket_category_description {
+  margin: 0;
+  text-align: center;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.ticket_category_name {
+  color: var(--black);
+  font-family: var(--font-family-card-title);
+  font-size: 1.3rem;
+  opacity: 1;
+  max-height: 2em;
+}
+
+.ticket_category_description {
+  color: var(--black);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.radio_button_label:hover .ticket_category_name {
+  opacity: 0;
+  max-height: 0;
+}
+
+.radio_button_label:hover .ticket_category_description {
+  opacity: 1;
+  max-height: 4em;
 }

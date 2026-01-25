@@ -13,7 +13,7 @@ function CategoryFormButton({
   formName,
   onChange,
 }: CategoryFormButtonProps) {
-  const { id, name, color } = category;
+  const { id, name, description, color } = category;
 
   return (
     <>
@@ -33,8 +33,10 @@ function CategoryFormButton({
         >
           <CategoryIcon category={category} />
         </div>
-
-        <h2>{name}</h2>
+        <div className="text_wrapper">
+          <h2 className={styles.ticket_category_name}>{name}</h2>
+          <p className={styles.ticket_category_description}>{description}</p>
+        </div>
       </label>
     </>
   );

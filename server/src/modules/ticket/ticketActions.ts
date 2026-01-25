@@ -1,6 +1,8 @@
 import type { RequestHandler } from "express";
+import { StatusCodes } from "http-status-codes";
 import type { Ticket } from "../../types/express/Ticket";
 import ticketRepository from "./ticketRepository";
+
 // import joi from "joi";
 
 // const validateTicketFormat: RequestHandler = async (req, res, next) => {
@@ -70,7 +72,7 @@ const addTicket: RequestHandler = async (req, res, next) => {
       parentId,
     );
 
-    res.status(201).json({ newInsertedTicketId });
+    res.status(StatusCodes.CREATED).json({ newInsertedTicketId });
   } catch (err) {
     next(err);
   }
