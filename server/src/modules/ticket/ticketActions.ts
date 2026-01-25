@@ -1,54 +1,59 @@
 import type { RequestHandler } from "express";
-import type { TicketNew } from "../../types/express/TicketNew";
+import type { Ticket } from "../../types/express/Ticket";
 import ticketRepository from "./ticketRepository";
+// import joi from "joi";
 
-// const validateTicket: RequestHandler = async (req, res, next) => {
-//   try {
-//     const newTicket = joi.object({
-//       content: joi.string().max(1000).required(),
-//       parent_id: joi.number().integer().positive().required(),
-//       ticket_category_id: joi.number().integer().positive().required(),
-//       student_ids: joi
-//         .array()
-//         .items(joi.number().integer().positive())
-//         .min(1)
-//         .required(),
-//     });
+// const validateTicketFormat: RequestHandler = async (req, res, next) => {
+//   const newTicket = joi.object({
+//     content: joi.string().max(1000).required(),
+//     ticketCategoryId: joi.number().integer().positive().required(),
+//     studentIds: joi
+//       .array()
+//       .items(joi.number().integer().positive())
+//       .min(1)
+//       .required(),
+//   });
 
-//     const { error } = newTicket.validate(req.body, { abortEarly: false });
+//   const { error } = newTicket.validate(req.body, { abortEarly: false });
 
-//     if (error == null) {
-//       next();
-//     } else {
-//       res.status(400).json({ validationErrors: error.details });
-//     }
-
-//     const { parent_id, ticket_category_id, student_ids } = req.body;
-//     req.parent
+//   if (error == null) {
+//     next();
+//   } else {
+//     res.status(400).json({ validationErrors: error.details });
+//   }
 
 // if dont find parent id with correct student id(s), refuse ticket
-// repo fx name?
-// const result = await ticketRepository.readStudentsByParent(
-//   parent_id,
-//   student_ids,
+//   const result = await ticketRepository.readStudentsByParent(
+//     parent_id,
+//     student_ids,
+//   );
+
+//   const students = await studentRepository.readAllByParent(parentId);
+
+// [
+//   {id: 1, first_name: "n"},
+//   {id: 1, first_name: "n"}
+// ]
+
+// studentIds:[1 , 2]
+
+//   if()
+
+// if dont find tik_cat between 1 and 4, refuse ticket
+// const result = await ticketRepository....(
+//   ticketCategoryId
 // );
 
 // if (result.length === 0) {
 //   res.sendStatus(422);
 //   return;
 // }
-
-// ticket cat id _ must be 1 to 4
-
-//     next();
-//   } catch (err) {
-//     next(err);
-//   }
+// next();
 // };
 
 const addTicket: RequestHandler = async (req, res, next) => {
   try {
-    const newTicket: TicketNew = {
+    const newTicket: Ticket = {
       content: req.body.content,
       ticketCategoryId: req.body.ticketCategoryId,
       studentIds: req.body.studentIds,

@@ -1,10 +1,10 @@
 import databaseClient from "../../../database/client";
 
 import type { Result } from "../../../database/client";
-import type { TicketNew } from "../../types/express/TicketNew";
+import type { Ticket } from "../../types/express/Ticket";
 
 class TicketRepository {
-  async createTicket(newTicket: TicketNew, parentId: number) {
+  async createTicket(newTicket: Ticket, parentId: number) {
     const { content, ticketCategoryId, studentIds } = newTicket;
 
     const [result] = await databaseClient.query<Result>(

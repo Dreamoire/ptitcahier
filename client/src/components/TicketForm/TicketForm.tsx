@@ -1,15 +1,14 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { Student } from "../../types/Student";
+import type { Ticket } from "../../types/Ticket";
 import type { TicketCategory } from "../../types/TicketCategory";
-import type { TicketNew } from "../../types/TicketNew";
 import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./TicketForm.module.css";
 
 type TicketFormProps = {
   children: ReactNode;
-  // defaultValue: Ticket;
-  onSubmit: (ticket: TicketNew) => void;
+  onSubmit: (ticket: Ticket) => void;
 };
 
 function TicketForm({ children, onSubmit }: TicketFormProps) {
@@ -17,15 +16,15 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
     [],
   );
   const [students, setStudents] = useState<Student[]>([]);
-  const [content, setContent] = useState<string>("");
+  const [charCount, setCharCount] = useState(0);
   const [validateWarning, setValidateWarning] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`)
       .then((response) => response.json())
-      .then((data) => {
-        setTicketCategories(data);
+      .then((ticketCategories) => {
+        setTicketCategories(ticketCategories);
       });
 
     fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`)
@@ -35,18 +34,22 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
       });
   }, []);
 
+  const clearWarning = () => {
+    if (validateWarning) setValidateWarning(false);
+  };
+
   return (
     <form
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
 
+        const formData = new FormData(event.currentTarget);
         const content = formData.get("content") as string;
         const ticketCategoryId = Number(
-          formData.get("ticket_category_id"),
+          formData.get("ticketCategoryId"),
         ) as number;
-        const studentIds = (formData.getAll("student_ids[]") as string[]).map(
+        const studentIds = (formData.getAll("studentIds[]") as string[]).map(
           Number,
         );
 
@@ -78,7 +81,8 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
             <li key={category.id}>
               <CategoryFormButton
                 category={category}
-                formName="ticket_category_id"
+                formName="ticketCategoryId"
+                onChange={clearWarning}
               />
             </li>
           ))}
@@ -94,18 +98,19 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
             {students.map((student) => (
               <li key={student.id}>
                 <input
-                  className={styles.checkbox}
                   type="checkbox"
                   id={`student-${student.id}`}
-                  name="student_ids[]"
-                  aria-required="true"
+                  name="studentIds[]"
                   value={student.id}
+                  aria-required="true"
+                  className={styles.checkbox}
+                  onChange={clearWarning}
                 />
                 <label
                   htmlFor={`student-${student.id}`}
                   className={styles.checkbox_label}
                 >
-                  {student.first_name}
+                  {student.firstName}
                 </label>
               </li>
             ))}
@@ -123,10 +128,12 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
             className={styles.textarea}
             maxLength={1000}
             placeholder="Expliquez votre demande (contexte, date, détails utiles...)"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
+            onChange={(e) => {
+              setCharCount(e.target.value.length);
+              clearWarning();
+            }}
           />
-          <p className={styles.charcter_counter}>{content.length} / 1000</p>
+          <p className={styles.charcter_counter}>{charCount} / 1000</p>
         </div>
       </fieldset>
 

@@ -7,13 +7,6 @@ function TicketNew() {
   const [formSent, setFormSent] = useState(false);
   const navigate = useNavigate();
 
-  // const defaultTicket = {
-  //   content: "",
-  //   parent_id: undefined,
-  //   ticket_category_id: undefined,
-  //   student_ids: [],
-  // };
-
   return (
     <main className="parent-background">
       {formSent ? (
@@ -38,10 +31,10 @@ function TicketNew() {
         </div>
       ) : (
         <TicketForm
-          // defaultValue={defaultTicket}
           onSubmit={(ticketData) => {
             console.log(ticketData);
             //à supprimer
+
             fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
               method: "post",
               headers: {

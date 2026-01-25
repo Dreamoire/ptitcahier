@@ -6,7 +6,7 @@ import type { TicketCategory } from "../../types/express/TicketCategory";
 class TicketCategoryRepository {
   async readAll() {
     const [rows] = await databaseClient.query<Rows>(
-      "select * from ticket_category order by id",
+      "SELECT * FROM ticket_category ORDER BY id",
     );
 
     return rows as TicketCategory[];
