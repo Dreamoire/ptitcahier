@@ -1,0 +1,101 @@
+.an_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 1rem;
+  border: 1px solid #f0f0f0;
+  width: 100%;
+  max-width: 850px;
+  height: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
+    rgba(0, 0, 0, 0.04);
+  background-color: var(--background-white);
+}
+
+.an_badge,
+.an_student_tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-family: var(--font-family-text);
+  font-weight: var(--font-weight-text);
+  font-size: var(--font-size-text);
+  width: 100%;
+  gap: 5px;
+  padding: 0 10px;
+  border-radius: 1rem;
+  box-shadow: 0 25px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
+    rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
+}
+.an_card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.an_badges_container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.an_student_tag {
+  background-color: var(--dark-blue);
+}
+
+.an_badge_school_life {
+  background-color: var(--purple);
+}
+
+.an_badge_admin {
+  background-color: var(--green);
+}
+
+.an_badge_event {
+  background-color: var(--blue);
+}
+
+.an_badge_default {
+  background-color: #f3f4f6;
+}
+.an_student_tag {
+  background-color: var(--dark-blue);
+}
+.an_card_footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.an_date {
+  font-family: var(--font-family-text);
+  font-weight: var(--font-weight-text);
+  color: var(--dark-grey);
+}
+
+@media (max-width: 600px) {
+  .an_card_header {
+    align-items: flex-start;
+  }
+
+  .an_badges_container {
+    align-items: flex-end;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .an_card {
+    padding: 5px;
+    height: auto;
+  }
+  .an_badge_school_life,
+  .an_badge_admin,
+  .an_badge_event,
+  .an_badge_default,
+  .an_student_tag {
+    font-size: 0.7rem;
+    width: auto;
+    height: 1rem;
+  }
+}
