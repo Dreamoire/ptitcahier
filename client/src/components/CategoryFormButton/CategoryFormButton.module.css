@@ -44,34 +44,3 @@
   align-items: center;
   transition: margin-left 0.3s ease;
 }
-
-.icon {
-  width: 2.8rem;
-  height: 2.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-}
-
-.icon svg {
-  stroke-width: 1.5;
-  width: 100%;
-  height: 100%;
-}
-
-.icon_wrapper_Urgence {
-  background-color: var(--red);
-}
-
-.icon_wrapper_Autorisation {
-  background-color: var(--blue);
-}
-
-.icon_wrapper_Divers {
-  background-color: var(--green);
-}
-
-.icon_wrapper_Absence {
-  background-color: var(--orange);
-}

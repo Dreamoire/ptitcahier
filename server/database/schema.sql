@@ -22,7 +22,9 @@ CREATE TABLE announcement_category (
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL UNIQUE,
-    description VARCHAR(120)
+    description VARCHAR(120),
+    color VARCHAR(6) NOT NULL,
+    icon VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE classroom (
@@ -86,12 +88,12 @@ VALUES
 (2, "Administratif"),
 (3, "Evénement");
 
-INSERT INTO ticket_category (id, name, description)
+INSERT INTO ticket_category (id, name, description, color, icon)
 VALUES
-(1, "Urgence", "Informer d'une situation nécessitant une action rapide (Changement de personne, incident…)"),
-(2, "Absence", "Signaler une absence prévue ou imprévue (Maladie, rendez-vous médical, retard…)"),
-(3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)"),
-(4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)");
+(1, "Urgence", "Informer d'une situation nécessitant une action rapide (Changement de personne, incident…)", "e5484d", "OctagonAlert"),
+(2, "Absence", "Signaler une absence prévue ou imprévue (Maladie, rendez-vous médical, retard…)", "f97015", "CalendarCheck"),
+(3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)", "16a249", "NotebookPen"),
+(4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)", "0da2e7", "ShieldUser");
 
 INSERT INTO school (email, password, school_name)
 VALUES
