@@ -1,4 +1,4 @@
-import type { Ticket } from "../../types/ticket";
+import type { Ticket } from "../../types/Ticket";
 import styles from "./TicketCard.module.css";
 import TicketIcon, { type TicketIconType } from "./TicketIcon";
 

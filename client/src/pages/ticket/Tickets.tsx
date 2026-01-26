@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import TicketCard from "../../components/TicketCard/TicketCard";
-import type { Ticket } from "../../types/ticket";
+import type { Ticket } from "../../types/Ticket";
 
 import styles from "./Tickets.module.css";
 
