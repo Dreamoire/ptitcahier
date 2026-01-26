@@ -26,17 +26,6 @@ class TicketRepository {
 
     return newTicketId;
   }
-
-  // async readStudentIdsByParentId(
-  //   parent_id,
-  //   student_ids: Omit<Ticket, "id", content>,
-  // ) {
-  // const [rows] = await databaseClient.query<Rows>(
-  //   "select * from tile where coord_x = ? AND coord_y = ?",
-  //   [coordX, coordY],
-  // );
-  //   return rows;
-  // }
 }
 
 export default new TicketRepository();

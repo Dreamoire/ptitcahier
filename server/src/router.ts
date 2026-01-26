@@ -12,13 +12,9 @@ router.get(
   ticketCategoryActions.browseAllTicketCategories,
 );
 
-router.post(
-  "/tickets",
-  // ticketActions.validateTicketFormat,
-  ticketActions.addTicket,
-);
+router.post("/tickets", ticketActions.validate, ticketActions.addTicket);
 
-router.get("/parents/me/students", studentActions.browseAllStudents);
+router.get("/parents/me/students", studentActions.readAllByParent);
 
 router.get("/parents/me/announcements", announcementActions.browseByParent);
 

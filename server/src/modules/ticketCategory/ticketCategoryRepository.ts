@@ -11,6 +11,15 @@ class TicketCategoryRepository {
 
     return rows as TicketCategory[];
   }
+
+  async readById(ticketCategoryId: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM ticket_category WHERE id = ?",
+      [ticketCategoryId],
+    );
+
+    return (rows[0] as TicketCategory) ?? null;
+  }
 }
 
 export default new TicketCategoryRepository();

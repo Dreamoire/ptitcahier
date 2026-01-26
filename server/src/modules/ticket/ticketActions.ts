@@ -1,57 +1,70 @@
 import type { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import joi from "joi";
 import type { Ticket } from "../../types/express/Ticket";
+import studentRepository from "../student/studentRepository";
+import ticketCategoryRepository from "../ticketCategory/ticketCategoryRepository";
 import ticketRepository from "./ticketRepository";
 
-// import joi from "joi";
+const validate: RequestHandler = async (req, res, next) => {
+  try {
+    const newTicket = joi.object({
+      content: joi.string().max(1000).required(),
+      ticketCategoryId: joi.number().integer().positive().required(),
+      studentIds: joi
+        .array()
+        .items(joi.number().integer().positive())
+        .min(1)
+        .required(),
+    });
 
-// const validateTicketFormat: RequestHandler = async (req, res, next) => {
-//   const newTicket = joi.object({
-//     content: joi.string().max(1000).required(),
-//     ticketCategoryId: joi.number().integer().positive().required(),
-//     studentIds: joi
-//       .array()
-//       .items(joi.number().integer().positive())
-//       .min(1)
-//       .required(),
-//   });
+    const { error } = newTicket.validate(req.body);
 
-//   const { error } = newTicket.validate(req.body, { abortEarly: false });
+    if (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Les données envoyées sont invalides" });
+      return;
+    }
 
-//   if (error == null) {
-//     next();
-//   } else {
-//     res.status(400).json({ validationErrors: error.details });
-//   }
+    const currentTicketCategory = await ticketCategoryRepository.readById(
+      req.body.ticketCategoryId,
+    );
 
-// if dont find parent id with correct student id(s), refuse ticket
-//   const result = await ticketRepository.readStudentsByParent(
-//     parent_id,
-//     student_ids,
-//   );
+    if (!currentTicketCategory) {
+      res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Categorie introuvable" });
+      return;
+    }
 
-//   const students = await studentRepository.readAllByParent(parentId);
+    const parentId = 1;
+    // parent Id hard coded for now
+    const studentIds = req.body.studentIds;
 
-// [
-//   {id: 1, first_name: "n"},
-//   {id: 1, first_name: "n"}
-// ]
+    for (const studentId of studentIds) {
+      const currentStudent = await studentRepository.readById(studentId);
 
-// studentIds:[1 , 2]
+      if (!currentStudent) {
+        res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: "Étudiant introuvable" });
+        return;
+      }
 
-//   if()
+      if (currentStudent.parentId !== parentId) {
+        res
+          .status(StatusCodes.UNPROCESSABLE_ENTITY)
+          .json({ error: "L'étudiant n'appartient pas à ce parent" });
+        return;
+      }
+    }
 
-// if dont find tik_cat between 1 and 4, refuse ticket
-// const result = await ticketRepository....(
-//   ticketCategoryId
-// );
-
-// if (result.length === 0) {
-//   res.sendStatus(422);
-//   return;
-// }
-// next();
-// };
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
 
 const addTicket: RequestHandler = async (req, res, next) => {
   try {
@@ -64,9 +77,6 @@ const addTicket: RequestHandler = async (req, res, next) => {
     const parentId = 1;
     //parent Id hard coded for now
 
-    console.log(newTicket);
-    // à supprimer
-
     const newInsertedTicketId = await ticketRepository.createTicket(
       newTicket,
       parentId,
@@ -78,4 +88,7 @@ const addTicket: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { addTicket };
+export default {
+  addTicket,
+  validate,
+};

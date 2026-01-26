@@ -4,14 +4,15 @@ import TicketForm from "../../components/TicketForm/TicketForm";
 import styles from "./TicketNew.module.css";
 
 function TicketNew() {
-  const [formSent, setFormSent] = useState(false);
+  const [formSent, setFormSent] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   return (
     <main className="parent-background">
       {formSent ? (
         <div className={styles.confirmation_form}>
-          <p>Votre ticket a été bien envoyé!</p>
+          {error ? <p>{error}</p> : <p>Votre ticket a été bien envoyé!</p>}
           <div className={styles.ticket_buttons_container}>
             <button
               onClick={() => navigate("/")}
@@ -21,7 +22,10 @@ function TicketNew() {
               Retourner à l'accueil
             </button>
             <button
-              onClick={() => setFormSent(false)}
+              onClick={() => {
+                setFormSent(false);
+                setError(null);
+              }}
               type="submit"
               className="primary-button"
             >
@@ -30,24 +34,31 @@ function TicketNew() {
           </div>
         </div>
       ) : (
-        <TicketForm
-          onSubmit={(ticketData) => {
-            console.log(ticketData);
-            //à supprimer
-
-            fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
-              method: "post",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(ticketData),
-            })
-              .then((response) => response.json())
-              .then(() => setFormSent(true));
-          }}
-        >
-          Envoyer
-        </TicketForm>
+        <>
+          <TicketForm
+            onSubmit={(newTicket) => {
+              setError(null);
+              fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
+                method: "post",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newTicket),
+              })
+                .then((response) => response.ok)
+                .then((ok) => {
+                  if (!ok) {
+                    setError(
+                      "Une erreur est survenue. Veuillez renvoyer votre demande.",
+                    );
+                  }
+                  setFormSent(true);
+                });
+            }}
+          >
+            Envoyer
+          </TicketForm>
+        </>
       )}
     </main>
   );
