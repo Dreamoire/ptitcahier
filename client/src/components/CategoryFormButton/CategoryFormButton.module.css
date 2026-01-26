@@ -59,7 +59,7 @@
 .ticket_category_name {
   color: var(--black);
   font-family: var(--font-family-card-title);
-  font-size: 1.3rem;
+  font-size: var(--font-size-card-title);
   opacity: 1;
   max-height: 2em;
 }
@@ -81,4 +81,11 @@
 .radio_button_label:hover .ticket_category_description {
   opacity: 1;
   max-height: 4em;
+}
+
+@media (max-width: 600px) {
+  .icon_wrapper {
+    width: 35px;
+    height: 80px;
+  }
 }

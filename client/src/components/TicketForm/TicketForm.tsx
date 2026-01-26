@@ -16,7 +16,7 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
     [],
   );
   const [students, setStudents] = useState<Student[]>([]);
-  const [charCount, setCharCount] = useState(0);
+  const [charCount, setCharCount] = useState<number>(0);
   const [validateWarning, setValidateWarning] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -53,14 +53,14 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
           Number,
         );
 
-        if (
-          content.length === 0 ||
-          studentIds.length === 0 ||
-          !ticketCategoryId
-        ) {
-          setValidateWarning(true);
-          return;
-        }
+        // if (
+        //   content.length === 0 ||
+        //   studentIds.length === 0 ||
+        //   !ticketCategoryId
+        // ) {
+        //   setValidateWarning(true);
+        //   return;
+        // }
 
         onSubmit({
           content,

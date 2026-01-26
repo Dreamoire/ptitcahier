@@ -1,5 +1,6 @@
 .confirmation_form {
   background: rgba(248, 250, 252, 0.8);
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 3rem;
@@ -23,7 +24,6 @@
 .ticket_buttons_container {
   width: 100%;
   display: flex;
-  flex-wrap: wrap-reverse;
   justify-content: center;
   gap: 1rem;
 }
@@ -31,4 +31,26 @@
 .ticket_buttons_container button {
   flex: 1;
   max-width: 350px;
+}
+
+@media (max-width: 768px) {
+  .confirmation_form {
+    width: 95%;
+  }
+}
+
+@media (max-width: 600px) {
+  .confirmation_form {
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .ticket_buttons_container {
+    flex-direction: column-reverse;
+  }
+
+  .ticket_buttons_container button {
+    flex: 1;
+    max-width: 100%;
+  }
 }

@@ -21,18 +21,14 @@
 
 .parent-background {
   background: var(--background-rainbow-light);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
-  padding-top: 2rem;
+  min-height: 100vh;
+  padding: 2rem 0;
 }
 
 .school-background {
   background-color: var(--grey-background);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding-top: 2rem;
 }
 
 .non-primary-button,
