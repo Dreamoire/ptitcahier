@@ -6,6 +6,18 @@ import studentRepository from "../student/studentRepository";
 import ticketCategoryRepository from "../ticketCategory/ticketCategoryRepository";
 import ticketRepository from "./ticketRepository";
 
+const browseBySchool: RequestHandler = async (req, res, next) => {
+  try {
+    const schoolId = 1;
+
+    const tickets = await ticketRepository.readAllBySchool(schoolId);
+
+    res.json(tickets);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const validate: RequestHandler = async (req, res, next) => {
   try {
     const newTicket = joi.object({
@@ -89,6 +101,7 @@ const addTicket: RequestHandler = async (req, res, next) => {
 };
 
 export default {
+  browseBySchool,
   addTicket,
   validate,
 };

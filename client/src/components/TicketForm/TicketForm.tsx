@@ -1,14 +1,14 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { Student } from "../../types/Student";
-import type { Ticket } from "../../types/Ticket";
 import type { TicketCategory } from "../../types/TicketCategory";
+import type { TicketNew } from "../../types/TicketNew";
 import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./TicketForm.module.css";
 
 type TicketFormProps = {
   children: ReactNode;
-  onSubmit: (ticket: Ticket) => void;
+  onSubmit: (ticket: TicketNew) => void;
 };
 
 function TicketForm({ children, onSubmit }: TicketFormProps) {
