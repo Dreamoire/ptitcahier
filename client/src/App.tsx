@@ -3,8 +3,10 @@ import "./styles/variables.css";
 import "./styles/typography.css";
 import "./styles/global.css";
 
+import Announcements from "./pages/Announcements";
+
 function App() {
-  return <></>;
+  return <Announcements />;
 }
 
 export default App;

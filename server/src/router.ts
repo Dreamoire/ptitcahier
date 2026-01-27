@@ -1,28 +1,24 @@
 import { Router } from "express";
 
-import announcementAction from "./modules/announcement/announcementAction";
+import announcementActions from "./modules/announcement/announcementActions";
 import announcementCategoryAction from "./modules/announcement/announcementCategoryAction";
 import classroomAction from "./modules/classroom/classroomAction";
-import newAnnouncementDataBaseValidation from "./modules/middleware/newAnnouncementDataBaseValidation";
-import {
-  newAnnouncementContentValidation,
-  newAnnouncementTypageValidation,
-} from "./modules/middleware/newAnnouncementValidation";
+import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
 
 const router = Router();
 
-router.get("/announcements", announcementAction.browseBySchool);
-
 router.post(
   "/announcements",
-  newAnnouncementTypageValidation,
-  newAnnouncementContentValidation,
-  newAnnouncementDataBaseValidation,
-  announcementAction.add,
+  newAnnouncementValidation,
+  announcementActions.addAnnouncement,
 );
 
-router.get("/announcement-categories", announcementCategoryAction.browse);
+router.get("/announcements-categories", announcementCategoryAction.browse);
 
-router.get("/classrooms", classroomAction.browse);
+router.get("/classrooms", classroomAction.browseClassrooms);
+router.get(
+  "/classrooms/:id/students",
+  classroomAction.browseStudentsInClassroom,
+);
 
 export default router;
