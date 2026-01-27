@@ -12,6 +12,7 @@
   --black: #0f1729;
   --blue: #0da2e7;
   --dark-blue: #075578;
+  --parent-blue: #1e6cb0;
   --dark-grey: #898888;
   --green: #16a249;
   --light-grey: #cccccc;
@@ -29,14 +30,19 @@
   --font-family-primary-title: "Nunito-Bold", sans-serif;
   --font-family-card-title: "Nunito-SemiBold", sans-serif;
   --font-family-text: "Source-Sans-3-Regular", sans-serif;
+  --font-family-button: "Nunito-SemiBold", sans-serif;
 
-  --font-size-primary-title: 4rem;
-  --font-size-card-title: 1.5rem;
+  --font-size-primary-title: 3rem;
+  --font-size-card-title: 1.3rem;
   --font-size-text: 1rem;
+  --font-size-button: 1.5rem;
 
-  --font-weight-primary-title: 600;
+  /* --font-weight-primary-title: 600;
   --font-weight-card-title: 500;
-  --font-weight-text: 400;
+  --font-weight-text: 400; */
+
+  --border-radius: 15px;
+  --box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 480px) {

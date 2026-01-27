@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router";
-import App from "./App";
+
 import Announcements from "./pages/announcement/Announcements";
+import Connexion from "./pages/connexion/Connexion";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Connexion />,
   },
   {
     path: "/parent/announcements",
