@@ -4,6 +4,7 @@ import announcementRepository from "./announcementRepository";
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = 1;
+    //hard coded for now
     const announcements =
       await announcementRepository.readAllByParent(parentId);
     res.json(announcements);

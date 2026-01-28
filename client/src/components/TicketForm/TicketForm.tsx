@@ -53,14 +53,14 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
           Number,
         );
 
-        // if (
-        //   content.length === 0 ||
-        //   studentIds.length === 0 ||
-        //   !ticketCategoryId
-        // ) {
-        //   setValidateWarning(true);
-        //   return;
-        // }
+        if (
+          content.length === 0 ||
+          studentIds.length === 0 ||
+          !ticketCategoryId
+        ) {
+          setValidateWarning(true);
+          return;
+        }
 
         onSubmit({
           content,
@@ -74,6 +74,7 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
         Choisissez un motif, sélectionnez le ou les enfants concernés, puis
         rédigez votre message.
       </p>
+
       <fieldset className={styles.fieldset_categories}>
         <legend className={styles.form_label}>Motif de la demande* :</legend>
         <ul>

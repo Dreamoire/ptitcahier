@@ -7,16 +7,13 @@ import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryAction
 
 const router = express.Router();
 
-router.get(
-  "/ticket-categories",
-  ticketCategoryActions.browseAllTicketCategories,
-);
+router.get("/parents/me/announcements", announcementActions.browseByParent);
+
+router.get("/parents/me/students", studentActions.readAllByParent);
 
 router.get("/schools/me/tickets", ticketActions.browseBySchool);
 router.post("/tickets", ticketActions.validate, ticketActions.addTicket);
 
-router.get("/parents/me/students", studentActions.readAllByParent);
-
-router.get("/parents/me/announcements", announcementActions.browseByParent);
+router.get("/ticket-categories", ticketCategoryActions.browseAll);
 
 export default router;

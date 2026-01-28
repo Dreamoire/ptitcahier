@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import joi from "joi";
-import type { Ticket } from "../../types/express/Ticket";
+import type { TicketNew } from "../../types/express/TicketNew";
 import studentRepository from "../student/studentRepository";
 import ticketCategoryRepository from "../ticketCategory/ticketCategoryRepository";
 import ticketRepository from "./ticketRepository";
@@ -9,6 +9,7 @@ import ticketRepository from "./ticketRepository";
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
     const schoolId = 1;
+    //school Id hard coded for now
 
     const tickets = await ticketRepository.readAllBySchool(schoolId);
 
@@ -80,7 +81,7 @@ const validate: RequestHandler = async (req, res, next) => {
 
 const addTicket: RequestHandler = async (req, res, next) => {
   try {
-    const newTicket: Ticket = {
+    const newTicket: TicketNew = {
       content: req.body.content,
       ticketCategoryId: req.body.ticketCategoryId,
       studentIds: req.body.studentIds,

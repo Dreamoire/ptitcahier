@@ -1,5 +1,9 @@
 export type Ticket = {
+  id: number;
   content: string;
-  ticketCategoryId: number;
-  studentIds: number[];
+  createdAt: string;
+  ticketCategoryName: string;
+  parentFirstName: string;
+  parentLastName: string;
+  studentNames: string;
 };

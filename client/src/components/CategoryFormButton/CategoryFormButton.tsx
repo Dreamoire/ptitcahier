@@ -33,7 +33,7 @@ function CategoryFormButton({
         >
           <CategoryIcon category={category} />
         </div>
-        <div className="text_wrapper">
+        <div className={styles.text_wrapper}>
           <h2 className={styles.ticket_category_name}>{name}</h2>
           <p className={styles.ticket_category_description}>{description}</p>
         </div>
