@@ -1,0 +1,45 @@
+.home_title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.ba_card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.ba_card_header {
+  padding: 0;
+}
+
+.school_banner {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.an_section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.an_section ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
