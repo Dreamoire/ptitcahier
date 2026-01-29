@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logoSite from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
-import type { School } from "../../types/school";
+import type { School } from "../../types/School";
 import styles from "./Home.module.css";
 
 function Home() {
