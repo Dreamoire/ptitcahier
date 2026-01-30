@@ -1,15 +1,6 @@
 import databaseClient from "../../../database/client";
 import type { Rows } from "../../../database/client";
-
-type Announcement = {
-  id: number;
-  created_at: Date;
-  announcement_category_name: string;
-  first_name: string;
-  title: string;
-  content: string;
-  school_id: number;
-};
+import type { Announcement } from "../../types/express/Announcement";
 
 class AnnouncementRepository {
   async readAllByParent(parentId: number) {

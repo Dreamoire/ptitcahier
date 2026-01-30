@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import AnnoucementsFilters from "../../components/AnnouncementsFilters";
-import type { Announcement } from "../../types/AnnouncementType";
+import type { Announcement } from "../../types/Announcement";
 import styles from "./Announcements.module.css";
 
 function Announcements() {
-  const [announcementList, setAnnouncementList] = useState<Announcement[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/announcements`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/announcements`)
       .then((response) => response.json())
-      .then((data) => {
-        setAnnouncementList(data);
+      .then((announcements) => {
+        setAnnouncements(announcements);
       });
   }, []);
 
@@ -20,7 +20,7 @@ function Announcements() {
     <main className="parent-background">
       <header className={styles.an_title}>
         <img src={logo_site} alt="Logo" className={styles.logo} />
-        <h1>Fil d'actualité</h1>
+        <h1 className="primary-title">Fil d'actualité</h1>
       </header>
       <div>
         <AnnoucementsFilters />
@@ -28,9 +28,9 @@ function Announcements() {
 
       <section className={styles.an_section}>
         <ul>
-          {announcementList.map((announcement) => (
+          {announcements.map((announcement) => (
             <li key={announcement.id}>
-              <AnnouncementCard {...announcement} />
+              <AnnouncementCard announcement={announcement} />
             </li>
           ))}
         </ul>
