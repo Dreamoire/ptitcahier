@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
+import AnnoucementsFilters from "../../components/AnnouncementsFilters";
 import type { Announcement } from "../../types/AnnouncementType";
 import styles from "./Announcements.module.css";
 
@@ -21,6 +22,10 @@ function Announcements() {
         <img src={logo_site} alt="Logo" className={styles.logo} />
         <h1>Fil d'actualité</h1>
       </header>
+      <div>
+        <AnnoucementsFilters />
+      </div>
+
       <section className={styles.an_section}>
         <ul>
           {announcementList.map((announcement) => (
