@@ -9,10 +9,10 @@ const router = express.Router();
 
 router.get("/parents/me/announcements", announcementActions.browseByParent);
 
-router.get("/parents/me/students", studentActions.readAllByParent);
+router.get("/parents/me/students", studentActions.browseByParent);
 
 router.get("/schools/me/tickets", ticketActions.browseBySchool);
-router.post("/tickets", ticketActions.validate, ticketActions.addTicket);
+router.post("/tickets", ticketActions.validate, ticketActions.add);
 
 router.get("/ticket-categories", ticketCategoryActions.browseAll);
 

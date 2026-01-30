@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import studentRepository from "./studentRepository";
 
-const readAllByParent: RequestHandler = async (req, res, next) => {
+const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = 1;
     //hard coded for now
@@ -13,4 +13,4 @@ const readAllByParent: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { readAllByParent };
+export default { browseByParent };

@@ -22,7 +22,7 @@ class StudentRepository {
     return rows as Student[];
   }
 
-  async readById(studentId: number) {
+  async read(studentId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
         s.id,

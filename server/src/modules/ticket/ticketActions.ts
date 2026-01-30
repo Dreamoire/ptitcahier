@@ -56,7 +56,7 @@ const validate: RequestHandler = async (req, res, next) => {
     const studentIds = req.body.studentIds;
 
     for (const studentId of studentIds) {
-      const currentStudent = await studentRepository.readById(studentId);
+      const currentStudent = await studentRepository.read(studentId);
 
       if (!currentStudent) {
         res
@@ -79,7 +79,7 @@ const validate: RequestHandler = async (req, res, next) => {
   }
 };
 
-const addTicket: RequestHandler = async (req, res, next) => {
+const add: RequestHandler = async (req, res, next) => {
   try {
     const newTicket: TicketNew = {
       content: req.body.content,
@@ -90,7 +90,7 @@ const addTicket: RequestHandler = async (req, res, next) => {
     const parentId = 1;
     //parent Id hard coded for now
 
-    const newInsertedTicketId = await ticketRepository.createTicket(
+    const newInsertedTicketId = await ticketRepository.create(
       newTicket,
       parentId,
     );
@@ -103,6 +103,6 @@ const addTicket: RequestHandler = async (req, res, next) => {
 
 export default {
   browseBySchool,
-  addTicket,
+  add,
   validate,
 };

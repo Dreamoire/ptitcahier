@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { Student } from "../../types/Student";
 import type { TicketCategory } from "../../types/TicketCategory";
@@ -7,32 +7,15 @@ import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./TicketForm.module.css";
 
 type TicketFormProps = {
-  children: ReactNode;
+  ticketCategories: TicketCategory[];
+  students: Student[];
   onSubmit: (ticket: TicketNew) => void;
 };
 
-function TicketForm({ children, onSubmit }: TicketFormProps) {
-  const [ticketCategories, setTicketCategories] = useState<TicketCategory[]>(
-    [],
-  );
-  const [students, setStudents] = useState<Student[]>([]);
-  const [charCount, setCharCount] = useState<number>(0);
+function TicketForm({ ticketCategories, students, onSubmit }: TicketFormProps) {
+  const [messageLength, setMessageLength] = useState<number>(0);
   const [validateWarning, setValidateWarning] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`)
-      .then((response) => response.json())
-      .then((ticketCategories) => {
-        setTicketCategories(ticketCategories);
-      });
-
-    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`)
-      .then((response) => response.json())
-      .then((students) => {
-        setStudents(students);
-      });
-  }, []);
 
   const clearWarning = () => {
     if (validateWarning) setValidateWarning(false);
@@ -53,10 +36,15 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
           Number,
         );
 
+        const validStudentIds = studentIds.filter(
+          (id) => Number.isInteger(id) && id > 0,
+        );
+
         if (
-          content.length === 0 ||
-          studentIds.length === 0 ||
-          !ticketCategoryId
+          content.trim().length === 0 ||
+          validStudentIds.length === 0 ||
+          !Number.isInteger(ticketCategoryId) ||
+          ticketCategoryId <= 0
         ) {
           setValidateWarning(true);
           return;
@@ -130,19 +118,13 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
             maxLength={1000}
             placeholder="Expliquez votre demande (contexte, date, détails utiles...)"
             onChange={(e) => {
-              setCharCount(e.target.value.length);
+              setMessageLength(e.target.value.length);
               clearWarning();
             }}
           />
-          <p className={styles.charcter_counter}>{charCount} / 1000</p>
+          <p className={styles.charcter_counter}>{messageLength} / 1000</p>
         </div>
       </fieldset>
-
-      {validateWarning && (
-        <p className={styles.warning}>
-          Veuillez remplir tous les champs obligatoires (indiqués par *).
-        </p>
-      )}
 
       <div className={styles.ticket_buttons_container}>
         <button
@@ -152,10 +134,20 @@ function TicketForm({ children, onSubmit }: TicketFormProps) {
         >
           Retourner à l'accueil
         </button>
-        <button type="submit" className="primary-button">
-          {children}
+        <button
+          type="submit"
+          className="primary-button"
+          disabled={validateWarning}
+        >
+          Envoyer
         </button>
       </div>
+
+      {validateWarning && (
+        <p className={styles.warning} role="alert" aria-live="polite">
+          Veuillez remplir tous les champs obligatoires (indiqués par *).
+        </p>
+      )}
     </form>
   );
 }
