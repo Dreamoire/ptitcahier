@@ -1,23 +1,46 @@
 import databaseClient from "../../../database/client";
-
-import type { Rows } from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
+import type { Ticket } from "../../types/express/Ticket";
+import type { TicketNew } from "../../types/express/TicketNew";
 
 class TicketRepository {
+  async create(newTicket: TicketNew, parentId: number) {
+    const { content, ticketCategoryId, studentIds } = newTicket;
+
+    const [result] = await databaseClient.query<Result>(
+      "INSERT INTO ticket (content, parent_id, ticket_category_id) VALUES (?, ?, ?)",
+      [content, parentId, ticketCategoryId],
+    );
+
+    const newTicketId = result.insertId;
+
+    const ticketStudentValues = studentIds.map((studentId) => [
+      newTicketId,
+      studentId,
+    ]);
+
+    await databaseClient.query(
+      "INSERT INTO ticket_student (ticket_id, student_id) VALUES ?",
+      [ticketStudentValues],
+    );
+
+    return newTicketId;
+  }
+
   async readAllBySchool(schoolId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT
         t.id,
         t.content,
-        t.created_at,        
-        tc.name AS category_name,
-        p.first_name AS parent_first_name,
-        p.last_name AS parent_last_name,
-        tic_stu.ticket_id,
+        t.created_at AS createdAt,        
+        tc.name AS ticketCategoryName,
+        p.first_name AS parentFirstName,
+        p.last_name AS parentLastName,
       GROUP_CONCAT(
           CONCAT(s.first_name, ' ', s.last_name)
           ORDER BY s.first_name
           SEPARATOR ', '
-      ) AS student_names
+      ) AS studentNames
       FROM ticket AS t    
       JOIN ticket_category AS tc ON t.ticket_category_id = tc.id    
       JOIN parent AS p  ON t.parent_id = p.id   
@@ -31,7 +54,7 @@ class TicketRepository {
       [schoolId],
     );
 
-    return rows;
+    return rows as Ticket[];
   }
 }
 

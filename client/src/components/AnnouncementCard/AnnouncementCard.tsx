@@ -6,7 +6,7 @@ type AnnouncementCardProps = {
 };
 
 function AnnouncementCard({ announcement }: AnnouncementCardProps) {
-  const formattedDate = new Date(announcement.created_at).toLocaleDateString(
+  const formattedDate = new Date(announcement.createdAt).toLocaleDateString(
     "fr-FR",
     {
       dateStyle: "medium",
@@ -32,22 +32,25 @@ function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         <h2 className="card-title">{announcement.title}</h2>
         <div className={styles.an_badges_container}>
           <span
-            className={`${styles.an_badge} ${categoryStyle(announcement.announcement_category_name)}`}
+            className={`${styles.an_badge} ${categoryStyle(announcement.announcementCategoryName)}`}
           >
             <span className="sr-only">Catégorie des annonces : </span>
-            {announcement.announcement_category_name}
+            {announcement.announcementCategoryName}
           </span>
-          {announcement.student_names && (
+          {announcement.studentNames && (
             <span className={styles.an_student_tag}>
               <span className="sr-only">nom de l'enfant : </span>
-              {announcement.student_names}
+              {announcement.studentNames}
             </span>
           )}
         </div>
       </header>
       <p className="text">{announcement.content}</p>
       <footer className={styles.an_card_footer}>
-        <time className={styles.an_date} dateTime={announcement.created_at}>
+        <time
+          className={styles.an_date}
+          dateTime={String(announcement.createdAt)}
+        >
           {formattedDate}
         </time>
       </footer>
