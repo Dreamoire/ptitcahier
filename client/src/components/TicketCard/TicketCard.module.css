@@ -2,6 +2,7 @@
   display: flex;
   width: 100%;
   overflow: hidden;
+  position: relative;
 
   border: 0;
   border-radius: var(--border-radius);
@@ -14,6 +15,21 @@
 .card:hover {
   transform: translateY(-6px);
   box-shadow: var(--box-shadow-hover);
+}
+
+.overlayButton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.overlayButton:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
 
 .leftPanel {
