@@ -15,7 +15,7 @@ class TicketSeeder extends AbstractSeeder {
           parent_id: parent,
           ticket_category_id: this.faker.helpers.rangeToNumber({
             min: 1,
-            max: 3,
+            max: 4,
           }),
           refName: `ticket_${parent}_${j}`,
         };

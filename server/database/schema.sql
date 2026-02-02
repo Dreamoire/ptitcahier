@@ -21,7 +21,10 @@ CREATE TABLE announcement_category (
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(120),
+    color VARCHAR(6) NOT NULL,
+    icon VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE classroom (
@@ -63,7 +66,7 @@ CREATE TABLE announcement_student (
 
 CREATE TABLE ticket (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    content VARCHAR(1000) NOT NULL,
+    content VARCHAR(1000) NOT NULL,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
@@ -85,12 +88,12 @@ VALUES
 (2, "Administratif"),
 (3, "Evénement");
 
-INSERT INTO ticket_category (id, name)
+INSERT INTO ticket_category (id, name, description, color, icon)
 VALUES
-(1, "Urgence"),
-(2, "Absence"),
-(3, "Divers"),
-(4, "Autorisation");
+(1, "Urgence", "Informer d'une situation nécessitant une action rapide (Changement de personne, incident…)", "e5484d", "OctagonAlert"),
+(2, "Absence", "Signaler une absence prévue ou imprévue (Maladie, rendez-vous médical, retard…)", "f97015", "CalendarCheck"),
+(3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)", "16a249", "NotebookPen"),
+(4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)", "0da2e7", "ShieldUser");
 
 INSERT INTO school (email, password, school_name)
 VALUES
@@ -119,20 +122,9 @@ VALUES
 
 INSERT INTO student (last_name, first_name, born_at, classroom_id, parent_id)
 VALUES
-('Martin', 'Sophie', '2014-05-14', 1, 1),
-('Martin', 'Lucas', '2012-09-22', 2, 1),
-('Dubois', 'Léo', '2014-02-10', 1, 1),
-('Thomas', 'Manon', '2013-07-05', 3, 1),
-('Robert', 'Hugo', '2012-11-12', 4, 1),
-('Richard', 'Jade', '2014-08-30', 5, 1),
-('Petit', 'Nathan', '2013-01-15', 2, 1),
-('Leroy', 'Emma', '2013-11-30', 6, 2),
-('Perrin', 'Lucie', '2016-03-24', 6, 2),
-('Perin', 'Michel', '2012-09-22', 7, 2),
-('Turin', 'Julie', '2013-11-30', 8, 2),
-('Moreau', 'Enzo', '2015-04-18', 7, 2),
-('Lefebvre', 'Chloé', '2014-12-01', 9, 2),
-('Roux', 'Gabriel', '2013-06-20', 10, 2),
-('Garcia', 'Inès', '2015-09-11', 8, 2),
-('Fournier', 'Arthur', '2014-03-03', 9, 2),
-('Girard', 'Sarah', '2012-05-25', 10, 2);
+("Martin", "Sophie", "2014-05-14", 1, 1),
+("Martin", "Lucas", "2012-09-22", 2, 1),
+("Leroy", "Emma", "2013-11-30", 3, 2),
+("Perrin", "Lucie", "2016-03-24", 6, 3), 
+("Perin", "Michel", "2012-09-22", 7, 4), 
+("Turin", "Julie", "2013-11-30", 8, 4); 

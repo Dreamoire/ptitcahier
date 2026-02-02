@@ -1,14 +1,6 @@
 import databaseClient from "../../../database/client";
 import type { Rows } from "../../../database/client";
-
-type Announcement = {
-  id: number;
-  created_at: Date;
-  announcement_category_name: string;
-  student_names: string;
-  title: string;
-  content: string;
-};
+import type { Announcement } from "../../types/express/Announcement";
 
 class AnnouncementRepository {
   async readAllByParent(parentId: number) {
@@ -17,9 +9,9 @@ class AnnouncementRepository {
           a.id,
           a.title,
           a.content,
-          a.created_at,
-          ac.name AS announcement_category_name,
-          GROUP_CONCAT(s.first_name SEPARATOR ', ') AS student_names
+          a.created_at AS createdAt,
+          ac.name AS announcementCategoryName,
+          GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
           FROM announcement AS a
           JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
           JOIN announcement_student AS ann_stu ON a.id = ann_stu.announcement_id

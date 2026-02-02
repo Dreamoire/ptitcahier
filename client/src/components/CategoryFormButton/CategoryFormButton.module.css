@@ -1,0 +1,96 @@
+.radio_button {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio_button_label {
+  border: 1px solid var(--light-grey);
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  padding-right: 0.5rem;
+  gap: 0.5rem;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.radio_button_label:hover {
+  border: 1px solid var(--parent-blue);
+  color: var(--parent-blue);
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.radio_button:checked + .radio_button_label {
+  border: 1px solid var(--parent-blue);
+  background-color: #c2d9f0;
+}
+
+.icon_wrapper {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: filter 180ms ease;
+}
+
+.radio_button_label:hover .icon_wrapper {
+  filter: brightness(1.06);
+}
+
+.text_wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 100%;
+}
+
+.ticket_category_name,
+.ticket_category_description {
+  margin: 0;
+  text-align: center;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.ticket_category_name {
+  color: var(--black);
+  font-family: var(--font-family-card-title);
+  font-size: var(--font-size-form-label);
+  opacity: 1;
+  max-height: 2em;
+}
+
+.ticket_category_description {
+  color: var(--black);
+  font-family: var(--font-family-text);
+  font-size: 1rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.radio_button_label:hover .ticket_category_name {
+  opacity: 0;
+  max-height: 0;
+}
+
+.radio_button_label:hover .ticket_category_description {
+  opacity: 1;
+  max-height: 4em;
+}
+
+@media (max-width: 600px) {
+  .icon_wrapper {
+    width: 35px;
+    height: 80px;
+  }
+}
