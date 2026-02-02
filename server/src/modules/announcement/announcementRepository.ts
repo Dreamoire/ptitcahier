@@ -1,16 +1,6 @@
 import databaseClient from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 
-type AnnouncementCategory = {
-  id: number;
-  name: string;
-};
-
-type Classroom = {
-  id: number;
-  name: string;
-};
-
 type Student = {
   id: number;
   firstName: string;
@@ -54,26 +44,6 @@ class AnnouncementRepository {
     return newAnnouncementId;
   }
 
-  async getAnnouncementCategories(): Promise<AnnouncementCategory[]> {
-    const [rows] = await databaseClient.query<Rows>(
-      "SELECT id, name FROM announcement_category ORDER BY name ASC",
-    );
-
-    return rows as AnnouncementCategory[];
-  }
-
-  async getClassroomsBySchool(schoolId: number): Promise<Classroom[]> {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT id, classroom_name AS name
-       FROM classroom
-       WHERE school_id = ?
-       ORDER BY classroom_name ASC`,
-      [schoolId],
-    );
-
-    return rows as Classroom[];
-  }
-
   async getStudentsInClassroom(
     classroomId: number,
     schoolId: number,
@@ -91,20 +61,4 @@ class AnnouncementRepository {
   }
 }
 
-const announcementRepository = new AnnouncementRepository();
-
-const AnnouncementCategories = async (): Promise<AnnouncementCategory[]> =>
-  announcementRepository.getAnnouncementCategories();
-
-const ClassroomsBySchool = async (schoolId: number): Promise<Classroom[]> =>
-  announcementRepository.getClassroomsBySchool(schoolId);
-
-const studentsInClassroom = async (
-  classroomId: number,
-  schoolId: number,
-): Promise<Student[]> =>
-  announcementRepository.getStudentsInClassroom(classroomId, schoolId);
-
-export { AnnouncementCategories, ClassroomsBySchool, studentsInClassroom };
-
-export default announcementRepository;
+export default new AnnouncementRepository();
