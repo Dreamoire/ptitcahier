@@ -1,5 +1,4 @@
 import type { RequestHandler } from "express";
-
 import ticketRepository from "./ticketRepository";
 
 const browseBySchool: RequestHandler = async (req, res, next) => {
@@ -14,4 +13,14 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseBySchool };
+const browseRecentByParent: RequestHandler = async (req, res, next) => {
+  try {
+    const parentId = 1;
+    const tickets = await ticketRepository.readLastThreeByParent(parentId);
+    res.json(tickets);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseBySchool, browseRecentByParent };

@@ -136,3 +136,18 @@ VALUES
 ('Garcia', 'Inès', '2015-09-11', 8, 2),
 ('Fournier', 'Arthur', '2014-03-03', 9, 2),
 ('Girard', 'Sarah', '2012-05-25', 10, 2);
+
+INSERT INTO announcement (title, content, announcement_category_id, school_id, created_at)
+VALUES 
+('Spectacle de fin d''année', 'Nous sommes ravis de vous inviter au spectacle de fin d''année qui aura lieu le 25 juin dans la salle polyvalente. Les enfants préparent ce moment depuis des mois !', 3, 1, NOW()),
+
+('Menu de la cantine - Mai', 'Le menu de la cantine pour le mois de mai est disponible. Nous avons introduit plus de produits locaux et bio cette semaine. Cliquez pour télécharger le PDF.', 1, 1, NOW()),
+
+('Rappel : Photo de classe', 'N''oubliez pas que la photo de classe aura lieu ce mardi matin. Merci d''habiller vos enfants avec une touche de bleu si possible.', 2, 1, NOW());
+
+INSERT INTO announcement_student (announcement_id, student_id)
+VALUES 
+
+(1, 1),
+(2, 1),
+(3, 1);
