@@ -27,4 +27,15 @@ const browseStudentsInClassroom: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseBySchool, browseStudentsInClassroom };
+const browseAllStudents: RequestHandler = async (req, res, next) => {
+  try {
+    const students =
+      await classroomRepository.readAllStudentsBySchool(SCHOOL_ID);
+
+    res.status(200).json(students);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseBySchool, browseStudentsInClassroom, browseAllStudents };

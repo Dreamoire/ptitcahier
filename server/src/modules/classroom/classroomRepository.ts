@@ -25,6 +25,23 @@ class ClassroomRepository {
 
     return rows;
   }
+
+  async readAllStudentsBySchool(schoolId: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      `SELECT s.id,
+              s.first_name AS firstname,
+              s.last_name AS lastname,
+              s.classroom_id AS classroomId,
+              c.classroom_name AS classroomName
+       FROM student s
+       JOIN classroom c ON c.id = s.classroom_id
+       WHERE c.school_id = ?
+       ORDER BY s.last_name ASC, s.first_name ASC`,
+      [schoolId],
+    );
+
+    return rows;
+  }
 }
 
 export default new ClassroomRepository();

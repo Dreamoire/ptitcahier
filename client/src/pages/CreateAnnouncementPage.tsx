@@ -17,6 +17,7 @@ type Student = {
   firstname: string;
   lastname: string;
   classroomId: number;
+  classroomName: string;
 };
 
 const MAX_MESSAGE_LENGTH = 1000;
@@ -33,10 +34,13 @@ const CreateAnnouncementPage = () => {
   const [studentsByClassroom, setStudentsByClassroom] = useState<
     Record<number, Student[]>
   >({});
+  const [allStudents, setAllStudents] = useState<Student[]>([]);
   const [selectedClassroomIds, setSelectedClassroomIds] = useState<number[]>(
     [],
   );
   const [selectedStudentIds, setSelectedStudentIds] = useState<number[]>([]);
+  const [studentSearch, setStudentSearch] = useState("");
+  const [isStudentSearchOpen, setIsStudentSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterSelectedClassroomIds, setFilterSelectedClassroomIds] = useState<
     number[]
@@ -101,47 +105,6 @@ const CreateAnnouncementPage = () => {
     return currentIds.filter((id) => !idsToRemove.includes(id));
   };
 
-  const isClassroomFullySelected = (classroomId: number) => {
-    const students = getStudentsForClassroom(classroomId);
-
-    if (students.length === 0) {
-      return false;
-    }
-
-    return students.every((student) =>
-      filterSelectedStudentIds.includes(student.id),
-    );
-  };
-
-  const isClassroomPartiallySelected = (classroomId: number) => {
-    const students = getStudentsForClassroom(classroomId);
-
-    if (students.length === 0) {
-      return false;
-    }
-
-    const selectedCount = students.filter((student) =>
-      filterSelectedStudentIds.includes(student.id),
-    ).length;
-
-    return selectedCount > 0 && selectedCount < students.length;
-  };
-
-  const toggleSelectAllForClassroom = (classroomId: number) => {
-    const students = getStudentsForClassroom(classroomId);
-    const studentIds = students.map((student) => student.id);
-
-    setFilterSelectedStudentIds((prev) => {
-      const isFullySelected = studentIds.every((id) => prev.includes(id));
-
-      if (isFullySelected) {
-        return removeIds(prev, studentIds);
-      }
-
-      return addUniqueIds(prev, studentIds);
-    });
-  };
-
   const loadStudentsForClassroom = (classroomId: number) => {
     return fetch(
       `${import.meta.env.VITE_API_URL}/api/classrooms/${classroomId}/students`,
@@ -183,6 +146,8 @@ const CreateAnnouncementPage = () => {
 
   const closeFilterModal = () => {
     setIsFilterOpen(false);
+    setStudentSearch("");
+    setIsStudentSearchOpen(false);
     setTimeout(() => {
       filterButtonRef.current?.focus();
     }, 0);
@@ -248,8 +213,12 @@ const CreateAnnouncementPage = () => {
   };
 
   const getStudentById = (studentId: number) => {
-    const allStudents = Object.values(studentsByClassroom).flat();
-    return allStudents.find((student) => student.id === studentId) ?? null;
+    const loadedStudents = Object.values(studentsByClassroom).flat();
+    return (
+      loadedStudents.find((student) => student.id === studentId) ??
+      allStudents.find((student) => student.id === studentId) ??
+      null
+    );
   };
 
   const removeClassroomSelection = (classroomId: number) => {
@@ -264,6 +233,46 @@ const CreateAnnouncementPage = () => {
 
   const removeStudentSelection = (studentId: number) => {
     setSelectedStudentIds((prev) => prev.filter((id) => id !== studentId));
+  };
+
+  const normalize = (value: string) => {
+    return value.toLowerCase().trim().replace(/\s+/g, " ");
+  };
+
+  const matchesStudent = (student: Student, searchValue: string) => {
+    const classroomName =
+      student.classroomName ?? getClassroomName(student.classroomId);
+    const fullName = `${student.firstname} ${student.lastname}`;
+    const searchTarget = [
+      student.firstname,
+      student.lastname,
+      fullName,
+      classroomName,
+    ]
+      .filter(Boolean)
+      .map((value) => normalize(value))
+      .join(" ");
+
+    return searchTarget.includes(searchValue);
+  };
+
+  const normalizedStudentSearch = normalize(studentSearch);
+  const studentSearchResults =
+    normalizedStudentSearch.length === 0
+      ? []
+      : allStudents.filter((student) =>
+          matchesStudent(student, normalizedStudentSearch),
+        );
+
+  const selectStudentFromSearch = (studentId: number) => {
+    setFilterSelectedStudentIds((prev) => {
+      if (prev.includes(studentId)) {
+        return prev;
+      }
+      return [...prev, studentId];
+    });
+    setStudentSearch("");
+    setIsStudentSearchOpen(false);
   };
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
@@ -295,7 +304,7 @@ const CreateAnnouncementPage = () => {
         setSuccessMessage("L'annonce a bien été créé");
       })
       .catch((error) => {
-        console.error(error); // display error submit to UX ?
+        console.error(error);
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -361,6 +370,20 @@ const CreateAnnouncementPage = () => {
       .catch((error) => {
         console.error(error);
       });
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/students`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error();
+        }
+        return res.json();
+      })
+      .then((students) => {
+        setAllStudents(students);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const fullySelectedClassroomIds = selectedClassroomIds.filter(
@@ -386,6 +409,10 @@ const CreateAnnouncementPage = () => {
 
       return !fullySelectedClassroomIds.includes(student.classroomId);
     });
+
+  const filterSelectedStudents = filterSelectedStudentIds
+    .map((studentId) => getStudentById(studentId))
+    .filter((student): student is Student => Boolean(student));
 
   return (
     <div className="announcements-page">
@@ -555,74 +582,87 @@ const CreateAnnouncementPage = () => {
 
               <div className="filter-column">
                 <p className="filter-title">Etudiants</p>
-                <div className="filter-list">
-                  {filterSelectedClassroomIds.length === 0 && (
-                    <span className="summary-empty">
-                      Sélectionner une classe
-                    </span>
-                  )}
-                  {filterSelectedClassroomIds.map((classroomId) => {
-                    const students = getStudentsForClassroom(classroomId);
-                    const classroomName = getClassroomName(classroomId);
-                    const isFullySelected =
-                      isClassroomFullySelected(classroomId);
-                    const isPartiallySelected =
-                      isClassroomPartiallySelected(classroomId);
+                <div className="student-search">
+                  <input
+                    className="text-input"
+                    type="text"
+                    placeholder="Search students..."
+                    value={studentSearch}
+                    onChange={(event) => {
+                      const nextValue = event.target.value;
+                      setStudentSearch(nextValue);
+                      setIsStudentSearchOpen(nextValue.trim().length > 0);
+                    }}
+                    onFocus={() => {
+                      if (studentSearch.trim().length > 0) {
+                        setIsStudentSearchOpen(true);
+                      }
+                    }}
+                    onBlur={() => {
+                      window.setTimeout(() => {
+                        setIsStudentSearchOpen(false);
+                      }, 100);
+                    }}
+                  />
+                  {isStudentSearchOpen && studentSearchResults.length > 0 && (
+                    <div className="search-results">
+                      {studentSearchResults.map((student) => {
+                        const classroomName =
+                          student.classroomName ??
+                          getClassroomName(student.classroomId);
+                        const isSelected = filterSelectedStudentIds.includes(
+                          student.id,
+                        );
 
-                    return (
-                      <div key={classroomId} className="classroom-section">
-                        <label className="classroom-toggle">
-                          <input
-                            type="checkbox"
-                            checked={isFullySelected}
-                            aria-checked={
-                              isPartiallySelected ? "mixed" : isFullySelected
-                            }
-                            ref={(node) => {
-                              if (node) {
-                                node.indeterminate = isPartiallySelected;
+                        return (
+                          <button
+                            key={student.id}
+                            type="button"
+                            className={`search-item${
+                              isSelected ? " is-selected" : ""
+                            }`}
+                            disabled={isSelected}
+                            onMouseDown={(event) => {
+                              event.preventDefault();
+                              if (!isSelected) {
+                                selectStudentFromSearch(student.id);
                               }
                             }}
-                            disabled={students.length === 0}
-                            onChange={() =>
-                              toggleSelectAllForClassroom(classroomId)
-                            }
-                          />
-                          <span>
-                            {isFullySelected
-                              ? "Deselectionner"
-                              : "Selectionner"}
-                          </span>
-                        </label>
+                          >
+                            <span>
+                              {student.firstname} {student.lastname} (
+                              {classroomName})
+                            </span>
+                            {isSelected && (
+                              <span className="search-status">Selected</span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+                <div className="filter-list">
+                  {filterSelectedStudents.length === 0 && (
+                    <span className="summary-empty">
+                      Sélectionner un étudiant
+                    </span>
+                  )}
+                  {filterSelectedStudents.map((student) => {
+                    const classroomName = getClassroomName(student.classroomId);
 
-                        {students.length === 0 && (
-                          <span className="summary-empty">
-                            Pas de sélection pour le moment.
-                          </span>
-                        )}
-
-                        {students.map((student) => {
-                          const isChecked = filterSelectedStudentIds.includes(
-                            student.id,
-                          );
-
-                          return (
-                            <label key={student.id} className="filter-item">
-                              <input
-                                type="checkbox"
-                                checked={isChecked}
-                                onChange={() => togglefilterStudent(student.id)}
-                              />
-                              <span>
-                                {student.firstname} {student.lastname}
-                              </span>
-                              <span className="filter-pill">
-                                {classroomName}
-                              </span>
-                            </label>
-                          );
-                        })}
-                      </div>
+                    return (
+                      <label key={student.id} className="filter-item">
+                        <input
+                          type="checkbox"
+                          checked
+                          onChange={() => togglefilterStudent(student.id)}
+                        />
+                        <span>
+                          {student.firstname} {student.lastname}
+                        </span>
+                        <span className="filter-pill">{classroomName}</span>
+                      </label>
                     );
                   })}
                 </div>

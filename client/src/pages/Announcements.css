@@ -268,6 +268,57 @@
   gap: 10px;
 }
 
+.student-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fff;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+  max-height: 220px;
+  overflow: auto;
+}
+
+.search-item {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #f8fafc;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.search-item:hover {
+  border-color: rgba(15, 23, 42, 0.15);
+}
+
+.search-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.search-status {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .classroom-section {
   display: flex;
   flex-direction: column;

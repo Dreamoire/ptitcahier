@@ -16,6 +16,7 @@ router.post(
 router.get("/announcements-categories", announcementCategoryActions.browseAll);
 
 router.get("/classrooms", classroomActions.browseBySchool);
+router.get("/students", classroomActions.browseAllStudents);
 router.get(
   "/classrooms/:id/students",
   classroomActions.browseStudentsInClassroom,
