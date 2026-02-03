@@ -9,6 +9,15 @@ class AnnouncementCategoryRepository {
 
     return rows;
   }
+
+  async readById(announcementCategoryId: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM announcement_category WHERE id = ?",
+      [announcementCategoryId],
+    );
+
+    return rows[0] ?? null;
+  }
 }
 
 export default new AnnouncementCategoryRepository();

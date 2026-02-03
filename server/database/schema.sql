@@ -21,7 +21,10 @@ CREATE TABLE announcement_category (
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(120),
+    color VARCHAR(6) NOT NULL,
+    icon VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE classroom (
@@ -33,7 +36,7 @@ CREATE TABLE classroom (
 
 CREATE TABLE announcement (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     content VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        
     announcement_category_id INT UNSIGNED NOT NULL,
@@ -63,7 +66,7 @@ CREATE TABLE announcement_student (
 
 CREATE TABLE ticket (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    content VARCHAR(1000) NOT NULL,
+    content VARCHAR(1000) NOT NULL,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
@@ -79,18 +82,18 @@ CREATE TABLE ticket_student (
     FOREIGN KEY (student_id) REFERENCES student(id)
 );
 
-INSERT INTO announcement_category (name)
+INSERT INTO announcement_category (id, name)
 VALUES
-("Vie de l'école"),
-("Administratif"),
-("Evénement");
+(1, "Vie de l'école"),
+(2, "Administratif"),
+(3, "Evénement");
 
-INSERT INTO ticket_category (name)
+INSERT INTO ticket_category (id, name, description, color, icon)
 VALUES
-("Absence"),
-("Autorisation"),
-("Information urgente"),
-("Demande d'information");
+(1, "Urgence", "Informer d'une situation nécessitant une action rapide (Changement de personne, incident…)", "e5484d", "OctagonAlert"),
+(2, "Absence", "Signaler une absence prévue ou imprévue (Maladie, rendez-vous médical, retard…)", "f97015", "CalendarCheck"),
+(3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)", "16a249", "NotebookPen"),
+(4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)", "0da2e7", "ShieldUser");
 
 INSERT INTO school (email, password, school_name)
 VALUES

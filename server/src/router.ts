@@ -1,16 +1,19 @@
-import { Router } from "express";
+import express from "express";
 
 import announcementActions from "./modules/announcement/announcementActions";
 import announcementCategoryActions from "./modules/announcementCategory/announcementCategoryActions";
 import classroomActions from "./modules/classroom/classroomActions";
-import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
+// import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
+import studentActions from "./modules/student/studentActions";
+import ticketActions from "./modules/ticket/ticketActions";
+import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
 
-const router = Router();
+const router = express.Router();
 
 router.post(
   "/announcements",
-  newAnnouncementValidation,
-  announcementActions.addAnnouncement,
+  announcementActions.validate,
+  announcementActions.add,
 );
 
 router.get("/announcements-categories", announcementCategoryActions.browseAll);
@@ -21,5 +24,14 @@ router.get(
   "/classrooms/:id/students",
   classroomActions.browseStudentsInClassroom,
 );
+
+router.get("/parents/me/announcements", announcementActions.browseByParent);
+
+router.get("/parents/me/students", studentActions.browseByParent);
+
+router.get("/schools/me/tickets", ticketActions.browseBySchool);
+router.post("/tickets", ticketActions.validate, ticketActions.add);
+
+router.get("/ticket-categories", ticketCategoryActions.browseAll);
 
 export default router;

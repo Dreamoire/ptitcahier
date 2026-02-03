@@ -1,25 +1,80 @@
 .primary-title {
-  font-family: var(--font-family-title);
-  font-weight: var(--font-weight-h1);
-  font-size: var(--font-size-h1);
+  color: var(--primary-color-title);
+  font-family: var(--font-family-primary-title);
+  font-size: var(--font-size-primary-title);
 }
 
-.secondary-title {
-  font-family: var(--font-family-title);
-  font-weight: var(--font-weight-h2);
-  font-size: var(--font-size-h2);
+.card-title {
+  color: var(--dark-blue);
+  font-family: var(--font-family-card-title);
+  font-size: var(--font-size-card-title);
 }
 
-.text-body {
-  font-family: var(--font-family-body);
-  font-weight: var(--font-weight-text);
+.text {
+  color: var(--primary-color-text);
+  font-family: var(--font-family-text);
   font-size: var(--font-size-text);
-  color: var(--color-text);
 }
 
-.text-body-strong {
-  font-family: var(--font-family-body);
-  font-weight: var(--font-weight-text-strong);
-  font-size: var(--font-size-text);
-  color: var(--color-text);
+.parent-background {
+  background: var(--background-rainbow-light);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.school-background {
+  background-color: var(--grey-background);
+  min-height: 100vh;
+  padding-top: 2rem;
+}
+
+.non-primary-button,
+.primary-button {
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    var(--dark-blue),
+    var(--parent-blue),
+    var(--blue)
+  );
+  color: var(--white);
+  font-family: var(--font-family-button);
+  font-size: var(--font-size-button);
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, #06405a, #165f9e, #0b8fd1);
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.primary-button:active {
+  background: linear-gradient(135deg, #05344b, #144f7b, #096a9c);
+  transform: translateY(0);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.non-primary-button {
+  background: var(--white);
+  color: var(--dark-grey);
+  border: 1px solid var(--light-grey);
+}
+
+.non-primary-button:hover {
+  border-color: var(--dark-grey);
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.non-primary-button:active {
+  background: #e4e7ed;
+  transform: translateY(0);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.5);
 }

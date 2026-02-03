@@ -1,11 +1,57 @@
 :root {
-  --primary: #0da2e7;
-  --background: #f8fafc;
+  --background-grey: #eef2f7;
+  --background-white: #f8fafc;
+  --background-rainbow-light: linear-gradient(
+    120deg,
+    #d4f0fc 0%,
+    #fddcc8 35%,
+    #fcf2ca 65%,
+    #d0fce5 100%
+  );
 
-  --accent-orange: #f97015;
-  --accent-green: #16a249;
-  --accent-yellow: #e7b008;
-  --accent-blue: #075578;
+  --black: #0f1729;
+  --blue: #0da2e7;
+  --dark-blue: #075578;
+  --parent-blue: #1e6cb0;
+  --dark-grey: #898888;
+  --green: #16a249;
+  --light-grey: #cccccc;
+  --orange: #f97015;
+  --purple: #6d5bd0;
+  --red: #e5484d;
+  --yellow: #e7b008;
+  --white: #f8fafc;
 
-  --color-text: #0f1729;
+  --primary-color-title: var(--dark-blue);
+  --primary-color-text: var(--black);
+  --primary-color-items-school: var(--dark-blue);
+  --primary-color-items-parent: var(--orange);
+
+  --font-family-primary-title: "Nunito-Bold", sans-serif;
+  --font-family-card-title: "Nunito-SemiBold", sans-serif;
+  --font-family-text: "Source-Sans-3-Regular", sans-serif;
+  --font-family-button: "Nunito-SemiBold", sans-serif;
+
+  --font-size-primary-title: clamp(1.8rem, 1.4rem + 2vw, 3rem);
+  --font-size-card-title: clamp(1.25rem, 1.08rem + 1.10vw, 2rem);
+  --font-size-text: clamp(1rem, 0.93rem + 0.30vw, 1.25rem);
+  --font-size-button: clamp(1.2rem, 1.1rem + 0.6vw, 1.5rem);
+  --font-size-form-label: clamp(1.1rem, 1.05rem + 0.5vw, 1.4rem);
+
+  --border-radius: 15px;
+  --box-shadow: 0 12px 28px rgba(15, 23, 41, 0.14);
+  --box-shadow-hover: 0 18px 40px rgba(15, 23, 41, 0.18), 0 0 0 2px
+    rgba(13, 162, 231, 0.15);
+}
+
+@media (max-width: 600px) {
+  :root {
+    --border-radius: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  :root {
+    --border-radius: 10px;
+  }
 }

@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
-import "./Announcements.css";
+import "./AnnouncementsNew.css";
 
 type Category = {
   id: number;
