@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-
 import type { Ticket } from "../../types/Ticket";
 import TicketIcon, { type TicketIconType } from "../TicketCard/TicketIcon";
 import styles from "./TicketModalViewSchool.module.css";
@@ -7,6 +6,19 @@ import styles from "./TicketModalViewSchool.module.css";
 type TicketModalViewSchoolProps = {
   ticket: Ticket;
   onCloseComplete: () => void;
+};
+
+const getTicketIconType = (categoryName: string): TicketIconType => {
+  switch (categoryName) {
+    case "Urgence":
+      return "urgent";
+    case "Autorisation":
+      return "events";
+    case "Absence":
+      return "notice";
+    default:
+      return "news";
+  }
 };
 
 function TicketModalViewSchool({
@@ -33,23 +45,21 @@ function TicketModalViewSchool({
     };
 
     document.addEventListener("keydown", onKeyDown);
+
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [requestClose]);
 
-  const ticketType: TicketIconType =
-    ticket.ticketCategoryName === "Urgence"
-      ? "urgent"
-      : ticket.ticketCategoryName === "Autorisation"
-        ? "events"
-        : ticket.ticketCategoryName === "Absence"
-          ? "notice"
-          : "news";
+  const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
+  const ticketType = getTicketIconType(ticket.ticketCategoryName);
 
   const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
-    dateStyle: "full",
-    timeStyle: "short",
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   return (
@@ -77,14 +87,16 @@ function TicketModalViewSchool({
       >
         <header className={styles.header}>
           <div className={styles.headerLeft}>
-            <div
-              className={`${styles.iconBadge} ${styles[ticketType]}`}
-              aria-hidden="true"
-            >
-              <TicketIcon type={ticketType} className={styles.icon} />
+            <div className={`${styles.colorBlock} ${styles[ticketType]}`}>
+              <div className={styles.iconCircle}>
+                <TicketIcon type={ticketType} className={styles.icon} />
+              </div>
             </div>
 
-            <h2 className={styles.title}>Ticket</h2>
+            <div className={styles.headerText}>
+              <h2 className={styles.title}>{parentFullName}</h2>
+              <time className={styles.subTitle}>{createdAtLabel}</time>
+            </div>
           </div>
 
           <button
@@ -97,27 +109,37 @@ function TicketModalViewSchool({
           </button>
         </header>
 
-        <div className={styles.meta}>
-          <p className={styles.line}>
-            <span className={styles.label}>Catégorie :</span>{" "}
-            {ticket.ticketCategoryName}
-          </p>
-          <p className={styles.line}>
-            <span className={styles.label}>Parent :</span>{" "}
-            {ticket.parentFirstName} {ticket.parentLastName}
-          </p>
-          <p className={styles.line}>
-            <span className={styles.label}>Élève(s) :</span>{" "}
-            {ticket.studentNames}
-          </p>
-          <p className={styles.line}>
-            <span className={styles.label}>Créé :</span>{" "}
-            <time dateTime={ticket.createdAt}>{createdAtLabel}</time>
-          </p>
-        </div>
+        <div className={styles.body}>
+          <div className={styles.infoRow}>
+            <div className={`${styles.infoBlock} ${styles.withDivider}`}>
+              <div className={styles.kvGrid}>
+                <p className={styles.kvLabel}>Enfant(s) concerné(s):</p>
 
-        <div className={styles.content}>
-          <p className={styles.contentText}>{ticket.content}</p>
+                <ul className={styles.namesList}>
+                  {ticket.studentNames
+                    .split(",")
+                    .map((name) => name.trim())
+                    .filter(Boolean)
+                    .map((name) => (
+                      <li key={name} className={styles.kvValue}>
+                        {name}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className={styles.infoBlock}>
+              <p className={styles.infoLabel}>Pièce jointe :</p>
+              <p className={styles.attachmentPlaceholder}>
+                Aucune pièce jointe
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.messageBox}>
+            <p className={styles.messageText}>{ticket.content} </p>
+          </div>
         </div>
       </dialog>
     </div>

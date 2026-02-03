@@ -24,7 +24,7 @@
   position: absolute;
   inset: 0;
 
-  background: rgba(15, 23, 41, 0.25);
+  background: rgba(15, 23, 41, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -41,7 +41,7 @@
   cursor: pointer;
 }
 
-/* ===== Modal ===== */
+/* ===== Modal (dialog) ===== */
 .modal {
   position: relative;
   z-index: 2;
@@ -50,24 +50,20 @@
   max-height: 85vh;
   overflow-y: auto;
 
+  border: 0;
+  padding: 0;
   border-radius: var(--border-radius);
+
   background: var(--background-white);
   box-shadow: var(--box-shadow);
 
   transform: translateY(12px) scale(0.98);
-  opacity: 0;
-  transition: transform 220ms ease, opacity 220ms ease;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
 }
 
 .modalOpen {
   transform: translateY(0) scale(1);
   opacity: 1;
-}
-
-/* reset dialog natif */
-.modal {
-  border: 0;
-  padding: 0;
 }
 
 .modal::backdrop {
@@ -77,11 +73,87 @@
 /* ===== Header ===== */
 .header {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
 
-  padding: 20px 24px 16px;
+  padding: 0;
   border-bottom: 1px solid var(--light-grey);
+  background-color: var(--background-grey);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  min-width: 0;
+}
+
+.iconCircle {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.25);
+}
+
+.icon {
+  width: 26px;
+  height: auto;
+  color: var(--white);
+}
+
+.colorBlock {
+  width: 72px;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+.colorBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+}
+
+/* Couleurs par catégorie */
+.urgent {
+  background: var(--red);
+}
+
+.events {
+  background: var(--orange);
+}
+
+.news {
+  background: var(--green);
+}
+
+.notice {
+  background: var(--blue);
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 20px 0 16px;
 }
 
 .title {
@@ -89,21 +161,28 @@
   font-family: var(--font-family-primary-title);
   font-size: var(--font-size-card-title);
   color: var(--primary-color-title);
+  line-height: 1.2;
+}
+
+.subTitle {
+  font-family: var(--font-family-text);
+  font-size: 0.95rem;
+  color: var(--dark-grey);
 }
 
 /* Croix */
 .closeButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   width: 40px;
   height: 40px;
 
-  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
   border: none;
+  border-radius: 999px;
   background: transparent;
-
+  align-self: flex-start;
   font-size: 1.6rem;
   line-height: 1;
   color: var(--dark-grey);
@@ -122,44 +201,152 @@
   outline-offset: 2px;
 }
 
-/* ===== Meta infos ===== */
-.meta {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 24px;
-
-  padding: 20px 24px;
+/* ===== Body ===== */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 24px 24px;
 }
 
-.line {
+.infoRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  align-items: start;
+}
+
+.infoRow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  left: calc(50% - 1.5px);
+  width: 3px;
+
+  background: var(--light-grey);
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoLine {
   margin: 0;
   font-family: var(--font-family-text);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: var(--primary-color-text);
 }
 
-.label {
+.infoValue {
+  font-family: var(--font-family-button);
+  color: var(--primary-color-title);
+}
+
+.infoLabel {
   font-family: var(--font-family-button);
   color: var(--dark-grey);
 }
 
-/* ===== Contenu ===== */
-.content {
-  padding: 0 24px 24px;
+.attachmentPlaceholder {
+  margin: 0;
+  font-family: var(--font-family-text);
+  font-size: 0.98rem;
+  color: var(--dark-grey);
 }
 
-.contentText {
-  margin: 0;
+/* ===== Message box ===== */
+.messageBox {
+  position: relative;
 
+  border: 1px solid var(--light-grey);
+  border-radius: var(--border-radius);
+  background: color-mix(in srgb, var(--blue) 10%, transparent);
+
+  padding: 16px 16px 16px 34px;
+  box-shadow: 0 8px 18px rgba(15, 23, 41, 0.08);
+  overflow: hidden;
+}
+
+.messageBox::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 16px;
+  background: var(--blue);
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.messageBox:focus-within {
+  outline: 2px solid color-mix(in srgb, var(--blue) 40%, transparent);
+  outline-offset: 2px;
+}
+
+.messageText {
+  margin: 0;
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
   color: var(--primary-color-text);
   line-height: 1.55;
 }
 
+.namesList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kvGrid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 12px;
+  align-items: start;
+}
+
+.kvLabel {
+  margin: 0;
+  font-family: var(--font-family-button);
+  font-weight: 700;
+  color: var(--dark-blue);
+  white-space: nowrap;
+}
+
+.namesList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kvValue {
+  font-family: var(--font-family-text);
+  font-weight: 400;
+  color: var(--dark-blue);
+  transition: color 120ms ease;
+}
+
+.kvValue:hover {
+  color: color-mix(in srgb, var(--blue) 80%, black);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
-  .meta {
+  .infoRow {
     grid-template-columns: 1fr;
   }
 
@@ -167,7 +354,11 @@
     padding: 16px 18px;
   }
 
-  .content {
-    padding: 0 18px 20px;
+  .body {
+    padding: 16px 18px 20px;
+  }
+  .withDivider {
+    padding-right: 0;
+    border-right: none;
   }
 }
