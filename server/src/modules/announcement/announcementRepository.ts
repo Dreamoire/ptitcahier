@@ -26,7 +26,7 @@ class AnnouncementRepository {
           JOIN student AS s ON ann_stu.student_id = s.id
           WHERE s.parent_id = ?
           GROUP BY a.id, ac.name, a.created_at 
-          ORDER BY a.created_at ASC`,
+          ORDER BY a.created_at DESC`,
       [parentId],
     );
     return rows as Announcement[];

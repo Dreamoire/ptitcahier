@@ -102,8 +102,8 @@
 .an_card_dashboard {
   display: flex;
   flex-direction: column;
-  min-height: 450px;
-  min-width: 600px;
+  height: 450px;
+  width: 600px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #e2e8f0;
 }
