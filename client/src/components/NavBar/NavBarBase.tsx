@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import siteLogo from "../../assets/images/logo_site.png";
 import styles from "./NavBar.module.css";
 
 export type NavItem = {
@@ -77,15 +78,19 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
             isCollapsed ? "Déplier la navigation" : "Replier la navigation"
           }
         >
-          ❮❮
+          <span aria-hidden="true" className={styles.toggleIcon}>
+            {isCollapsed ? "❯❯" : "❮❮"}
+          </span>
         </button>
 
-        <div className={styles.profile}>
-          <img src={avatarUrl} alt="" className={styles.avatar} />
+        <div className={styles.profileBlock}>
+          <div className={styles.profile}>
+            <img src={avatarUrl} alt="" className={styles.avatar} />
 
-          {!isCollapsed ? (
-            <span className={styles.displayName}>{displayName}</span>
-          ) : null}
+            {!isCollapsed ? (
+              <span className={styles.displayName}>{displayName}</span>
+            ) : null}
+          </div>
         </div>
 
         <nav className={styles.nav} aria-label="Navigation latérale">
@@ -113,6 +118,21 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
             })}
           </ul>
         </nav>
+
+        <div className={styles.footer}>
+          <a
+            href="/"
+            className={styles.footerLogoLink}
+            aria-label="Retour à l'accueil"
+            onClick={() => onLinkClick("/")}
+          >
+            <img src={siteLogo} alt="" className={styles.footerLogo} />
+          </a>
+
+          {!isCollapsed ? (
+            <p className={styles.footerText}>P’Tit Cahier © 2026</p>
+          ) : null}
+        </div>
       </aside>
 
       {/* ===== Mobile bottom nav ===== */}
