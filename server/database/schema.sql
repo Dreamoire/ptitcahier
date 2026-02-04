@@ -1,14 +1,14 @@
 CREATE TABLE school (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    school_name VARCHAR(100) NOT NULL
+    hashed_password VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE parent (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    hashed_password VARCHAR(255) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     genre VARCHAR(1) NOT NULL
@@ -29,7 +29,7 @@ CREATE TABLE ticket_category (
 
 CREATE TABLE classroom (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    classroom_name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     school_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (school_id) REFERENCES school(id)
 );
@@ -95,19 +95,19 @@ VALUES
 (3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)", "16a249", "NotebookPen"),
 (4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)", "0da2e7", "ShieldUser");
 
-INSERT INTO school (email, password, school_name)
+INSERT INTO school (email, hashed_password, name)
 VALUES
 ("contact@greenvalley.edu", "GreenValley123!", "Ecole Primaire Emile Zola"),
 ("admin@riverside-intl.edu", "Riverside2024$", "Ecole Primaire Voltaire");
 
-INSERT INTO parent (email, password, last_name, first_name, genre)
+INSERT INTO parent (email, hashed_password, last_name, first_name, genre)
 VALUES
-("mlaurent@aol.fr", "po3?JioL@143ij", "Martin", "Laurent", "M"),
-("pleroy143@gmail.com", "plKJ43!lmno", "Leroy", "Patricia", "F"),
-("joijeofij@hotmail.com", "Jio43!lmno", "Perrin", "Jean", "M"),
-("Turin3498@gmail.com", "Turin!4309", "Turin", "Isabelle", "F");
+("mlaurent@aol.fr", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Martin", "Laurent", "M"),
+("pleroy143@gmail.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Leroy", "Patricia", "F"),
+("joijeofij@hotmail.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Perrin", "Jean", "M"),
+("Turin3498@gmail.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Turin", "Isabelle", "F");
 
-INSERT INTO classroom (classroom_name, school_id)
+INSERT INTO classroom (name, school_id)
 VALUES
 ("CP", 1), 
 ("CE1", 1), 
