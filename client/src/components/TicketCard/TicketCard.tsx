@@ -21,14 +21,14 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
 };
 
 function TicketCard({ ticket, variant = "default" }: TicketCardProps) {
-  const parentFullName = `${ticket.parent_first_name} ${ticket.parent_last_name}`;
+  const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
 
-  const createdAtLabel = new Date(ticket.created_at).toLocaleString("fr-FR", {
+  const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
     dateStyle: "medium",
     timeStyle: "short",
   });
 
-  const iconType = getTicketIconType(ticket.category_name);
+  const iconType = getTicketIconType(ticket.ticketCategoryName);
 
   return (
     <article
@@ -48,7 +48,8 @@ function TicketCard({ ticket, variant = "default" }: TicketCardProps) {
           )}
         </header>
         <p className={styles.content}>{ticket.content}</p>
-        <time className={styles.date} dateTime={ticket.created_at}>
+
+        <time className={styles.date} dateTime={ticket.createdAt}>
           {createdAtLabel}
         </time>
       </div>

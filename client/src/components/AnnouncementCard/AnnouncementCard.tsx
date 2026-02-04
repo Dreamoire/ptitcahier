@@ -63,7 +63,10 @@ function AnnouncementCard({
       )}
       <p className="text">{announcement.content}</p>
       <footer className={styles.an_card_footer}>
-        <time className={styles.an_date} dateTime={announcement.createdAt}>
+        <time
+          className={styles.an_date}
+          dateTime={String(announcement.createdAt)}
+        >
           {formattedDate}
         </time>
       </footer>
