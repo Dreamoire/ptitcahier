@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
-import AnnouncementNew from "./pages/announcement/AnnouncementNew";
+// import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import Announcements from "./pages/announcement/Announcements";
-import AnnouncementsSchool from "./pages/announcement/AnnouncementsSchool";
+import JennTest from "./pages/announcement/JennTest";
+// import AnnouncementsSchool from "./pages/announcement/AnnouncementsSchool";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
@@ -23,13 +24,13 @@ const router = createBrowserRouter([
     path: "/school/tickets",
     element: <Tickets />,
   },
-  {
-    path: "/school/announcements",
-    element: <AnnouncementsSchool />,
-  },
+  // {
+  //   path: "/school/announcements",
+  //   element: <AnnouncementsSchool />,
+  // },
   {
     path: "/school/announcements/new",
-    element: <AnnouncementNew />,
+    element: <JennTest />,
   },
 ]);
 
