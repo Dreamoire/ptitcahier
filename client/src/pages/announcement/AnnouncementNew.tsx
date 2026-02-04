@@ -1,18 +1,19 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import "./AnnouncementsNew.css";
+import FilterStudent from "./FilterStudent";
 
-type Category = {
+export type Category = {
   id: number;
   name: string;
 };
 
-type Classroom = {
+export type Classroom = {
   id: number;
   name: string;
 };
 
-type Student = {
+export type Student = {
   id: number;
   firstname: string;
   lastname: string;
@@ -543,151 +544,25 @@ const CreateAnnouncementPage = () => {
           </div>
         </form>
       </div>
-
-      {isFilterOpen && (
-        <div className="modal-overlay">
-          <dialog
-            className="modal-dialog filter-modal"
-            open
-            aria-label="Filtre étudiant"
-            tabIndex={-1}
-            ref={filterModalRef}
-          >
-            <div className="filter-modal-header">
-              <h2 className="announcement-title">Filtre étudiant</h2>
-            </div>
-
-            <div className="filter-modal-body">
-              <div className="filter-column">
-                <p className="filter-title">Classes</p>
-                <div className="filter-list">
-                  {classrooms.map((classroom) => {
-                    const isChecked = filterSelectedClassroomIds.includes(
-                      classroom.id,
-                    );
-
-                    return (
-                      <label key={classroom.id} className="filter-item">
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => togglefilterClassroom(classroom.id)}
-                        />
-                        <span>{classroom.name}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="filter-column">
-                <p className="filter-title">Etudiants</p>
-                <div className="student-search">
-                  <input
-                    className="text-input"
-                    type="text"
-                    placeholder="Search students..."
-                    value={studentSearch}
-                    onChange={(event) => {
-                      const nextValue = event.target.value;
-                      setStudentSearch(nextValue);
-                      setIsStudentSearchOpen(nextValue.trim().length > 0);
-                    }}
-                    onFocus={() => {
-                      if (studentSearch.trim().length > 0) {
-                        setIsStudentSearchOpen(true);
-                      }
-                    }}
-                    onBlur={() => {
-                      window.setTimeout(() => {
-                        setIsStudentSearchOpen(false);
-                      }, 100);
-                    }}
-                  />
-                  {isStudentSearchOpen && studentSearchResults.length > 0 && (
-                    <div className="search-results">
-                      {studentSearchResults.map((student) => {
-                        const classroomName =
-                          student.classroomName ??
-                          getClassroomName(student.classroomId);
-                        const isSelected = filterSelectedStudentIds.includes(
-                          student.id,
-                        );
-
-                        return (
-                          <button
-                            key={student.id}
-                            type="button"
-                            className={`search-item${
-                              isSelected ? " is-selected" : ""
-                            }`}
-                            disabled={isSelected}
-                            onMouseDown={(event) => {
-                              event.preventDefault();
-                              if (!isSelected) {
-                                selectStudentFromSearch(student.id);
-                              }
-                            }}
-                          >
-                            <span>
-                              {student.firstname} {student.lastname} (
-                              {classroomName})
-                            </span>
-                            {isSelected && (
-                              <span className="search-status">Selected</span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-                <div className="filter-list">
-                  {filterSelectedStudents.length === 0 && (
-                    <span className="summary-empty">
-                      Sélectionner un étudiant
-                    </span>
-                  )}
-                  {filterSelectedStudents.map((student) => {
-                    const classroomName = getClassroomName(student.classroomId);
-
-                    return (
-                      <label key={student.id} className="filter-item">
-                        <input
-                          type="checkbox"
-                          checked
-                          onChange={() => togglefilterStudent(student.id)}
-                        />
-                        <span>
-                          {student.firstname} {student.lastname}
-                        </span>
-                        <span className="filter-pill">{classroomName}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="form-actions">
-              <button
-                type="button"
-                className="secondary-button"
-                onClick={closeFilterModal}
-              >
-                Annuler
-              </button>
-              <button
-                type="button"
-                className="primary-button"
-                onClick={applyFilterModal}
-              >
-                Valider
-              </button>
-            </div>
-          </dialog>
-        </div>
-      )}
+      <FilterStudent
+        isFilterOpen={isFilterOpen}
+        filterModalRef={filterModalRef}
+        classrooms={classrooms}
+        filterSelectedClassroomIds={filterSelectedClassroomIds}
+        togglefilterClassroom={togglefilterClassroom}
+        studentSearch={studentSearch}
+        setStudentSearch={setStudentSearch}
+        setIsStudentSearchOpen={setIsStudentSearchOpen}
+        isStudentSearchOpen={isStudentSearchOpen}
+        studentSearchResults={studentSearchResults}
+        filterSelectedStudentIds={filterSelectedStudentIds}
+        selectStudentFromSearch={selectStudentFromSearch}
+        getClassroomName={getClassroomName}
+        filterSelectedStudents={filterSelectedStudents}
+        togglefilterStudent={togglefilterStudent}
+        closeFilterModal={closeFilterModal}
+        applyFilterModal={applyFilterModal}
+      />
     </div>
   );
 };

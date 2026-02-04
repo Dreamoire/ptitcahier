@@ -4,7 +4,7 @@ import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard
 import type { Announcement } from "../../types/Announcement";
 import styles from "./Announcements.module.css";
 
-function Announcements() {
+function AnnouncementsParentView() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
@@ -33,4 +33,4 @@ function Announcements() {
     </main>
   );
 }
-export default Announcements;
+export default AnnouncementsParentView;

@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
 import AnnouncementNew from "./pages/announcement/AnnouncementNew";
-import Announcements from "./pages/announcement/Announcements";
-import AnnouncementsSchool from "./pages/announcement/AnnouncementsSchool";
+import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
+import AnnouncementsSchoolView from "./pages/announcement/AnnouncementsSchoolView";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/parent/announcements",
-    element: <Announcements />,
+    path: "/parent/AnnouncementsParentView",
+    element: <AnnouncementsParentView />,
   },
   {
     path: "/parent/tickets/new",
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/school/announcements",
-    element: <AnnouncementsSchool />,
+    element: <AnnouncementsSchoolView />,
   },
   {
     path: "/school/announcements/new",
