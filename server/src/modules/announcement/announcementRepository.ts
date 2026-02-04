@@ -44,22 +44,6 @@ class AnnouncementRepository {
     return newAnnouncementId;
   }
 
-  async getStudentsInClassroom(
-    classroomId: number,
-    schoolId: number,
-  ): Promise<Student[]> {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT s.id
-       FROM student s
-       JOIN classroom c ON c.id = s.classroom_id
-       WHERE c.id = ? AND c.school_id = ?
-       ORDER BY s.last_name ASC, s.first_name ASC`,
-      [classroomId, schoolId],
-    );
-
-    return rows as Student[];
-  }
-
   async readAllByParent(parentId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
@@ -78,7 +62,28 @@ class AnnouncementRepository {
           ORDER BY a.created_at ASC`,
       [parentId],
     );
-    return rows as Announcement[];
+    return rows;
+  }
+
+  async readAllBySchool(SCHOOL_ID: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      `SELECT 
+          a.id,
+          a.title,
+          a.content,
+          a.created_at AS createdAt,
+          ac.name AS announcementCategoryName,
+          GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
+          FROM announcement AS a
+          JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
+          JOIN announcement_student AS ann_stu ON a.id = ann_stu.announcement_id
+          JOIN student AS s ON ann_stu.student_id = s.id
+          WHERE s.school_id = ?
+          GROUP BY a.id, ac.name
+          ORDER BY a.created_at ASC`,
+      [SCHOOL_ID],
+    );
+    return rows;
   }
 }
 

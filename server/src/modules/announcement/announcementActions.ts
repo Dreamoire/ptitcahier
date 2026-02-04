@@ -42,6 +42,17 @@ const browseByParent: RequestHandler = async (req, res, next) => {
   }
 };
 
+const browseBySchool: RequestHandler = async (req, res, next) => {
+  try {
+    const SCHOOL_ID = 1;
+    const announcements =
+      await announcementRepository.readAllBySchool(SCHOOL_ID);
+    res.json(announcements);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const validate: RequestHandler = async (req, res, next) => {
   try {
     const newAnnouncement = joi.object({
@@ -104,4 +115,4 @@ const validate: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { add, browseByParent, validate };
+export default { add, browseByParent, browseBySchool, validate };

@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
-import "./AnnouncementsNew.css";
+import "./AnnouncementsNew.module.css";
 import FilterStudent from "./FilterStudent";
 
 export type Category = {
@@ -295,8 +295,6 @@ const CreateAnnouncementPage = () => {
       }),
     })
       .then((res) => {
-        console.log("HEREEEE", res.json());
-
         if (!res.ok) {
           throw new Error("Failed to create announcement.");
         }
