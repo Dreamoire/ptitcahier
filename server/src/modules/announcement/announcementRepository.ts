@@ -6,9 +6,8 @@ class AnnouncementRepository {
   async readAllByParent(
     parentId: number,
     categoryId?: number,
-    studentId?: number
+    studentId?: number,
   ) {
-    
     let sql = `
       SELECT 
         a.id,
@@ -62,7 +61,7 @@ class AnnouncementRepository {
       GROUP BY a.id, ac.name, a.created_at
       ORDER BY a.created_at DESC
       LIMIT 3`,
-      [parentId]
+      [parentId],
     );
 
     return rows as Announcement[];
