@@ -8,12 +8,14 @@ import type { Announcement } from "../../types/Announcement";
 import type { School } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
 
+import { useNavigate } from "react-router";
 import styles from "./HomeParentView.module.css";
 
 function Home() {
   const [school, setSchool] = useState<School | null>(null);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const navigate = useNavigate();
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -82,7 +84,11 @@ function Home() {
                 {recentTickets.length > 0 ? (
                   recentTickets.map((ticket) => (
                     <li key={ticket.id}>
-                      <TicketCard ticket={ticket} variant="dashboard" />
+                      <TicketCard
+                        onClick={() => navigate("/parent/tickets")}
+                        ticket={ticket}
+                        variant="dashboard"
+                      />
                     </li>
                   ))
                 ) : (
