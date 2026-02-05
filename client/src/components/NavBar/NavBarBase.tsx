@@ -120,6 +120,16 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
         </nav>
 
         <div className={styles.footer}>
+          {!isCollapsed ? (
+            <button
+              type="button"
+              className={styles.logoutButton}
+              aria-label="Se déconnecter"
+            >
+              Déconnexion
+            </button>
+          ) : null}
+
           <a
             href="/"
             className={styles.footerLogoLink}

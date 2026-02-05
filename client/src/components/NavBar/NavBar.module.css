@@ -17,7 +17,7 @@
 }
 
 .expanded {
-  width: 260px;
+  width: 320px;
 }
 
 .collapsed {
@@ -58,17 +58,20 @@
 /* Profile */
 .profile {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 10px;
 
-  padding: 18px 16px 14px;
+  padding: 22px 16px 18px;
+
   border-bottom: 1px solid
     color-mix(in srgb, var(--light-grey) 65%, transparent);
 }
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 64px;
+  height: 64px;
 
   border-radius: 999px;
   border: 2px solid color-mix(in srgb, var(--blue) 35%, transparent);
@@ -78,21 +81,25 @@
 }
 
 .displayName {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin: 0;
 
   font-family: var(--font-family-card-title);
   font-size: 1rem;
   font-weight: 600;
   color: var(--primary-color-title);
+
+  text-align: center;
+
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Nav list */
 .nav {
   flex: 1;
-  padding: 18px 10px;
+  padding: 28px 10px;
 }
 
 .navList {
@@ -103,7 +110,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .navItem {
@@ -112,24 +119,30 @@
 
 .navLink {
   width: 100%;
-  min-height: 48px;
+  min-height: 56px;
 
   display: flex;
   align-items: center;
   gap: 12px;
 
-  padding: 10px 12px;
+  padding: 10px 22px;
 
   text-decoration: none;
 
-  border-radius: 14px;
+  border-radius: 10px;
+
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--light-grey) 60%, transparent);
+
   color: var(--dark-blue);
 
-  transition: background 160ms ease, transform 160ms ease;
+  transition: background 160ms ease, transform 160ms ease, border-color 160ms
+    ease;
 }
 
 .navLink:hover {
-  background: color-mix(in srgb, var(--blue) 10%, transparent);
+  border-color: color-mix(in srgb, var(--blue) 25%, var(--light-grey));
+  background: color-mix(in srgb, var(--blue) 6%, var(--white));
 }
 
 .navLink:focus-visible {
@@ -147,16 +160,21 @@
 .icon {
   width: 22px;
   height: 22px;
-  color: var(--dark-blue);
+  color: var(--blue);
 }
 
 /* Active state */
 .active {
-  background: color-mix(in srgb, var(--blue) 20%, transparent);
+  background: var(--dark-blue);
+  border-color: var(--dark-blue);
+}
+
+.active .linkLabel {
+  color: var(--white);
 }
 
 .active .icon {
-  color: var(--blue);
+  color: var(--white);
 }
 
 /* ===== Mobile bottom nav ===== */
@@ -252,6 +270,33 @@
   font-family: var(--font-family-text);
   font-size: 0.85rem;
   color: var(--dark-grey);
+}
+
+.logoutButton {
+  width: 100%;
+  padding: 10px 12px;
+
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--light-grey) 70%, transparent);
+  border-radius: 12px;
+
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  color: var(--dark-grey);
+
+  cursor: pointer;
+
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.logoutButton:hover {
+  background: color-mix(in srgb, var(--blue) 10%, transparent);
+  color: var(--dark-blue);
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--blue) 45%, transparent);
+  outline-offset: 2px;
 }
 
 /* ===== Responsive ===== */
