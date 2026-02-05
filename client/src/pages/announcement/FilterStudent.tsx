@@ -1,9 +1,22 @@
 import type { RefObject } from "react";
-import type { Classroom, Student } from "./AnnouncementNew";
+import styles from "./FilterStudent.module.css";
+
+type Classroom = {
+  id: number;
+  name: string;
+};
+
+type Student = {
+  id: number;
+  firstname: string;
+  lastname: string;
+  classroomId: number;
+  classroomName?: string;
+};
 
 type FilterStudentProps = {
   isFilterOpen: boolean;
-  filterModalRef: RefObject<HTMLDialogElement | null>;
+  filterModalRef?: RefObject<HTMLDialogElement | null>;
   classrooms: Classroom[];
   filterSelectedClassroomIds: number[];
   togglefilterClassroom: (classroomId: number) => void;
@@ -45,48 +58,57 @@ const FilterStudent = ({
   }
 
   return (
-    <div className="modal-overlay">
+    <div className={styles.modal_overlay}>
       <dialog
-        className="modal-dialog filter-modal"
+        className={styles.filter_modal}
         open
-        aria-label="Filtre étudiant"
+        aria-label="Filtrer les élèves"
         tabIndex={-1}
         ref={filterModalRef}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            closeFilterModal();
+          }
+        }}
       >
-        <div className="filter-modal-header">
-          <h2 className="announcement-title">Filtre étudiant</h2>
-        </div>
+        <header>
+          <h2 className="primary-title">Filtrer les élèves</h2>
+        </header>
 
-        <div className="filter-modal-body">
-          <div className="filter-column">
-            <p className="filter-title">Classes</p>
-            <div className="filter-list">
+        <section className={styles.filter_body}>
+          <fieldset className={styles.filter_column}>
+            <legend className={styles.filter_title}>Classes</legend>
+            <ul className={styles.filter_list}>
               {classrooms.map((classroom) => {
                 const isChecked = filterSelectedClassroomIds.includes(
                   classroom.id,
                 );
 
                 return (
-                  <label key={classroom.id} className="filter-item">
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => togglefilterClassroom(classroom.id)}
-                    />
-                    <span>{classroom.name}</span>
-                  </label>
+                  <li key={classroom.id}>
+                    <label className={styles.filter_item}>
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => togglefilterClassroom(classroom.id)}
+                      />
+                      <span>{classroom.name}</span>
+                    </label>
+                  </li>
                 );
               })}
-            </div>
-          </div>
+            </ul>
+          </fieldset>
 
-          <div className="filter-column">
-            <p className="filter-title">Etudiants</p>
-            <div className="student-search">
+          <fieldset className={styles.filter_column}>
+            <legend className={styles.filter_title}>Élèves</legend>
+            <div className={styles.student_search}>
               <input
-                className="text-input"
+                className={styles.search_input}
                 type="text"
-                placeholder="Rechercher un étudiant..."
+                placeholder="Rechercher un élève..."
+                aria-label="Rechercher un élève"
                 value={studentSearch}
                 onChange={(event) => {
                   const nextValue = event.target.value;
@@ -105,7 +127,7 @@ const FilterStudent = ({
                 }}
               />
               {isStudentSearchOpen && studentSearchResults.length > 0 && (
-                <div className="search-results">
+                <ul className={styles.search_results}>
                   {studentSearchResults.map((student) => {
                     const classroomName =
                       student.classroomName ??
@@ -115,62 +137,71 @@ const FilterStudent = ({
                     );
 
                     return (
-                      <button
-                        key={student.id}
-                        type="button"
-                        className={`search-item${
-                          isSelected ? " is-selected" : ""
-                        }`}
-                        disabled={isSelected}
-                        onMouseDown={(event) => {
-                          event.preventDefault();
-                          if (!isSelected) {
-                            selectStudentFromSearch(student.id);
-                          }
-                        }}
-                      >
-                        <span>
-                          {student.firstname} {student.lastname} (
-                          {classroomName})
-                        </span>
-                        {isSelected && (
-                          <span className="search-status">Selected</span>
-                        )}
-                      </button>
+                      <li key={student.id}>
+                        <button
+                          type="button"
+                          className={styles.search_item}
+                          disabled={isSelected}
+                          onMouseDown={(event) => {
+                            event.preventDefault();
+                            if (!isSelected) {
+                              selectStudentFromSearch(student.id);
+                            }
+                          }}
+                        >
+                          <span>
+                            {student.firstname} {student.lastname} (
+                            {classroomName})
+                          </span>
+                          {isSelected && (
+                            <span className={styles.search_status}>
+                              Sélectionné
+                            </span>
+                          )}
+                        </button>
+                      </li>
                     );
                   })}
-                </div>
+                </ul>
               )}
             </div>
-            <div className="filter-list">
+            <ul className={styles.filter_list}>
               {filterSelectedStudents.length === 0 && (
-                <span className="summary-empty">Sélectionner un étudiant</span>
+                <li>
+                  <span className={styles.summary_empty}>
+                    Sélectionnez un élève.
+                  </span>
+                </li>
               )}
               {filterSelectedStudents.map((student) => {
                 const classroomName = getClassroomName(student.classroomId);
 
                 return (
-                  <label key={student.id} className="filter-item">
-                    <input
-                      type="checkbox"
-                      checked
-                      onChange={() => togglefilterStudent(student.id)}
-                    />
-                    <span>
-                      {student.firstname} {student.lastname}
-                    </span>
-                    <span className="filter-pill">{classroomName}</span>
-                  </label>
+                  <li key={student.id}>
+                    <label className={styles.filter_item}>
+                      <input
+                        type="checkbox"
+                        checked
+                        onChange={() => togglefilterStudent(student.id)}
+                      />
+                      <span>
+                        {student.firstname} {student.lastname}
+                      </span>
+                      <span className={styles.filter_pill}>
+                        {classroomName}
+                      </span>
+                    </label>
+                  </li>
                 );
               })}
-            </div>
-          </div>
-        </div>
+            </ul>
+          </fieldset>
+        </section>
 
-        <div className="form-actions">
+        <footer className={styles.filter_actions}>
           <button
             type="button"
-            className="secondary-button"
+            className="non-primary-button"
             onClick={closeFilterModal}
           >
             Annuler
@@ -182,7 +213,7 @@ const FilterStudent = ({
           >
             Valider
           </button>
-        </div>
+        </footer>
       </dialog>
     </div>
   );
