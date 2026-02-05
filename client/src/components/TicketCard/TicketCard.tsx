@@ -4,6 +4,7 @@ import TicketIcon, { type TicketIconType } from "./TicketIcon";
 
 type TicketCardProps = {
   ticket: Ticket;
+  onClick: (ticket: Ticket) => void;
   variant?: "default" | "dashboard";
 };
 
@@ -20,7 +21,7 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
   }
 };
 
-function TicketCard({ ticket, variant = "default" }: TicketCardProps) {
+function TicketCard({ ticket, onClick, variant = "default" }: TicketCardProps) {
   const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
 
   const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
@@ -53,6 +54,13 @@ function TicketCard({ ticket, variant = "default" }: TicketCardProps) {
           {createdAtLabel}
         </time>
       </div>
+
+      <button
+        type="button"
+        className={styles.overlayButton}
+        onClick={() => onClick(ticket)}
+        aria-label={`Ouvrir le ticket de ${parentFullName}`}
+      />
     </article>
   );
 }

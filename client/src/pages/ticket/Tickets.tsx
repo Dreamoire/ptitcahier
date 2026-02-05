@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
 import TicketCard from "../../components/TicketCard/TicketCard";
+import TicketModalViewSchool from "../../components/TicketModalViewSchool/TicketModalViewSchool";
 import type { Ticket } from "../../types/Ticket";
 
 import styles from "./Tickets.module.css";
 
 function Tickets() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [hasError, setHasError] = useState<boolean>(false);
 
@@ -21,8 +23,8 @@ function Tickets() {
         }
         return response.json() as Promise<Ticket[]>;
       })
-      .then((tickets) => {
-        setTickets(tickets);
+      .then((fetchedTickets) => {
+        setTickets(fetchedTickets);
       })
       .catch(() => {
         setHasError(true);
@@ -50,13 +52,20 @@ function Tickets() {
             <ul className={styles.list}>
               {tickets.map((ticket) => (
                 <li key={ticket.id} className={styles.listItem}>
-                  <TicketCard ticket={ticket} />
+                  <TicketCard ticket={ticket} onClick={setSelectedTicket} />
                 </li>
               ))}
             </ul>
           ) : null}
         </section>
       </div>
+
+      {selectedTicket ? (
+        <TicketModalViewSchool
+          ticket={selectedTicket}
+          onCloseComplete={() => setSelectedTicket(null)}
+        />
+      ) : null}
     </main>
   );
 }
