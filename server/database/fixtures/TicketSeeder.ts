@@ -6,7 +6,7 @@ class TicketSeeder extends AbstractSeeder {
   }
 
   run() {
-    for (let i = 1; i < 4; i += 1) {
+    for (let i = 1; i < 5; i += 1) {
       const parent = i;
 
       for (let j = 0; j < 6; j += 1) {

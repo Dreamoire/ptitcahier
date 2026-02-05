@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router";
 
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
-import Login from "./pages/connexion/Login";
 import HomeParentView from "./pages/home/HomeParentView";
+import Login from "./pages/login/Login";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 

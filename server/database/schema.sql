@@ -97,15 +97,15 @@ VALUES
 
 INSERT INTO school (email, hashed_password, name)
 VALUES
-("contact@greenvalley.edu", "GreenValley123!", "Ecole Primaire Emile Zola"),
-("admin@riverside-intl.edu", "Riverside2024$", "Ecole Primaire Voltaire");
+("example@school1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "École Primaire Emile Zola"),
+("example@school2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "École Primaire Voltaire");
 
 INSERT INTO parent (email, hashed_password, last_name, first_name, genre)
 VALUES
-("mlaurent@aol.fr", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Martin", "Laurent", "M"),
-("pleroy143@gmail.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Leroy", "Patricia", "F"),
-("joijeofij@hotmail.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Perrin", "Jean", "M"),
-("Turin3498@gmail.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Turin", "Isabelle", "F");
+("example@parent1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Martin", "Laurent", "M"),
+("example@parent2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Leroy", "Patricia", "F"),
+("example@parent3.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Perrin", "Jean", "M"),
+("example@parent4.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Turin", "Isabelle", "F");
 
 INSERT INTO classroom (name, school_id)
 VALUES

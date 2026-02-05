@@ -37,6 +37,33 @@ class TicketStudentSeeder extends AbstractSeeder {
 
       this.insert(TicketParent2Student3);
     }
+
+    for (let j = 0; j < 4; j += 1) {
+      const TicketParent3Student4 = {
+        ticket_id: this.getRef(`ticket_3_${j}`).insertId,
+        student_id: 4,
+      };
+
+      this.insert(TicketParent3Student4);
+    }
+
+    for (let j = 0; j < 1; j += 1) {
+      const TicketParent4Student5 = {
+        ticket_id: this.getRef(`ticket_3_${j}`).insertId,
+        student_id: 5,
+      };
+
+      this.insert(TicketParent4Student5);
+    }
+
+    for (let j = 0; j < 1; j += 1) {
+      const TicketParent4Student6 = {
+        ticket_id: this.getRef(`ticket_4_${j}`).insertId,
+        student_id: 6,
+      };
+
+      this.insert(TicketParent4Student6);
+    }
   }
 }
 

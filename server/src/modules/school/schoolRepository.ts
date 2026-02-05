@@ -6,15 +6,17 @@ type School = {
   name: string;
 };
 
+// need to redo typing school
+
 class SchoolRepository {
-  //   async readByEmailWithPassword(email: string) {
-  //     const [rows] = await databaseClient.query<Rows>(
-  //       "SELECT * FROM school WHERE email = ?",
-  //       [email],
-  //     );
-  //     return (rows[0] as School) ?? null;
-  //   }
-  // }
+  async readByEmailWithPassword(email: string) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM school WHERE email = ?",
+      [email],
+    );
+    return rows[0] ?? null;
+  }
+
   async findSchoolByParent(parentId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT DISTINCT sc.id, sc.school_name as name

@@ -35,15 +35,22 @@
 .form {
   background: rgba(248, 250, 252, 0.8);
   width: 100%;
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+}
+
+.form p {
+  color: var(--primary-color-title);
+  font-family: var(--font-family-primary-title);
+  font-size: var(--font-size-card-title);
+  text-align: center;
 }
 
 .fieldset_user {
@@ -67,7 +74,7 @@
   flex: 1;
   font-family: var(--font-family-card-title);
   color: var(--dark-grey);
-  font-size: var(--font-size-primary-title);
+  font-size: var(--font-size-card-title);
   padding: 0.5rem 0;
   transition: all 0.2s ease;
 }
@@ -134,8 +141,8 @@
   align-items: center;
   border: 1px solid var(--light-grey);
   border-radius: var(--border-radius);
-  padding: 0.5rem;
-  gap: 1rem; /* space between icon and input */
+  padding: 0.5rem 1rem;
+  gap: 1rem;
   background-color: var(--white);
 }
 
@@ -153,11 +160,11 @@
   color: var(--dark-grey);
 }
 
-.icon_end {
+.icon_eye {
   flex-shrink: 0;
   width: 2.5rem;
   height: 2.5rem;
-  cursor: pointer; /* for eye toggle */
+  cursor: pointer;
   color: var(--dark-grey);
 }
 

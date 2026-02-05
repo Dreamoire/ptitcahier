@@ -11,7 +11,7 @@ class AnnouncementStudentSeeder extends AbstractSeeder {
   }
 
   run() {
-    for (let j = 0; j < 5; j += 1) {
+    for (let j = 0; j < 13; j += 1) {
       const AnnouncementStudent1 = {
         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
         student_id: 1,
@@ -20,7 +20,7 @@ class AnnouncementStudentSeeder extends AbstractSeeder {
       this.insert(AnnouncementStudent1);
     }
 
-    for (let j = 0; j < 3; j += 1) {
+    for (let j = 0; j < 6; j += 1) {
       const AnnouncementStudent2 = {
         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
         student_id: 2,
@@ -29,7 +29,7 @@ class AnnouncementStudentSeeder extends AbstractSeeder {
       this.insert(AnnouncementStudent2);
     }
 
-    for (let j = 0; j < 1; j += 1) {
+    for (let j = 0; j < 20; j += 1) {
       const AnnouncementStudent3 = {
         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
         student_id: 3,

@@ -46,7 +46,7 @@ function TicketNew() {
                 setFormSent(false);
                 setError(null);
               }}
-              type="submit"
+              type="button"
               className="primary-button"
             >
               Nouvelle Demande
