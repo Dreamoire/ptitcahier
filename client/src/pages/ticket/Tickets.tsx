@@ -52,7 +52,7 @@ function Tickets() {
             <ul className={styles.list}>
               {tickets.map((ticket) => (
                 <li key={ticket.id} className={styles.listItem}>
-                  <TicketCard ticket={ticket} onSelect={setSelectedTicket} />
+                  <TicketCard ticket={ticket} onClick={setSelectedTicket} />
                 </li>
               ))}
             </ul>

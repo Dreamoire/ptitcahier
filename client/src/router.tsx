@@ -1,17 +1,17 @@
 import { createBrowserRouter } from "react-router";
-import App from "./App";
-import Announcements from "./pages/announcement/Announcements";
+import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
+import HomeParentView from "./pages/home/HomeParentView";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: "/parent/home",
+    element: <HomeParentView />,
   },
   {
     path: "/parent/announcements",
-    element: <Announcements />,
+    element: <AnnouncementsParentView />,
   },
   {
     path: "/parent/tickets/new",

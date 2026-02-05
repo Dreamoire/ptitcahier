@@ -4,7 +4,8 @@ import TicketIcon, { type TicketIconType } from "./TicketIcon";
 
 type TicketCardProps = {
   ticket: Ticket;
-  onSelect: (ticket: Ticket) => void;
+  onClick: (ticket: Ticket) => void;
+  variant?: "default" | "dashboard";
 };
 
 const getTicketIconType = (categoryName: string): TicketIconType => {
@@ -20,7 +21,7 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
   }
 };
 
-function TicketCard({ ticket, onSelect }: TicketCardProps) {
+function TicketCard({ ticket, onClick, variant = "default" }: TicketCardProps) {
   const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
 
   const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
@@ -31,7 +32,10 @@ function TicketCard({ ticket, onSelect }: TicketCardProps) {
   const iconType = getTicketIconType(ticket.ticketCategoryName);
 
   return (
-    <article className={styles.card} data-type={iconType}>
+    <article
+      className={`${styles.card} ${variant === "dashboard" ? styles.card_dashboard : ""}`}
+      data-type={iconType}
+    >
       <div className={styles.leftPanel} aria-hidden="true">
         <div className={styles.iconCircle}>
           <TicketIcon type={iconType} className={styles.icon} />
@@ -40,9 +44,10 @@ function TicketCard({ ticket, onSelect }: TicketCardProps) {
 
       <div className={styles.body}>
         <header className={styles.header}>
-          <h2 className={styles.parentName}>{parentFullName}</h2>
+          {variant !== "dashboard" && (
+            <h2 className={styles.parentName}>{parentFullName}</h2>
+          )}
         </header>
-
         <p className={styles.content}>{ticket.content}</p>
 
         <time className={styles.date} dateTime={ticket.createdAt}>
@@ -53,7 +58,7 @@ function TicketCard({ ticket, onSelect }: TicketCardProps) {
       <button
         type="button"
         className={styles.overlayButton}
-        onClick={() => onSelect(ticket)}
+        onClick={() => onClick(ticket)}
         aria-label={`Ouvrir le ticket de ${parentFullName}`}
       />
     </article>
