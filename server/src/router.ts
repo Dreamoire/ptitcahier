@@ -1,5 +1,4 @@
 import express from "express";
-
 import announcementActions from "./modules/announcement/announcementActions";
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
@@ -7,9 +6,8 @@ import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryAction
 
 const router = express.Router();
 
-router.get("/parents/me/announcements", announcementActions.browse);
+router.get("/parents/me/announcements", announcementActions.browseByParent);
 
-router.get("/api/announcements", announcementActions.browse);
 router.get("/parents/me/students", studentActions.browseByParent);
 
 router.get("/schools/me/tickets", ticketActions.browseBySchool);

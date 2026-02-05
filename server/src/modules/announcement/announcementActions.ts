@@ -1,24 +1,23 @@
 import type { RequestHandler } from "express";
 import announcementRepository from "./announcementRepository";
 
-const browse: RequestHandler = async (req, res) => {
+const browseByParent: RequestHandler = async (req, res) => {
   try {
     const parentId = 1;
 
-    if (req.query.category) {
-      const categoryId = Number(req.query.category);
+    const categoryId = req.query.category
+      ? Number(req.query.category)
+      : undefined;
 
-      const announcements = await announcementRepository.readAllByCategory(
-        parentId,
-        categoryId,
-      );
+    const studentId = req.query.student ? Number(req.query.student) : undefined;
 
-      res.json(announcements);
-      return;
-    }
+    console.log(req.query.student);
 
-    const announcements =
-      await announcementRepository.readAllByParent(parentId);
+    const announcements = await announcementRepository.readAllByParent(
+      parentId,
+      categoryId,
+      studentId,
+    );
 
     res.json(announcements);
   } catch (error) {
@@ -27,4 +26,4 @@ const browse: RequestHandler = async (req, res) => {
   }
 };
 
-export default { browse };
+export default { browseByParent };
