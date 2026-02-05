@@ -19,6 +19,16 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
   }
 };
 
+const browseRecentByParent: RequestHandler = async (req, res, next) => {
+  try {
+    const parentId = 1;
+    const tickets = await ticketRepository.readLastThreeByParent(parentId);
+    res.json(tickets);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const validate: RequestHandler = async (req, res, next) => {
   try {
     const newTicket = joi.object({
@@ -105,4 +115,5 @@ export default {
   browseBySchool,
   add,
   validate,
+  browseRecentByParent,
 };

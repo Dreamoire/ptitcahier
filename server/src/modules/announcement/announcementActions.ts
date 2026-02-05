@@ -26,4 +26,15 @@ const browseByParent: RequestHandler = async (req, res) => {
   }
 };
 
-export default { browseByParent };
+const browseRecentByParent: RequestHandler = async (req, res, next) => {
+  try {
+    const parentId = 1;
+    const annoucements =
+      await announcementRepository.readLastThreeByParent(parentId);
+    res.json(annoucements);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseByParent, browseRecentByParent };

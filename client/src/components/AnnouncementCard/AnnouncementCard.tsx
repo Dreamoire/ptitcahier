@@ -52,14 +52,15 @@ function AnnouncementCard({
         </div>
       </header>
 
-      <div className={styles.imageContainer}>
-        <img
-          src={`https://picsum.photos/seed/${announcement.id}/400/200`}
-          alt="Illustration"
-          className={styles.realImage}
-        />
-      </div>
-
+      {variant === "dashboard" && (
+        <div className={styles.imageContainer}>
+          <img
+            src={`https://picsum.photos/seed/${announcement.id}/400/200`}
+            alt="Illustration"
+            className={styles.realImage}
+          />
+        </div>
+      )}
       <p className="text">{announcement.content}</p>
       <footer className={styles.an_card_footer}>
         <time
