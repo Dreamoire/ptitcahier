@@ -1,0 +1,187 @@
+.background_parent_login {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    rgba(13, 162, 231, 0.3) 0%,
+    rgba(249, 112, 21, 0.3) 35%,
+    rgba(231, 176, 8, 0.3) 65%,
+    rgba(22, 162, 73, 0.3) 100%
+  );
+}
+
+.background_school_login {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    #d2e9ff 0%,
+    #cceef5 35%,
+    #cceee6 65%,
+    #ddd6f4 100%
+  );
+}
+
+.logo {
+  padding: 5rem;
+}
+
+.form {
+  background: rgba(248, 250, 252, 0.8);
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.fieldset_user {
+  border: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.radio_button {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio_button_label {
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  flex: 1;
+  font-family: var(--font-family-card-title);
+  color: var(--dark-grey);
+  font-size: var(--font-size-primary-title);
+  padding: 0.5rem 0;
+  transition: all 0.2s ease;
+}
+
+.radio_button_label:hover {
+  background-color: rgba(200, 200, 200, 0.2);
+  border-radius: 0.5rem;
+}
+
+.radio_button_label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--dark-grey);
+  transition: opacity 0.2s ease;
+  opacity: 1;
+}
+
+.radio_button_label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.label_checked_parent {
+  color: var(--orange);
+  font-family: var(--font-family-primary-title);
+}
+
+.label_checked_parent::after {
+  background: var(--orange);
+  border-radius: var(--border-radius);
+}
+
+.label_checked_parent::before {
+  opacity: 0;
+}
+
+.label_checked_school {
+  color: var(--dark-blue);
+  font-family: var(--font-family-primary-title);
+}
+
+.label_checked_school::after {
+  background: var(--dark-blue);
+  border-radius: var(--border-radius);
+}
+
+.label_checked_school::before {
+  opacity: 0;
+}
+
+.input_wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--light-grey);
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  gap: 1rem; /* space between icon and input */
+  background-color: var(--white);
+}
+
+.input_field {
+  border: none;
+  flex: 1;
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--dark-grey);
+}
+
+.icon_end {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer; /* for eye toggle */
+  color: var(--dark-grey);
+}
+
+.ticket_buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ticket_buttons_container button {
+  flex: 1;
+  max-width: 350px;
+}
+
+.btn_connect_parent {
+  background: linear-gradient(135deg, #d85e10, #f97015, #ff8c3a) !important;
+  color: white !important;
+}
+
+.btn_connect_parent:hover {
+  background: linear-gradient(135deg, #c6560f, #f97015, #ffa154) !important;
+}
+
+.btn_connect_parent:active {
+  background: linear-gradient(135deg, #a9470c, #d85e10, #f97015) !important;
+}

@@ -1,20 +1,33 @@
 import databaseClient from "../../../database/client";
 import type { Rows } from "../../../database/client";
 
-export type School = {
+type School = {
   id: number;
-  email: string;
-  hashed_password: string;
   name: string;
 };
 
 class SchoolRepository {
-  async readByEmailWithPassword(email: string) {
+  //   async readByEmailWithPassword(email: string) {
+  //     const [rows] = await databaseClient.query<Rows>(
+  //       "SELECT * FROM school WHERE email = ?",
+  //       [email],
+  //     );
+  //     return (rows[0] as School) ?? null;
+  //   }
+  // }
+  async findSchoolByParent(parentId: number) {
     const [rows] = await databaseClient.query<Rows>(
-      "SELECT * FROM school WHERE email = ?",
-      [email],
+      `SELECT DISTINCT sc.id, sc.school_name as name
+       FROM parent p
+       JOIN student s ON s.parent_id = p.id
+       JOIN classroom c ON s.classroom_id = c.id
+       JOIN school sc ON c.school_id = sc.id
+       WHERE p.id = ?
+       LIMIT 1`,
+      [parentId],
     );
-    return (rows[0] as School) ?? null;
+    return rows[0] as School;
   }
 }
+
 export default new SchoolRepository();

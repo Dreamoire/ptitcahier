@@ -1,18 +1,23 @@
 import { createBrowserRouter } from "react-router";
 
-import Announcements from "./pages/announcement/Announcements";
-import Connexion from "./pages/connexion/Connexion";
+import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
+import Login from "./pages/connexion/Login";
+import HomeParentView from "./pages/home/HomeParentView";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Connexion />,
+    element: <Login />,
+  },
+  {
+    path: "/parent/home",
+    element: <HomeParentView />,
   },
   {
     path: "/parent/announcements",
-    element: <Announcements />,
+    element: <AnnouncementsParentView />,
   },
   {
     path: "/parent/tickets/new",

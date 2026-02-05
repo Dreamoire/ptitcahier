@@ -13,3 +13,7 @@
   gap: 2.5rem;
   color: var(--dark-blue);
 }
+.logo {
+  width: 120px;
+  height: auto;
+}
