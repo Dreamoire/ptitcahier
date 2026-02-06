@@ -52,7 +52,7 @@ function AnnouncementCard({
         </div>
       </header>
 
-      {variant === "dashboard" && (
+      
         <div className={styles.imageContainer}>
           <img
             src={`https://picsum.photos/seed/${announcement.id}/400/200`}
@@ -60,7 +60,7 @@ function AnnouncementCard({
             className={styles.realImage}
           />
         </div>
-      )}
+      
       <p className="text">{announcement.content}</p>
       <footer className={styles.an_card_footer}>
         <time
