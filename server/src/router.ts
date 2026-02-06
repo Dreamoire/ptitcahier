@@ -1,5 +1,4 @@
 import express from "express";
-
 import announcementActions from "./modules/announcement/announcementActions";
 import schoolActions from "./modules/school/schoolActions";
 import studentActions from "./modules/student/studentActions";

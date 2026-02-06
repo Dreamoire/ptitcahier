@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router";
 import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
 
-import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
+import AnnouncementsParentView from "./pages/announcement/Announcements";
 import HomeParentView from "./pages/home/HomeParentView";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
