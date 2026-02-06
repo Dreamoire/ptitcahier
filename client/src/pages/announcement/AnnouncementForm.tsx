@@ -1,9 +1,21 @@
+import { CalendarDays, ClipboardList, School } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
+import FilterStudent from "../../components/FilterStudents/FilterStudent";
 import styles from "./AnnouncementForm.module.css";
-import FilterStudent from "./FilterStudent";
 
 const MAX_MESSAGE_LENGTH = 1000;
+
+type CategoryButtonConfig = {
+  color: string;
+  Icon: typeof School;
+};
+
+const CATEGORY_BUTTON_CONFIG_BY_ID: Record<number, CategoryButtonConfig> = {
+  1: { color: "16a249", Icon: School },
+  2: { color: "0da2e7", Icon: ClipboardList },
+  3: { color: "f97015", Icon: CalendarDays },
+};
 
 type AnnouncementCategory = { id: number; name: string };
 type Classroom = { id: number; name: string };
@@ -27,10 +39,10 @@ type AnnouncementFormProps = {
   classrooms: Classroom[];
   students: Student[];
   onSubmit: (announcement: AnnouncementNew) => void;
-  isSubmitting?: boolean;
+  isSubmitting: boolean;
 };
 
-function JennForm({
+function AnnouncementForm({
   announcementCategories,
   classrooms,
   students,
@@ -39,19 +51,15 @@ function JennForm({
 }: AnnouncementFormProps) {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null,
-  );
-  const [selectedClassroomIds, setSelectedClassroomIds] = useState<number[]>(
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedClassroom, setSelectedClassroom] = useState<number[]>([]);
+  const [selectedStudent, setSelectedStudent] = useState<number[]>([]);
+  const [filterSelectedClassroom, setFilterSelectedClassroom] = useState<
+    number[]
+  >([]);
+  const [filterSelectedStudent, setFilterSelectedStudent] = useState<number[]>(
     [],
   );
-  const [selectedStudentIds, setSelectedStudentIds] = useState<number[]>([]);
-  const [filterSelectedClassroomIds, setFilterSelectedClassroomIds] = useState<
-    number[]
-  >([]);
-  const [filterSelectedStudentIds, setFilterSelectedStudentIds] = useState<
-    number[]
-  >([]);
   const [studentSearch, setStudentSearch] = useState("");
   const [isStudentSearchOpen, setIsStudentSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -81,11 +89,11 @@ function JennForm({
 
   const getClassroomName = (classroomId: number) => {
     const classroom = classrooms.find((item) => item.id === classroomId);
-    return classroom ? classroom.name : "";
+    return classroom?.name ?? "Classe inconnue";
   };
 
   const getStudentById = (studentId: number) => {
-    return students.find((student) => student.id === studentId) ?? null;
+    return students.find((student) => student.id === studentId);
   };
 
   const addUniqueIds = (currentIds: number[], idsToAdd: number[]) => {
@@ -109,8 +117,8 @@ function JennForm({
   };
 
   const openFilterModal = () => {
-    setFilterSelectedClassroomIds(selectedClassroomIds);
-    setFilterSelectedStudentIds(selectedStudentIds);
+    setFilterSelectedClassroom(selectedClassroom);
+    setFilterSelectedStudent(selectedStudent);
     setStudentSearch("");
     setIsStudentSearchOpen(false);
     setIsFilterOpen(true);
@@ -123,36 +131,32 @@ function JennForm({
   };
 
   const applyFilterModal = () => {
-    setSelectedClassroomIds(filterSelectedClassroomIds);
-    setSelectedStudentIds(filterSelectedStudentIds);
+    setSelectedClassroom(filterSelectedClassroom);
+    setSelectedStudent(filterSelectedStudent);
     closeFilterModal();
     clearWarning();
   };
 
   const toggleFilterClassroom = (classroomId: number) => {
-    const isSelected = filterSelectedClassroomIds.includes(classroomId);
+    const isSelected = filterSelectedClassroom.includes(classroomId);
     const classroomStudentIds = getStudentsForClassroom(classroomId).map(
       (student) => student.id,
     );
 
     if (isSelected) {
-      setFilterSelectedClassroomIds((prev) =>
+      setFilterSelectedClassroom((prev) =>
         prev.filter((id) => id !== classroomId),
       );
-      setFilterSelectedStudentIds((prev) =>
-        removeIds(prev, classroomStudentIds),
-      );
+      setFilterSelectedStudent((prev) => removeIds(prev, classroomStudentIds));
       return;
     }
 
-    setFilterSelectedClassroomIds((prev) => [...prev, classroomId]);
-    setFilterSelectedStudentIds((prev) =>
-      addUniqueIds(prev, classroomStudentIds),
-    );
+    setFilterSelectedClassroom((prev) => [...prev, classroomId]);
+    setFilterSelectedStudent((prev) => addUniqueIds(prev, classroomStudentIds));
   };
 
   const toggleFilterStudent = (studentId: number) => {
-    setFilterSelectedStudentIds((prev) => {
+    setFilterSelectedStudent((prev) => {
       if (prev.includes(studentId)) {
         return prev.filter((id) => id !== studentId);
       }
@@ -162,16 +166,16 @@ function JennForm({
   };
 
   const removeClassroomSelection = (classroomId: number) => {
-    setSelectedClassroomIds((prev) => prev.filter((id) => id !== classroomId));
+    setSelectedClassroom((prev) => prev.filter((id) => id !== classroomId));
 
     const classroomStudentIds = getStudentsForClassroom(classroomId).map(
       (student) => student.id,
     );
-    setSelectedStudentIds((prev) => removeIds(prev, classroomStudentIds));
+    setSelectedStudent((prev) => removeIds(prev, classroomStudentIds));
   };
 
   const removeStudentSelection = (studentId: number) => {
-    setSelectedStudentIds((prev) => prev.filter((id) => id !== studentId));
+    setSelectedStudent((prev) => prev.filter((id) => id !== studentId));
   };
 
   const normalize = (value: string) => {
@@ -182,13 +186,7 @@ function JennForm({
     const classroomName =
       student.classroomName ?? getClassroomName(student.classroomId);
     const fullName = `${student.firstname} ${student.lastname}`;
-    const searchTarget = [
-      student.firstname,
-      student.lastname,
-      fullName,
-      classroomName,
-    ]
-      .filter(Boolean)
+    const searchTarget = [fullName, classroomName]
       .map((item) => normalize(item))
       .join(" ");
 
@@ -204,7 +202,7 @@ function JennForm({
         );
 
   const selectStudentFromSearch = (studentId: number) => {
-    setFilterSelectedStudentIds((prev) => {
+    setFilterSelectedStudent((prev) => {
       if (prev.includes(studentId)) {
         return prev;
       }
@@ -214,29 +212,24 @@ function JennForm({
     setIsStudentSearchOpen(false);
   };
 
-  const fullySelectedClassroomIds = selectedClassroomIds.filter(
-    (classroomId) => {
-      const classroomStudents = getStudentsForClassroom(classroomId);
-      if (classroomStudents.length === 0) {
-        return false;
-      }
+  const fullySelectedClassroom = selectedClassroom.filter((classroomId) => {
+    const classroomStudents = getStudentsForClassroom(classroomId);
+    if (classroomStudents.length === 0) {
+      return false;
+    }
 
-      return classroomStudents.every((student) =>
-        selectedStudentIds.includes(student.id),
-      );
-    },
-  );
-
-  const individualStudents = selectedStudentIds
-    .map((studentId) => getStudentById(studentId))
-    .filter((student): student is Student => Boolean(student))
-    .filter(
-      (student) => !fullySelectedClassroomIds.includes(student.classroomId),
+    return classroomStudents.every((student) =>
+      selectedStudent.includes(student.id),
     );
+  });
 
-  const filterSelectedStudents = filterSelectedStudentIds
+  const individualStudents = (
+    selectedStudent.map((studentId) => getStudentById(studentId)) as Student[]
+  ).filter((student) => !fullySelectedClassroom.includes(student.classroomId));
+
+  const filterSelectedStudents = filterSelectedStudent
     .map((studentId) => getStudentById(studentId))
-    .filter((student): student is Student => Boolean(student));
+    .filter((student): student is Student => student !== undefined);
 
   return (
     <>
@@ -254,8 +247,8 @@ function JennForm({
           if (
             trimmedTitle.length === 0 ||
             trimmedMessage.length === 0 ||
-            selectedCategoryId === null ||
-            selectedStudentIds.length === 0
+            selectedCategory === null ||
+            selectedStudent.length === 0
           ) {
             setValidateWarning(true);
             return;
@@ -264,8 +257,8 @@ function JennForm({
           onSubmit({
             title: trimmedTitle,
             content: trimmedMessage,
-            announcementCategoryId: selectedCategoryId,
-            studentIds: selectedStudentIds,
+            announcementCategoryId: selectedCategory,
+            studentIds: selectedStudent,
           });
         }}
       >
@@ -294,29 +287,48 @@ function JennForm({
         <fieldset className={styles.fieldset_categories}>
           <legend className={styles.form_label}>Motif de l'annonce* :</legend>
           <ul>
-            {announcementCategories.map((category) => (
-              <li key={category.id}>
-                <input
-                  type="radio"
-                  id={`category-${category.id}`}
-                  name="announcementCategoryId"
-                  value={category.id}
-                  checked={selectedCategoryId === category.id}
-                  onChange={() => {
-                    setSelectedCategoryId(category.id);
-                    clearWarning();
-                  }}
-                  className={styles.category_input}
-                  aria-required="true"
-                />
-                <label
-                  htmlFor={`category-${category.id}`}
-                  className={styles.category_label}
-                >
-                  {category.name}
-                </label>
-              </li>
-            ))}
+            {announcementCategories.map((category) => {
+              const config = CATEGORY_BUTTON_CONFIG_BY_ID[category.id];
+
+              if (!config) {
+                return null;
+              }
+
+              const IconComponent = config.Icon;
+              const categoryColor = config.color;
+
+              return (
+                <li key={category.id}>
+                  <input
+                    type="radio"
+                    id={`category-${category.id}`}
+                    name="announcementCategoryId"
+                    value={category.id}
+                    checked={selectedCategory === category.id}
+                    onChange={() => {
+                      setSelectedCategory(category.id);
+                      clearWarning();
+                    }}
+                    className={styles.category_input}
+                    aria-required="true"
+                  />
+                  <label
+                    htmlFor={`category-${category.id}`}
+                    className={styles.category_button}
+                  >
+                    <span
+                      className={styles.category_icon_wrapper}
+                      style={{ backgroundColor: `#${categoryColor}` }}
+                    >
+                      <IconComponent className={styles.category_icon} />
+                    </span>
+                    <span className={styles.category_name}>
+                      {category.name}
+                    </span>
+                  </label>
+                </li>
+              );
+            })}
           </ul>
         </fieldset>
 
@@ -328,7 +340,7 @@ function JennForm({
               className="primary-button"
               onClick={openFilterModal}
             >
-              Filtrer les élèves
+              Sélectionner les élèves
             </button>
           </div>
 
@@ -337,7 +349,7 @@ function JennForm({
             aria-label="Élèves sélectionnés"
           >
             <div className={styles.chip_row}>
-              {fullySelectedClassroomIds.map((classroomId) => (
+              {fullySelectedClassroom.map((classroomId) => (
                 <span key={classroomId} className={styles.summary_chip}>
                   {getClassroomName(classroomId)}
                   <button
@@ -366,7 +378,7 @@ function JennForm({
                   </button>
                 </span>
               ))}
-              {fullySelectedClassroomIds.length === 0 &&
+              {fullySelectedClassroom.length === 0 &&
                 individualStudents.length === 0 && (
                   <span className={styles.summary_empty}>
                     Sélectionnez au moins un élève.
@@ -425,14 +437,14 @@ function JennForm({
       <FilterStudent
         isFilterOpen={isFilterOpen}
         classrooms={classrooms}
-        filterSelectedClassroomIds={filterSelectedClassroomIds}
+        filterSelectedClassroom={filterSelectedClassroom}
         togglefilterClassroom={toggleFilterClassroom}
         studentSearch={studentSearch}
         setStudentSearch={setStudentSearch}
         setIsStudentSearchOpen={setIsStudentSearchOpen}
         isStudentSearchOpen={isStudentSearchOpen}
         studentSearchResults={studentSearchResults}
-        filterSelectedStudentIds={filterSelectedStudentIds}
+        filterSelectedStudent={filterSelectedStudent}
         selectStudentFromSearch={selectStudentFromSearch}
         getClassroomName={getClassroomName}
         filterSelectedStudents={filterSelectedStudents}
@@ -444,4 +456,4 @@ function JennForm({
   );
 }
 
-export default JennForm;
+export default AnnouncementForm;

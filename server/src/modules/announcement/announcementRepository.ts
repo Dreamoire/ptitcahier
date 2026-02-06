@@ -59,7 +59,7 @@ class AnnouncementRepository {
           JOIN student AS s ON ann_stu.student_id = s.id
           WHERE s.parent_id = ?
           GROUP BY a.id, ac.name
-          ORDER BY a.created_at ASC`,
+          ORDER BY a.created_at DESC`,
       [parentId],
     );
     return rows;
@@ -80,7 +80,7 @@ class AnnouncementRepository {
           JOIN student AS s ON ann_stu.student_id = s.id
           WHERE s.school_id = ?
           GROUP BY a.id, ac.name
-          ORDER BY a.created_at ASC`,
+          ORDER BY a.created_at DESC`,
       [SCHOOL_ID],
     );
     return rows;

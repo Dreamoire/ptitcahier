@@ -35,7 +35,7 @@ function AnnouncementNew() {
       .then((res) => res.json())
       .then((classrooms) => setClassrooms(classrooms));
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/students`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students`)
       .then((res) => res.json())
       .then((students) => setStudents(students));
   }, []);
@@ -81,22 +81,18 @@ function AnnouncementNew() {
               },
               body: JSON.stringify(newAnnouncement),
             })
-              .then((response) => response.ok)
-              .then((ok) => {
-                if (!ok) {
-                  setError(
-                    "Une erreur est survenue. Veuillez renvoyer votre annonce.",
-                  );
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error();
                 }
-                setFormSent(true);
               })
               .catch(() => {
                 setError(
                   "Une erreur est survenue. Veuillez renvoyer votre annonce.",
                 );
-                setFormSent(true);
               })
               .finally(() => {
+                setFormSent(true);
                 setIsSubmitting(false);
               });
           }}

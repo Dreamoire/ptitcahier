@@ -18,14 +18,14 @@ type FilterStudentProps = {
   isFilterOpen: boolean;
   filterModalRef?: RefObject<HTMLDialogElement | null>;
   classrooms: Classroom[];
-  filterSelectedClassroomIds: number[];
+  filterSelectedClassroom: number[];
   togglefilterClassroom: (classroomId: number) => void;
   studentSearch: string;
   setStudentSearch: (value: string) => void;
   setIsStudentSearchOpen: (value: boolean) => void;
   isStudentSearchOpen: boolean;
   studentSearchResults: Student[];
-  filterSelectedStudentIds: number[];
+  filterSelectedStudent: number[];
   selectStudentFromSearch: (studentId: number) => void;
   getClassroomName: (classroomId: number) => string;
   filterSelectedStudents: Student[];
@@ -38,14 +38,14 @@ const FilterStudent = ({
   isFilterOpen,
   filterModalRef,
   classrooms,
-  filterSelectedClassroomIds,
+  filterSelectedClassroom,
   togglefilterClassroom,
   studentSearch,
   setStudentSearch,
   setIsStudentSearchOpen,
   isStudentSearchOpen,
   studentSearchResults,
-  filterSelectedStudentIds,
+  filterSelectedStudent,
   selectStudentFromSearch,
   getClassroomName,
   filterSelectedStudents,
@@ -62,7 +62,7 @@ const FilterStudent = ({
       <dialog
         className={styles.filter_modal}
         open
-        aria-label="Filtrer les élèves"
+        aria-label="Elèves concernés"
         tabIndex={-1}
         ref={filterModalRef}
         onKeyDown={(event) => {
@@ -73,7 +73,7 @@ const FilterStudent = ({
         }}
       >
         <header>
-          <h2 className="primary-title">Filtrer les élèves</h2>
+          <h2 className="primary-title">Elèves concernés</h2>
         </header>
 
         <section className={styles.filter_body}>
@@ -81,7 +81,7 @@ const FilterStudent = ({
             <legend className={styles.filter_title}>Classes</legend>
             <ul className={styles.filter_list}>
               {classrooms.map((classroom) => {
-                const isChecked = filterSelectedClassroomIds.includes(
+                const isChecked = filterSelectedClassroom.includes(
                   classroom.id,
                 );
 
@@ -132,7 +132,7 @@ const FilterStudent = ({
                     const classroomName =
                       student.classroomName ??
                       getClassroomName(student.classroomId);
-                    const isSelected = filterSelectedStudentIds.includes(
+                    const isSelected = filterSelectedStudent.includes(
                       student.id,
                     );
 

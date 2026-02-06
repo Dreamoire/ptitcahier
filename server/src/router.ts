@@ -3,7 +3,6 @@ import express from "express";
 import announcementActions from "./modules/announcement/announcementActions";
 import announcementCategoryActions from "./modules/announcementCategory/announcementCategoryActions";
 import classroomActions from "./modules/classroom/classroomActions";
-// import newAnnouncementValidation from "./modules/middleware/newAnnouncementValidation";
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
 import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
@@ -19,7 +18,7 @@ router.post(
 router.get("/announcements-categories", announcementCategoryActions.browseAll);
 
 router.get("/schools/me/classrooms", classroomActions.browseBySchool);
-router.get("/students", classroomActions.browseAllStudents);
+router.get("/schools/me/students", studentActions.browseBySchool);
 router.get(
   "/classrooms/:id/students",
   classroomActions.browseStudentsInClassroom,
