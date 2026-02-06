@@ -11,8 +11,6 @@ const browseByParent: RequestHandler = async (req, res) => {
 
     const studentId = req.query.student ? Number(req.query.student) : undefined;
 
-    console.log(req.query.student);
-
     const announcements = await announcementRepository.readAllByParent(
       parentId,
       categoryId,

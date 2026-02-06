@@ -3,7 +3,7 @@ import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
 import type { Student } from "../../types/Student";
-import styles from "./AnnouncementsParentView.module.css";
+import styles from "./Announcements.module.css";
 
 function AnnouncementsParentView() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -46,8 +46,7 @@ function AnnouncementsParentView() {
 
     fetch(url.toString())
       .then((response) => response.json())
-      .then((data) => setAnnouncements(data))
-      .catch((err) => console.error(err));
+      .then((categories) => setAnnouncements(categories));
   }, [selectedCategoryId, selectedStudentId]);
 
   const checkBoxFilter = (studentId: number) => {

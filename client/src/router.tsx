@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
+import Announcements from "./pages/announcement/Announcements";
 import HomeParentView from "./pages/home/HomeParentView";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/parent/announcements",
-    element: <AnnouncementsParentView />,
+    element: <Announcements />,
   },
   {
     path: "/parent/tickets/new",
