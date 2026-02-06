@@ -207,7 +207,7 @@
 }
 
 .demo {
-  color: var(--primary-color-text);
+  color: var(--dark-grey);
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
   transition: all 0.2s ease;

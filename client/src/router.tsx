@@ -1,4 +1,5 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
+import AuthLayout from "./layouts/AuthLayout";
 import LayoutWithNav from "./layouts/LayoutWithNav";
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
 import HomeParentView from "./pages/home/HomeParentView";
@@ -8,16 +9,23 @@ import Tickets from "./pages/ticket/Tickets";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    element: <LayoutWithNav />,
+    element: <AuthLayout />,
     children: [
-      { path: "/parent/home", element: <HomeParentView /> },
-      { path: "/parent/announcements", element: <AnnouncementsParentView /> },
-      { path: "/parent/tickets/new", element: <TicketNew /> },
-      { path: "/school/tickets", element: <Tickets /> },
+      {
+        children: [{ path: "/", element: <Login /> }],
+      },
+      {
+        element: <LayoutWithNav />,
+        children: [
+          { path: "/parent/home", element: <HomeParentView /> },
+          {
+            path: "/parent/announcements",
+            element: <AnnouncementsParentView />,
+          },
+          { path: "/parent/tickets/new", element: <TicketNew /> },
+          { path: "/school/tickets", element: <Tickets /> },
+        ],
+      },
     ],
   },
 ]);

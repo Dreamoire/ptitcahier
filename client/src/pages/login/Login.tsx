@@ -1,7 +1,9 @@
 import { CircleUserRound, Eye, EyeOff, Lock } from "lucide-react";
 import type { FormEventHandler } from "react";
 import { useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import logo_site from "../../assets/images/logo_site.png";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import styles from "./Login.module.css";
 
 function Login() {
@@ -14,6 +16,9 @@ function Login() {
     useState<boolean>(false);
   const [invalidLoginWarning, setInvalidLoginWarning] =
     useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const { setAuth } = useOutletContext<OutletAuthContext>();
 
   const clearWarnings = () => {
     if (submitValidationWarning) setSubmitValidationWarning(false);
@@ -63,22 +68,21 @@ function Login() {
       }),
     })
       .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-
         if (response.status === 422) {
           setInvalidLoginWarning(true);
+          return;
         }
 
-        throw new Error("unknown-error");
-      })
-      .then((data) => {
-        console.log("it works");
-        console.log(data.role);
+        if (!response.ok) {
+          setInvalidLoginWarning(true);
+          return;
+        }
 
-        // setAuth(data);
-        // navigate(`/${data.role}/home`);
+        return response.json();
+      })
+      .then((auth) => {
+        setAuth(auth);
+        navigate(`/${auth.role}/home`);
       });
   };
 

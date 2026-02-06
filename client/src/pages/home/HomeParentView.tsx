@@ -11,7 +11,7 @@ import type { Ticket } from "../../types/Ticket";
 import { useNavigate } from "react-router";
 import styles from "./HomeParentView.module.css";
 
-function Home() {
+function HomeParentView() {
   const [school, setSchool] = useState<School | null>(null);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -163,4 +163,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomeParentView;
