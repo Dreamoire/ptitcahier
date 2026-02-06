@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-
+import LayoutWithNav from "./layouts/LayoutWithNav";
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
 import HomeParentView from "./pages/home/HomeParentView";
 import Login from "./pages/login/Login";
@@ -12,20 +12,13 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/parent/home",
-    element: <HomeParentView />,
-  },
-  {
-    path: "/parent/announcements",
-    element: <AnnouncementsParentView />,
-  },
-  {
-    path: "/parent/tickets/new",
-    element: <TicketNew />,
-  },
-  {
-    path: "/school/tickets",
-    element: <Tickets />,
+    element: <LayoutWithNav />,
+    children: [
+      { path: "/parent/home", element: <HomeParentView /> },
+      { path: "/parent/announcements", element: <AnnouncementsParentView /> },
+      { path: "/parent/tickets/new", element: <TicketNew /> },
+      { path: "/school/tickets", element: <Tickets /> },
+    ],
   },
 ]);
 

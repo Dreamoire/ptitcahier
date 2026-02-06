@@ -1,9 +1,5 @@
 .background_parent_login {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
   background: linear-gradient(
     135deg,
     rgba(13, 162, 231, 0.3) 0%,
@@ -11,14 +7,11 @@
     rgba(231, 176, 8, 0.3) 65%,
     rgba(22, 162, 73, 0.3) 100%
   );
+  padding-top: 3rem;
 }
 
 .background_school_login {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
   background: linear-gradient(
     135deg,
     #d2e9ff 0%,
@@ -26,10 +19,18 @@
     #cceee6 65%,
     #ddd6f4 100%
   );
+  padding-top: 3rem;
+}
+
+.login_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
 }
 
 .logo {
-  padding: 5rem;
+  width: 200px;
 }
 
 .form {
@@ -46,7 +47,7 @@
   box-shadow: var(--box-shadow);
 }
 
-.form p {
+.parent_message {
   color: var(--primary-color-title);
   font-family: var(--font-family-primary-title);
   font-size: var(--font-size-card-title);
@@ -146,6 +147,10 @@
   background-color: var(--white);
 }
 
+.input_error {
+  border: 1px solid var(--red);
+}
+
 .input_field {
   border: none;
   flex: 1;
@@ -191,4 +196,67 @@
 
 .btn_connect_parent:active {
   background: linear-gradient(135deg, #a9470c, #d85e10, #f97015) !important;
+}
+
+.warning {
+  color: var(--red);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  text-align: center;
+  margin: 0 auto;
+}
+
+.demo {
+  color: var(--primary-color-text);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  transition: all 0.2s ease;
+}
+
+.demo:hover {
+  color: var(--dark-blue);
+}
+
+@media (max-width: 768px) {
+  .form {
+    width: 95%;
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    padding: 1rem;
+  }
+
+  .background_parent_login {
+    padding-top: 1rem;
+  }
+
+  .background_school_login {
+    padding-top: 1rem;
+  }
+
+  .login_container {
+    gap: 1rem;
+  }
+
+  .fieldset_user {
+    gap: 1rem;
+  }
+
+  .ticket_buttons_container {
+    flex-direction: column-reverse;
+  }
+
+  .ticket_buttons_container button {
+    flex: 1;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .form {
+    width: 100%;
+    padding: 0.5rem;
+  }
 }

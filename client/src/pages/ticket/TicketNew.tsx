@@ -4,6 +4,7 @@ import TicketForm from "../../components/TicketForm/TicketForm";
 import type { Student } from "../../types/Student";
 import type { TicketCategory } from "../../types/TicketCategory";
 import styles from "./TicketNew.module.css";
+// import type { Auth } from "../../types/Auth";
 
 function TicketNew() {
   const [ticketCategories, setTicketCategories] = useState<TicketCategory[]>(
@@ -13,6 +14,7 @@ function TicketNew() {
   const [formSent, setFormSent] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  // const { auth } = useOutletContext() as { auth: Auth | null };
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`)
@@ -64,6 +66,7 @@ function TicketNew() {
                 method: "post",
                 headers: {
                   "Content-Type": "application/json",
+                  // Authorization: `Bearer ${(auth as Auth).token}`,
                 },
                 body: JSON.stringify(newTicket),
               })
