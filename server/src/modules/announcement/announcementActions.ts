@@ -1,15 +1,26 @@
 import type { RequestHandler } from "express";
 import announcementRepository from "./announcementRepository";
 
-const browseByParent: RequestHandler = async (req, res, next) => {
+const browseByParent: RequestHandler = async (req, res) => {
   try {
     const parentId = 1;
-    //hard coded for now
-    const announcements =
-      await announcementRepository.readAllByParent(parentId);
+
+    const categoryId = req.query.category
+      ? Number(req.query.category)
+      : undefined;
+
+    const studentId = req.query.student ? Number(req.query.student) : undefined;
+
+    const announcements = await announcementRepository.readAllByParent(
+      parentId,
+      categoryId,
+      studentId,
+    );
+
     res.json(announcements);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erreur serveur");
   }
 };
 
@@ -24,4 +35,15 @@ const browseRecentByParent: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseByParent, browseRecentByParent };
+const browseBySchool: RequestHandler = async (req, res, next) => {
+  try {
+    const schoolId = 1;
+    const announcements =
+      await announcementRepository.readAllBySchool(schoolId);
+    res.json(announcements);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseByParent, browseRecentByParent, browseBySchool };
