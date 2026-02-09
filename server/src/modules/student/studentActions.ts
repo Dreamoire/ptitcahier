@@ -1,6 +1,8 @@
 import type { RequestHandler } from "express";
 import studentRepository from "./studentRepository";
 
+const SCHOOL_ID = 1;
+
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = 1;
@@ -15,7 +17,6 @@ const browseByParent: RequestHandler = async (req, res, next) => {
 
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
-    const SCHOOL_ID = 1;
     const students = await studentRepository.readAllStudentsBySchool(SCHOOL_ID);
 
     res.status(200).json(students);
@@ -24,4 +25,19 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseByParent, browseBySchool };
+const browseByClassroom: RequestHandler = async (req, res, next) => {
+  try {
+    const classroomId = Number(req.params.id);
+
+    const students = await studentRepository.readByClassroom(
+      classroomId,
+      SCHOOL_ID,
+    );
+
+    res.status(200).json(students);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseByParent, browseBySchool, browseByClassroom };

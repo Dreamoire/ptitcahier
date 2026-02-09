@@ -17,7 +17,6 @@ function AnnouncementNew() {
   const [announcementCategories, setAnnouncementCategories] = useState<
     AnnouncementCategory[]
   >([]);
-  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [formSent, setFormSent] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,14 +30,24 @@ function AnnouncementNew() {
         setAnnouncementCategories(announcementCategories),
       );
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/classrooms`)
-      .then((res) => res.json())
-      .then((classrooms) => setClassrooms(classrooms));
-
     fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students`)
       .then((res) => res.json())
       .then((students) => setStudents(students));
   }, []);
+
+  const classrooms = (): Classroom[] => {
+    const classroomsById = new Map<number, string>();
+
+    for (const student of students) {
+      if (!classroomsById.has(student.classroomId)) {
+        classroomsById.set(student.classroomId, student.classroomName);
+      }
+    }
+
+    return Array.from(classroomsById.entries())
+      .map(([id, name]) => ({ id, name }))
+      .sort((a, b) => a.id - b.id);
+  };
 
   return (
     <main className="school-background">
@@ -68,7 +77,7 @@ function AnnouncementNew() {
       ) : (
         <AnnouncementForm
           announcementCategories={announcementCategories}
-          classrooms={classrooms}
+          classrooms={classrooms()}
           students={students}
           isSubmitting={isSubmitting}
           onSubmit={(newAnnouncement) => {

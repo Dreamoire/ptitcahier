@@ -16,10 +16,7 @@ type Announcement = {
 };
 
 class AnnouncementRepository {
-  async createAnnouncement(
-    newAnnouncement: Omit<Announcement, "id">,
-    schoolId: number,
-  ) {
+  async create(newAnnouncement: Omit<Announcement, "id">, schoolId: number) {
     const { title, content, announcementCategoryId, studentIds } =
       newAnnouncement;
 

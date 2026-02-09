@@ -19,10 +19,7 @@ router.get("/announcements-categories", announcementCategoryActions.browseAll);
 
 router.get("/schools/me/classrooms", classroomActions.browseBySchool);
 router.get("/schools/me/students", studentActions.browseBySchool);
-router.get(
-  "/classrooms/:id/students",
-  classroomActions.browseStudentsInClassroom,
-);
+router.get("/classrooms/:id/students", studentActions.browseByClassroom);
 router.get("/schools/me/announcements", announcementActions.browseBySchool);
 
 router.get("/parents/me/announcements", announcementActions.browseByParent);

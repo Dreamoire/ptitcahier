@@ -66,15 +66,17 @@ function AnnouncementForm({
   const [validateWarning, setValidateWarning] = useState(false);
   const navigate = useNavigate();
 
-  const studentsByClassroom = useMemo(() => {
+  const getStudentsByClassroom = useMemo(() => {
     const map: Record<number, Student[]> = {};
+
     for (const student of students) {
       if (!map[student.classroomId]) {
         map[student.classroomId] = [];
       }
       map[student.classroomId].push(student);
     }
-    return map;
+
+    return (classroomId: number) => map[classroomId] ?? [];
   }, [students]);
 
   const clearWarning = () => {
@@ -83,12 +85,10 @@ function AnnouncementForm({
     }
   };
 
-  const getStudentsForClassroom = (classroomId: number) => {
-    return studentsByClassroom[classroomId] ?? [];
-  };
-
   const getClassroomName = (classroomId: number) => {
-    const classroom = classrooms.find((item) => item.id === classroomId);
+    const classroom = classrooms.find(
+      (classroom) => classroom.id === classroomId,
+    );
     return classroom?.name ?? "Classe inconnue";
   };
 
@@ -139,7 +139,7 @@ function AnnouncementForm({
 
   const toggleFilterClassroom = (classroomId: number) => {
     const isSelected = filterSelectedClassroom.includes(classroomId);
-    const classroomStudentIds = getStudentsForClassroom(classroomId).map(
+    const classroomStudentIds = getStudentsByClassroom(classroomId).map(
       (student) => student.id,
     );
 
@@ -168,7 +168,7 @@ function AnnouncementForm({
   const removeClassroomSelection = (classroomId: number) => {
     setSelectedClassroom((prev) => prev.filter((id) => id !== classroomId));
 
-    const classroomStudentIds = getStudentsForClassroom(classroomId).map(
+    const classroomStudentIds = getStudentsByClassroom(classroomId).map(
       (student) => student.id,
     );
     setSelectedStudent((prev) => removeIds(prev, classroomStudentIds));
@@ -213,7 +213,7 @@ function AnnouncementForm({
   };
 
   const fullySelectedClassroom = selectedClassroom.filter((classroomId) => {
-    const classroomStudents = getStudentsForClassroom(classroomId);
+    const classroomStudents = getStudentsByClassroom(classroomId);
     if (classroomStudents.length === 0) {
       return false;
     }

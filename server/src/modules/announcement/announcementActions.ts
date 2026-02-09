@@ -16,11 +16,10 @@ const add: RequestHandler = async (req, res, next) => {
 
     const SCHOOLID = 1; // to change later
 
-    const newInsertedAnnouncementId =
-      await announcementRepository.createAnnouncement(
-        newAnnouncement,
-        SCHOOLID,
-      );
+    const newInsertedAnnouncementId = await announcementRepository.create(
+      newAnnouncement,
+      SCHOOLID,
+    );
 
     res.status(StatusCodes.CREATED).json({
       newInsertedAnnouncementId,
