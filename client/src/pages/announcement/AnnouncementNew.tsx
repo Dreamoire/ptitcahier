@@ -56,7 +56,7 @@ function AnnouncementNew() {
           {error ? <p>{error}</p> : <p>Votre annonce a bien été envoyée !</p>}
           <div className={styles.ticket_buttons_container}>
             <button
-              onClick={() => navigate("/school/home")}
+              onClick={() => navigate("/school/annoucements")}
               type="button"
               className="non-primary-button"
             >

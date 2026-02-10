@@ -1,3 +1,8 @@
+.logo {
+  width: 120px;
+  height: auto;
+}
+
 .an_section {
   display: flex;
   flex-direction: column;
@@ -5,6 +10,7 @@
   min-height: 100vh;
   padding: 0 0.5rem;
 }
+
 .an_title {
   display: flex;
   align-items: center;
@@ -88,14 +94,16 @@
   color: var(--dark-blue);
   font-family: var(--font-family-text);
 }
+.button_addannouncement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: rgb(34, 255, 0);
+}
 
 .active {
   background-color: var(--dark-blue);
   color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-  width: 120px;
-  height: auto;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
@@ -23,13 +24,6 @@ function Announcements({ userRole }: AnnouncementsProps) {
   const titleText =
     userRole === "school" ? "Fil d'actualité - École" : "Fil d'actualité";
 
-  const categories = [
-    { id: null, label: "Toutes les catégories" },
-    { id: 1, label: "Vie de l'école" },
-    { id: 2, label: "Administratif" },
-    { id: 3, label: "Événement" },
-  ];
-
   useEffect(() => {
     if (userRole === "parent") {
       const API_URL = import.meta.env.VITE_API_URL;
@@ -40,6 +34,13 @@ function Announcements({ userRole }: AnnouncementsProps) {
         });
     }
   }, [userRole]);
+
+  const categories = [
+    { id: null, label: "Toutes les catégories" },
+    { id: 1, label: "Vie de l'école" },
+    { id: 2, label: "Administratif" },
+    { id: 3, label: "Événement" },
+  ];
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -70,6 +71,8 @@ function Announcements({ userRole }: AnnouncementsProps) {
       setSelectedStudent(student);
     }
   };
+
+  const navigate = useNavigate(userRole === "shool");
 
   return (
     <main className={backgroundClass}>
@@ -111,6 +114,13 @@ function Announcements({ userRole }: AnnouncementsProps) {
               {category.label}
             </button>
           ))}
+          <button
+            type="button"
+            className={`${styles.button_addannouncement}`}
+            onClick={() => navigate("/school/announcements/new")}
+          >
+            Nouvelle annonce
+          </button>
         </nav>
       </div>
       <section className={styles.an_section}>
