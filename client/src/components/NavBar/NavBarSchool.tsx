@@ -12,6 +12,7 @@ function NavBarSchool({ logoUrl, schoolName }: NavBarSchoolProps) {
       items={schoolNavItems}
       avatarUrl={logoUrl}
       displayName={schoolName}
+      variant="school"
     />
   );
 }

@@ -12,6 +12,7 @@ function NavBarParent({ avatarUrl, parentName }: NavBarParentProps) {
       items={parentNavItems}
       avatarUrl={avatarUrl}
       displayName={parentName}
+      variant="parent"
     />
   );
 }

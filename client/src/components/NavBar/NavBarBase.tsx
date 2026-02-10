@@ -1,9 +1,9 @@
-// client/src/components/NavBar/NavBarBase.tsx
 import type { LucideIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import siteLogo from "../../assets/images/logo_site.png";
-import styles from "./NavBar.module.css";
+import parentStyles from "./NavBarParent.module.css";
+import schoolStyles from "./NavBarSchool.module.css";
 
 export type NavItem = {
   to: string;
@@ -11,10 +11,13 @@ export type NavItem = {
   Icon: LucideIcon;
 };
 
+type NavBarVariant = "parent" | "school";
+
 type NavBarBaseProps = {
   items: NavItem[];
   avatarUrl: string;
   displayName: string;
+  variant: NavBarVariant;
 };
 
 const getPathname = (): string => {
@@ -22,50 +25,59 @@ const getPathname = (): string => {
   return window.location.pathname;
 };
 
-function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activePath, setActivePath] = useState<string>(() => getPathname());
+const normalizePath = (path: string): string => {
+  return path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+};
+
+function NavBarBase({
+  items,
+  avatarUrl,
+  displayName,
+  variant,
+}: NavBarBaseProps) {
+  const styles = variant === "school" ? schoolStyles : parentStyles;
+
+  const mobileContainerClass =
+    variant === "parent" ? styles.mobileNavParent : styles.mobileNav;
+
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [activePath, setActivePath] = useState<string>(() =>
+    normalizePath(getPathname()),
+  );
 
   useEffect(() => {
     const onLocationChange = () => {
-      setActivePath(getPathname());
+      setActivePath(normalizePath(getPathname()));
     };
 
     window.addEventListener("popstate", onLocationChange);
-
-    return () => {
-      window.removeEventListener("popstate", onLocationChange);
-    };
+    return () => window.removeEventListener("popstate", onLocationChange);
   }, []);
 
-  const normalizedActivePath = useMemo(() => {
-    if (activePath !== "/" && activePath.endsWith("/"))
-      return activePath.slice(0, -1);
-    return activePath;
-  }, [activePath]);
+  const normalizedActivePath = useMemo(
+    () => normalizePath(activePath),
+    [activePath],
+  );
 
-  const normalizePath = (path: string) => {
-    if (path !== "/" && path.endsWith("/")) return path.slice(0, -1);
-    return path;
+  const isItemActive = (to: string): boolean => {
+    return normalizePath(to) === normalizedActivePath;
   };
-
-  const isItemActive = (to: string): boolean =>
-    normalizePath(to) === normalizedActivePath;
 
   const onLinkClick = (to: string) => {
     setActivePath(normalizePath(to));
   };
 
   const toggleCollapse = () => {
-    setIsCollapsed((previous) => !previous);
+    setIsCollapsed((prev) => !prev);
   };
 
   return (
     <>
-      {/* ===== Desktop sidebar ===== */}
       <aside
         id="sidebar"
-        className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : styles.expanded}`}
+        className={`${styles.sidebar} ${
+          isCollapsed ? styles.collapsed : styles.expanded
+        }`}
         aria-label="Navigation principale"
       >
         <button
@@ -73,10 +85,7 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
           className={styles.toggleButton}
           onClick={toggleCollapse}
           aria-expanded={!isCollapsed}
-          aria-controls="sidebar-nav"
-          aria-label={
-            isCollapsed ? "Déplier la navigation" : "Replier la navigation"
-          }
+          aria-label={isCollapsed ? "Déplier" : "Replier"}
         >
           <span aria-hidden="true" className={styles.toggleIcon}>
             {isCollapsed ? "❯❯" : "❮❮"}
@@ -85,33 +94,29 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
 
         <div className={styles.profile}>
           <img src={avatarUrl} alt="" className={styles.avatar} />
-          {!isCollapsed ? (
+          {!isCollapsed && (
             <span className={styles.displayName}>{displayName}</span>
-          ) : null}
+          )}
         </div>
 
-        <nav
-          id="sidebar-nav"
-          className={styles.nav}
-          aria-label="Navigation latérale"
-        >
+        <nav className={styles.nav}>
           <ul className={styles.navList}>
             {items.map(({ to, label, Icon }) => {
               const isActive = isItemActive(to);
-
               return (
                 <li key={to} className={styles.navItem}>
                   <a
                     href={to}
-                    className={`${styles.navLink} ${isActive ? styles.active : ""}`}
-                    aria-label={label}
+                    className={`${styles.navLink} ${
+                      isActive ? styles.active : ""
+                    }`}
                     aria-current={isActive ? "page" : undefined}
                     onClick={() => onLinkClick(to)}
                   >
                     <Icon className={styles.icon} aria-hidden="true" />
-                    {!isCollapsed ? (
+                    {!isCollapsed && (
                       <span className={styles.linkLabel}>{label}</span>
-                    ) : null}
+                    )}
                   </a>
                 </li>
               );
@@ -120,51 +125,42 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
         </nav>
 
         <div className={styles.footer}>
-          {!isCollapsed ? (
-            <button
-              type="button"
-              className={styles.logoutButton}
-              aria-label="Se déconnecter"
-            >
+          {!isCollapsed && (
+            <button type="button" className={styles.logoutButton}>
               Déconnexion
             </button>
-          ) : null}
-
+          )}
           <a
             href="/"
-            className={styles.footerLogoLink}
-            aria-label="Retour à l'accueil"
             onClick={() => onLinkClick("/")}
+            className={styles.footerLogoLink}
           >
-            <img src={siteLogo} alt="" className={styles.footerLogo} />
+            <img src={siteLogo} alt="Logo" className={styles.footerLogo} />
           </a>
-
-          {!isCollapsed ? (
+          {!isCollapsed && (
             <p className={styles.footerText}>P’Tit Cahier © 2026</p>
-          ) : null}
+          )}
         </div>
       </aside>
 
-      {/* ===== Mobile bottom nav ===== */}
-      <nav className={styles.mobileNav} aria-label="Navigation mobile">
+      <nav className={mobileContainerClass} aria-label="Navigation mobile">
         <div className={styles.mobileRow}>
           <a
             href="/"
-            className={styles.mobileHome}
-            aria-label="Retour à l'accueil"
             onClick={() => onLinkClick("/")}
+            className={styles.mobileHome}
           >
-            <img src={siteLogo} alt="" className={styles.mobileLogo} />
+            <img src={siteLogo} alt="Logo" className={styles.mobileLogo} />
           </a>
-
           {items.map(({ to, label, Icon }) => {
             const isActive = isItemActive(to);
-
             return (
               <a
-                key={to}
+                key={`mobile-${to}`}
                 href={to}
-                className={`${styles.mobileLink} ${isActive ? styles.active : ""}`}
+                className={`${styles.mobileLink} ${
+                  isActive ? styles.active : ""
+                }`}
                 aria-label={label}
                 aria-current={isActive ? "page" : undefined}
                 onClick={() => onLinkClick(to)}
@@ -173,14 +169,6 @@ function NavBarBase({ items, avatarUrl, displayName }: NavBarBaseProps) {
               </a>
             );
           })}
-
-          <button
-            type="button"
-            className={styles.mobileLogoutIcon}
-            aria-label="Déconnexion"
-          >
-            Déconnexion
-          </button>
         </div>
       </nav>
     </>
