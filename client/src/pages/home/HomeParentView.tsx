@@ -1,14 +1,14 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import logoSite from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import CalendarCard from "../../components/CalendarCard/CalendarCard";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import type { Announcement } from "../../types/Announcement";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { School } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
-
-import { useNavigate } from "react-router";
 import styles from "./HomeParentView.module.css";
 
 function HomeParentView() {
@@ -16,25 +16,40 @@ function HomeParentView() {
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const navigate = useNavigate();
-
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  if (!auth) return;
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL;
+    const headers = { Authorization: `Bearer ${auth.token}` };
 
-    fetch(`${API_URL}/api/parents/me/school`)
-      .then((res) => res.json())
-      .then((school) => setSchool(school));
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/school`, {
+        headers,
+      }).then((res) => res.json()),
 
-    fetch(`${API_URL}/api/parents/me/tickets/recent`)
-      .then((res) => res.json())
-      .then((recentTickets) => setRecentTickets(recentTickets));
+      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/tickets/recent`, {
+        headers,
+      }).then((res) => res.json()),
 
-    fetch(`${API_URL}/api/parents/me/announcements/recent`)
-      .then((res) => res.json())
-      .then((announcements) => setAnnouncements(announcements));
-  }, []);
+      fetch(
+        `${import.meta.env.VITE_API_URL}/api/parents/me/announcements/recent`,
+        { headers },
+      ).then((res) => {
+        if (!res.ok) {
+          navigate("/redirection");
+          return null;
+        }
+        return res.json();
+      }),
+    ]).then(([school, recentTickets, recentAnnouncements]) => {
+      setSchool(school);
+      setRecentTickets(recentTickets);
+      setAnnouncements(recentAnnouncements);
+    });
+  }, [auth, navigate]);
 
   const totalSlides = announcements.length;
 

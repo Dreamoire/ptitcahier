@@ -3,9 +3,9 @@ import type { FormEventHandler } from "react";
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
+import type { Auth } from "../../types/Auth";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import styles from "./Login.module.css";
-import type { Auth } from "../../types/Auth";
 
 function Login() {
   const [email, setEmail] = useState("");

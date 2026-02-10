@@ -3,9 +3,10 @@ import schoolRepository from "./schoolRepository";
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 1;
-    const schoolData = await schoolRepository.findSchoolByParent(parentId);
-    res.json(schoolData);
+    const parentId = req.auth.sub;
+
+    const school = await schoolRepository.readByParent(parentId);
+    res.json(school);
   } catch (err) {
     next(err);
   }

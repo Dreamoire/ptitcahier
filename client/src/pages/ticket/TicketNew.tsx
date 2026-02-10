@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import TicketForm from "../../components/TicketForm/TicketForm";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { Student } from "../../types/Student";
 import type { TicketCategory } from "../../types/TicketCategory";
 import styles from "./TicketNew.module.css";
-// import type { Auth } from "../../types/Auth";
 
 function TicketNew() {
   const [ticketCategories, setTicketCategories] = useState<TicketCategory[]>(
@@ -14,21 +14,32 @@ function TicketNew() {
   const [formSent, setFormSent] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  // const { auth } = useOutletContext() as { auth: Auth | null };
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  if (!auth) return;
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`)
-      .then((response) => response.json())
-      .then((ticketCategories) => {
-        setTicketCategories(ticketCategories);
-      });
+    const headers = { Authorization: `Bearer ${auth.token}` };
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`)
-      .then((response) => response.json())
-      .then((students) => {
-        setStudents(students);
-      });
-  }, []);
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`, {
+        headers,
+      }).then((res) => res.json()),
+
+      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`, {
+        headers,
+      }).then((res) => {
+        if (!res.ok) {
+          navigate("/redirection");
+          return null;
+        }
+        return res.json();
+      }),
+    ]).then(([ticketCategories, students]) => {
+      setTicketCategories(ticketCategories);
+      setStudents(students);
+    });
+  }, [auth, navigate]);
 
   return (
     <main className="parent-background">
@@ -37,11 +48,11 @@ function TicketNew() {
           {error ? <p>{error}</p> : <p>Votre ticket a été bien envoyé!</p>}
           <div className={styles.ticket_buttons_container}>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate(`/${auth.role}/home`)}
               type="button"
               className="non-primary-button"
             >
-              Retourner à l'accueil
+              Retour à l'accueil
             </button>
             <button
               onClick={() => {
@@ -66,7 +77,7 @@ function TicketNew() {
                 method: "post",
                 headers: {
                   "Content-Type": "application/json",
-                  // Authorization: `Bearer ${(auth as Auth).token}`,
+                  Authorization: `Bearer ${auth.token}`,
                 },
                 body: JSON.stringify(newTicket),
               })

@@ -3,8 +3,8 @@ import announcementRepository from "./announcementRepository";
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 1;
-    //hard coded for now
+    const parentId = Number(req.auth.sub);
+
     const announcements =
       await announcementRepository.readAllByParent(parentId);
     res.json(announcements);
@@ -15,7 +15,8 @@ const browseByParent: RequestHandler = async (req, res, next) => {
 
 const browseRecentByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 1;
+    const parentId = Number(req.auth.sub);
+
     const annoucements =
       await announcementRepository.readLastThreeByParent(parentId);
     res.json(annoucements);

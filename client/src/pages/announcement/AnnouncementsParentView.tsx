@@ -1,19 +1,34 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import styles from "./AnnouncementsParentView.module.css";
 
 function AnnouncementsParentView() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  const navigate = useNavigate();
+
+  if (!auth) return;
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/announcements`)
-      .then((response) => response.json())
+    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/announcements`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          navigate("/redirection");
+          return null;
+        }
+        return res.json();
+      })
       .then((announcements) => {
         setAnnouncements(announcements);
       });
-  }, []);
+  }, [auth, navigate]);
 
   return (
     <main className="parent-background">

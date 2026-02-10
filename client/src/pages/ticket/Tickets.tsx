@@ -1,38 +1,34 @@
 import { useEffect, useState } from "react";
-
+import { useNavigate, useOutletContext } from "react-router-dom";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import TicketModalViewSchool from "../../components/TicketModalViewSchool/TicketModalViewSchool";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { Ticket } from "../../types/Ticket";
-
 import styles from "./Tickets.module.css";
 
 function Tickets() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [hasError, setHasError] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  if (!auth) return;
 
   useEffect(() => {
-    setIsLoading(true);
-    setHasError(false);
-
-    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/tickets`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/tickets`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          navigate("/redirection");
+          return null;
         }
-        return response.json() as Promise<Ticket[]>;
+        return res.json();
       })
-      .then((fetchedTickets) => {
-        setTickets(fetchedTickets);
-      })
-      .catch(() => {
-        setHasError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
+      .then((tickets) => {
+        setTickets(tickets);
       });
-  }, []);
+  }, [auth, navigate]);
 
   return (
     <main className={styles.page}>
@@ -40,32 +36,22 @@ function Tickets() {
         <h1 className="primary-title">Tickets</h1>
 
         <section className={styles.contentArea} aria-label="Liste des tickets">
-          {isLoading ? (
-            <p className="text-body">Chargement en cours...</p>
-          ) : null}
-
-          {hasError ? (
-            <p className="text-body">Erreur lors du chargement des tickets.</p>
-          ) : null}
-
-          {!isLoading && !hasError ? (
-            <ul className={styles.list}>
-              {tickets.map((ticket) => (
-                <li key={ticket.id} className={styles.listItem}>
-                  <TicketCard ticket={ticket} onClick={setSelectedTicket} />
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <ul className={styles.list}>
+            {tickets.map((ticket) => (
+              <li key={ticket.id} className={styles.listItem}>
+                <TicketCard ticket={ticket} onClick={setSelectedTicket} />
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
 
-      {selectedTicket ? (
+      {selectedTicket && (
         <TicketModalViewSchool
           ticket={selectedTicket}
           onCloseComplete={() => setSelectedTicket(null)}
         />
-      ) : null}
+      )}
     </main>
   );
 }

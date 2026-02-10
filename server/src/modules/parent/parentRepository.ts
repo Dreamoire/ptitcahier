@@ -1,20 +1,19 @@
 import databaseClient from "../../../database/client";
 import type { Rows } from "../../../database/client";
-
-type Parent = {
-  id: number;
-  email: string;
-  hashed_password: string;
-  first_name: string;
-  last_name: string;
-  genre: string;
-};
+import type { Parent } from "../../types/express/Parent";
 
 class ParentRepository {
-  async readByEmailWithPassword(email: string) {
+  async readByUserId(userId: number) {
     const [rows] = await databaseClient.query<Rows>(
-      "SELECT * FROM parent WHERE email = ?",
-      [email],
+      `SELECT 
+        id,
+        last_name AS lastName,
+        first_name AS firstName,
+        genre
+        FROM parent
+        WHERE user_id = ?
+        LIMIT 1`,
+      [userId],
     );
     return (rows[0] as Parent) ?? null;
   }

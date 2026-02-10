@@ -29,7 +29,7 @@ class AnnouncementStudentSeeder extends AbstractSeeder {
       this.insert(AnnouncementStudent2);
     }
 
-    for (let j = 0; j < 20; j += 1) {
+    for (let j = 0; j < 2; j += 1) {
       const AnnouncementStudent3 = {
         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
         student_id: 3,

@@ -49,8 +49,7 @@ class TicketRepository {
       JOIN classroom AS c ON s.classroom_id = c.id    
       WHERE c.school_id = ?
       GROUP BY t.id
-      ORDER BY t.created_at ASC
-      `,
+      ORDER BY t.created_at ASC`,
       [schoolId],
     );
 
@@ -62,8 +61,8 @@ class TicketRepository {
       `SELECT
         t.id,
         t.content,
-        t.created_at,        
-        tc.name AS category_name
+        t.created_at AS createdAt,        
+        tc.name AS categoryName
       FROM ticket AS t    
       JOIN ticket_category AS tc ON t.ticket_category_id = tc.id    
       WHERE t.parent_id = ?
@@ -71,7 +70,7 @@ class TicketRepository {
       LIMIT 3`,
       [parentId],
     );
-    return rows;
+    return rows as Ticket[];
   }
 }
 export default new TicketRepository();
