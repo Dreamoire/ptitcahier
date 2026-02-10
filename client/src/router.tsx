@@ -1,9 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
-import LayoutWithNav from "./layouts/LayoutWithNav";
+import ParentLayout from "./layouts/ParentLayout";
+import SchoolLayout from "./layouts/SchoolLayout";
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
 import HomeParentView from "./pages/home/HomeParentView";
 import Login from "./pages/login/Login";
+import Redirection from "./pages/redirection/Redirection";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
@@ -11,11 +13,11 @@ const router = createBrowserRouter([
   {
     element: <AuthLayout />,
     children: [
+      { path: "/", element: <Login /> },
+      { path: "/redirection", element: <Redirection /> },
+
       {
-        children: [{ path: "/", element: <Login /> }],
-      },
-      {
-        element: <LayoutWithNav />,
+        element: <ParentLayout />,
         children: [
           { path: "/parent/home", element: <HomeParentView /> },
           {
@@ -23,8 +25,11 @@ const router = createBrowserRouter([
             element: <AnnouncementsParentView />,
           },
           { path: "/parent/tickets/new", element: <TicketNew /> },
-          { path: "/school/tickets", element: <Tickets /> },
         ],
+      },
+      {
+        element: <SchoolLayout />,
+        children: [{ path: "/school/tickets", element: <Tickets /> }],
       },
     ],
   },
