@@ -51,7 +51,7 @@ class AnnouncementRepository {
         a.title,
         a.content,
         a.created_at AS createdAt,
-        ac.name AS announcementCategoryName,
+        ac.name AS announcementCategoryName, 
         GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
       FROM announcement AS a
       JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
@@ -68,16 +68,33 @@ class AnnouncementRepository {
   async readAllBySchool(schoolId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
-        announcement.id, 
-        announcement.title, 
-        announcement.content, 
-        announcement.created_at AS createdAt,
-        announcement_category.name AS categoryName
-    FROM announcement
-    JOIN announcement_category ON announcement.announcement_category_id = announcement_category.id
-    WHERE announcement.school_id = ?
-    ORDER BY announcement.created_at DESC`,
-      [schoolId],
+    a.id, 
+    a.title, 
+    a.content, 
+    a.created_at AS createdAt,
+    ac.name AS categoryName,
+    COUNT(DISTINCT s.id) AS studentCount,
+    (
+          SELECT COUNT(*) 
+          FROM student s2 
+          JOIN classroom c2 ON s2.classroom_id = c2.id 
+          WHERE c2.school_id = ?
+        ) AS totalStudents,
+    GROUP_CONCAT(DISTINCT CONCAT(s.first_name, ' ', s.last_name) SEPARATOR ', ') AS studentNames,
+    GROUP_CONCAT(DISTINCT c.classroom_name SEPARATOR ',') AS classroomNames
+FROM PTIT_CAHIER.announcement AS a
+JOIN PTIT_CAHIER.announcement_category AS ac ON a.announcement_category_id = ac.id
+LEFT JOIN PTIT_CAHIER.announcement_student AS ans ON ans.announcement_id = a.id
+LEFT JOIN PTIT_CAHIER.student AS s ON ans.student_id = s.id
+LEFT JOIN PTIT_CAHIER.classroom AS c ON s.classroom_id=c.id
+WHERE a.school_id = ?
+GROUP BY 
+    a.id, 
+    ac.name,
+    a.created_at
+ORDER BY a.created_at DESC;
+      `,
+      [schoolId, schoolId],
     );
     return rows as Announcement[];
   }

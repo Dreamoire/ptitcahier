@@ -11,7 +11,13 @@ import type { Ticket } from "../../types/Ticket";
 import { useNavigate } from "react-router";
 import styles from "./HomeParentView.module.css";
 
-function Home() {
+type UserRole = "parent" | "school";
+
+interface HomeProps {
+  userRole: UserRole;
+}
+
+function Home({ userRole }: HomeProps) {
   const [school, setSchool] = useState<School | null>(null);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -150,7 +156,8 @@ function Home() {
                   >
                     <AnnouncementCard
                       announcement={announcement}
-                      variant="dashboard"
+                      userRole={userRole}
+                      key={announcement.id}
                     />
                   </li>
                 ))}

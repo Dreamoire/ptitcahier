@@ -5,12 +5,23 @@ import type { Announcement } from "../../types/Announcement";
 import type { Student } from "../../types/Student";
 import styles from "./Announcements.module.css";
 
-function AnnouncementsParentView() {
-  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [students, setStudents] = useState<Student[]>([]);
+type UserRole = "parent" | "school";
 
+interface AnnouncementsProps {
+  userRole: UserRole;
+}
+
+function Announcements({ userRole }: AnnouncementsProps) {
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+  const [students, setStudents] = useState<Student[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
+
+  const backgroundClass =
+    userRole === "school" ? "school-background" : "parent-background";
+  const titleText =
+    userRole === "school" ? "Fil d'actualité - École" : "Fil d'actualité";
 
   const categories = [
     { id: null, label: "Toutes les catégories" },
@@ -20,30 +31,37 @@ function AnnouncementsParentView() {
   ];
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL;
-    fetch(`${API_URL}/api/parents/me/students`)
-      .then((response) => response.json())
-      .then((students) => {
-        setStudents(students);
-      });
-  }, []);
+    if (userRole === "parent") {
+      const API_URL = import.meta.env.VITE_API_URL;
+      fetch(`${API_URL}/api/parents/me/students`)
+        .then((response) => response.json())
+        .then((students) => {
+          setStudents(students);
+        });
+    }
+  }, [userRole]);
 
   useEffect(() => {
-    const url = new URL(
-      `${import.meta.env.VITE_API_URL}/api/parents/me/announcements`,
-    );
-    if (selectedCategory !== null) {
-      url.searchParams.append("category", String(selectedCategory));
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    let endpoint = "";
+
+    if (userRole === "school") {
+      endpoint = `${API_URL}/api/school/announcements`;
+    } else {
+      endpoint = `${API_URL}/api/parents/me/announcements`;
     }
 
-    if (selectedStudent !== null) {
+    const url = new URL(endpoint);
+    if (selectedCategory !== null)
+      url.searchParams.append("category", String(selectedCategory));
+    if (selectedStudent !== null)
       url.searchParams.append("student", String(selectedStudent));
-    }
 
     fetch(url.toString())
       .then((response) => response.json())
-      .then((categories) => setAnnouncements(categories));
-  }, [selectedCategory, selectedStudent]);
+      .then((announcements) => setAnnouncements(announcements));
+  }, [selectedCategory, selectedStudent, userRole]);
 
   const checkBoxFilter = (student: number) => {
     if (selectedStudent === student) {
@@ -54,10 +72,10 @@ function AnnouncementsParentView() {
   };
 
   return (
-    <main className="parent-background">
+    <main className={backgroundClass}>
       <header className={styles.an_title}>
         <img src={logo_site} alt="Logo" className={styles.logo} />
-        <h1 className="primary-title">Fil d'actualité</h1>
+        <h1 className="primary-title">{titleText}</h1>
       </header>
 
       <div className={styles.filters_container}>
@@ -100,7 +118,11 @@ function AnnouncementsParentView() {
           {announcements.length > 0 ? (
             announcements.map((announcement) => (
               <li key={announcement.id}>
-                <AnnouncementCard announcement={announcement} />
+                <AnnouncementCard
+                  announcement={announcement}
+                  userRole={userRole}
+                  key={announcement.id}
+                />
               </li>
             ))
           ) : (
@@ -111,4 +133,5 @@ function AnnouncementsParentView() {
     </main>
   );
 }
-export default AnnouncementsParentView;
+
+export default Announcements;

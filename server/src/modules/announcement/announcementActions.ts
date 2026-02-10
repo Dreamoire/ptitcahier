@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import announcementRepository from "./announcementRepository";
 
-const browseByParent: RequestHandler = async (req, res) => {
+const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = 1;
 
@@ -18,18 +18,17 @@ const browseByParent: RequestHandler = async (req, res) => {
     );
 
     res.json(announcements);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Erreur serveur");
+  } catch (err) {
+    next(err);
   }
 };
 
 const browseRecentByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = 1;
-    const annoucements =
+    const announcements =
       await announcementRepository.readLastThreeByParent(parentId);
-    res.json(annoucements);
+    res.json(announcements);
   } catch (err) {
     next(err);
   }

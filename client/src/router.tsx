@@ -7,15 +7,20 @@ import Tickets from "./pages/ticket/Tickets";
 const router = createBrowserRouter([
   {
     path: "/parent/home",
-    element: <HomeParentView />,
+    element: <HomeParentView userRole="parent" />,
   },
   {
     path: "/parent/announcements",
-    element: <Announcements />,
+    element: <Announcements userRole="parent" />,
   },
   {
     path: "/parent/tickets/new",
     element: <TicketNew />,
+  },
+
+  {
+    path: "/school/announcements",
+    element: <Announcements userRole="school" />,
   },
   {
     path: "/school/tickets",
