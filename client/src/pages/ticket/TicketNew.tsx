@@ -54,31 +54,29 @@ function TicketNew() {
           </div>
         </div>
       ) : (
-        <>
-          <TicketForm
-            ticketCategories={ticketCategories}
-            students={students}
-            onSubmit={(newTicket) => {
-              setError(null);
-              fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
-                method: "post",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newTicket),
-              })
-                .then((response) => response.ok)
-                .then((ok) => {
-                  if (!ok) {
-                    setError(
-                      "Une erreur est survenue. Veuillez renvoyer votre demande.",
-                    );
-                  }
-                  setFormSent(true);
-                });
-            }}
-          />
-        </>
+        <TicketForm
+          ticketCategories={ticketCategories}
+          students={students}
+          onSubmit={(newTicket) => {
+            setError(null);
+            fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newTicket),
+            })
+              .then((response) => response.ok)
+              .then((ok) => {
+                if (!ok) {
+                  setError(
+                    "Une erreur est survenue. Veuillez renvoyer votre demande.",
+                  );
+                }
+                setFormSent(true);
+              });
+          }}
+        />
       )}
     </main>
   );
