@@ -1,8 +1,46 @@
 import databaseClient from "../../../database/client";
-import type { Rows } from "../../../database/client";
-import type { Announcement } from "../../types/express/Announcement";
+import type { Result, Rows } from "../../../database/client";
+
+type Student = {
+  id: number;
+  firstName: string;
+  lastName: string;
+};
+
+type Announcement = {
+  id: number;
+  title: string;
+  content: string;
+  announcementCategoryId: number;
+  studentIds: number[];
+};
 
 class AnnouncementRepository {
+  async create(newAnnouncement: Omit<Announcement, "id">, schoolId: number) {
+    const { title, content, announcementCategoryId, studentIds } =
+      newAnnouncement;
+
+    const [result] = await databaseClient.query<Result>(
+      `INSERT INTO announcement (title, content, announcement_category_id, school_id)
+			VALUES (?, ?, ?, ?)`,
+      [title, content, announcementCategoryId, schoolId],
+    );
+
+    const newAnnouncementId = result.insertId;
+
+    const announcementStudentValues = studentIds.map((studentId) => [
+      newAnnouncementId,
+      studentId,
+    ]);
+
+    await databaseClient.query<Result>(
+      "INSERT INTO announcement_student (announcement_id, student_id) VALUES ?",
+      [announcementStudentValues],
+    );
+
+    return newAnnouncementId;
+  }
+
   async readAllByParent(
     parentId: number,
     categoryId?: number,
@@ -63,6 +101,7 @@ class AnnouncementRepository {
       LIMIT 3`,
       [parentId],
     );
+
     return rows as Announcement[];
   }
   async readAllBySchool(schoolId: number) {

@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router";
+import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import Announcements from "./pages/announcement/Announcements";
 import HomeParentView from "./pages/home/HomeParentView";
+
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/school/tickets",
     element: <Tickets />,
+  },
+  {
+    path: "/school/announcements/new",
+    element: <AnnouncementNew />,
   },
 ]);
 

@@ -36,7 +36,7 @@ CREATE TABLE classroom (
 
 CREATE TABLE announcement (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     content VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        
     announcement_category_id INT UNSIGNED NOT NULL,
