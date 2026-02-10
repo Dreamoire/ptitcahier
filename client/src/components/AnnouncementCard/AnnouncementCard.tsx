@@ -3,9 +3,13 @@ import styles from "./AnnouncementCard.module.css";
 
 type AnnouncementCardProps = {
   announcement: Announcement;
+  variant?: "default" | "dashboard";
 };
 
-function AnnouncementCard({ announcement }: AnnouncementCardProps) {
+function AnnouncementCard({
+  announcement,
+  variant = "default",
+}: AnnouncementCardProps) {
   const formattedDate = new Date(announcement.createdAt).toLocaleDateString(
     "fr-FR",
     {
@@ -27,7 +31,9 @@ function AnnouncementCard({ announcement }: AnnouncementCardProps) {
   };
 
   return (
-    <article className={styles.an_card}>
+    <article
+      className={`${styles.an_card} ${variant === "dashboard" ? styles.an_card_dashboard : styles.list}`}
+    >
       <header className={styles.an_card_header}>
         <h2 className="card-title">{announcement.title}</h2>
         <div className={styles.an_badges_container}>
@@ -45,6 +51,15 @@ function AnnouncementCard({ announcement }: AnnouncementCardProps) {
           )}
         </div>
       </header>
+
+      <div className={styles.imageContainer}>
+        <img
+          src={`https://picsum.photos/seed/${announcement.id}/400/200`}
+          alt="Illustration"
+          className={styles.realImage}
+        />
+      </div>
+
       <p className="text">{announcement.content}</p>
       <footer className={styles.an_card_footer}>
         <time

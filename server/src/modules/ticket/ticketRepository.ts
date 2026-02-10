@@ -56,6 +56,22 @@ class TicketRepository {
 
     return rows as Ticket[];
   }
-}
 
+  async readLastThreeByParent(parentId: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      `SELECT
+        t.id,
+        t.content,
+        t.created_at,        
+        tc.name AS category_name
+      FROM ticket AS t    
+      JOIN ticket_category AS tc ON t.ticket_category_id = tc.id    
+      WHERE t.parent_id = ?
+      ORDER BY t.created_at DESC
+      LIMIT 3`,
+      [parentId],
+    );
+    return rows;
+  }
+}
 export default new TicketRepository();

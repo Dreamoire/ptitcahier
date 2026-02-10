@@ -31,11 +31,32 @@ const add: RequestHandler = async (req, res, next) => {
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parent_id = 1;
-    //hard coded for now
-    const announcements =
-      await announcementRepository.readAllByParent(parent_id);
+    const parentId = 1;
+
+    const categoryId = req.query.category
+      ? Number(req.query.category)
+      : undefined;
+
+    const studentId = req.query.student ? Number(req.query.student) : undefined;
+
+    const announcements = await announcementRepository.readAllByParent(
+      parentId,
+      categoryId,
+      studentId,
+    );
+
     res.json(announcements);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const browseRecentByParent: RequestHandler = async (req, res, next) => {
+  try {
+    const parentId = 1;
+    const annoucements =
+      await announcementRepository.readLastThreeByParent(parentId);
+    res.json(annoucements);
   } catch (err) {
     next(err);
   }
@@ -114,4 +135,10 @@ const validate: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { add, browseByParent, browseBySchool, validate };
+export default {
+  add,
+  browseByParent,
+  browseRecentByParent,
+  browseBySchool,
+  validate,
+};

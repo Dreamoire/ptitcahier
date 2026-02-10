@@ -1,7 +1,6 @@
 .an_section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   min-height: 100vh;
   padding: 0 0.5rem;
@@ -12,4 +11,91 @@
   justify-content: center;
   gap: 2.5rem;
   color: var(--dark-blue);
+}
+
+.filters_container {
+  background-color: #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: 210px;
+  margin-right: 210px;
+  border-radius: 1rem;
+}
+
+.filter_bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox_label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 1rem;
+  border: 1.5px solid #cbd5e1;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  font-family: var(--font-family-text);
+}
+
+.checkbox_label:hover {
+  background-color: #f1f5f9;
+  border-color: var(--dark-blue);
+}
+
+.filter_checkbox {
+  accent-color: var(--dark-blue);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.filter_label {
+  font-family: var(--font-family-text);
+  font-weight: bold;
+  color: var(--dark-blue);
+  margin-right: 0.5rem;
+}
+
+.filter_button {
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  background-color: #f1f5f9;
+  color: #64748b;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-family: var(--font-family-text);
+}
+
+.filter_button:hover {
+  background-color: #e2e8f0;
+  color: var(--dark-blue);
+  font-family: var(--font-family-text);
+}
+
+.active {
+  background-color: var(--dark-blue);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 120px;
+  height: auto;
 }
