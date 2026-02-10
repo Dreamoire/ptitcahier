@@ -2,22 +2,17 @@ import { CalendarDays, ClipboardList, School } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import FilterStudent from "../../components/FilterStudents/FilterStudent";
+import type { AnnouncementCategory } from "../../types/AnnouncementCategory";
 import styles from "./AnnouncementForm.module.css";
 
 const MAX_MESSAGE_LENGTH = 1000;
 
-type CategoryButtonConfig = {
-  color: string;
-  Icon: typeof School;
+const LUCIDE_ICON = {
+  School,
+  ClipboardList,
+  CalendarDays,
 };
 
-const CATEGORY_BUTTON_CONFIG_BY_ID: Record<number, CategoryButtonConfig> = {
-  1: { color: "16a249", Icon: School },
-  2: { color: "0da2e7", Icon: ClipboardList },
-  3: { color: "f97015", Icon: CalendarDays },
-};
-
-type AnnouncementCategory = { id: number; name: string };
 type Classroom = { id: number; name: string };
 type Student = {
   id: number;
@@ -92,11 +87,11 @@ function AnnouncementForm({
     return classroom?.name ?? "Classe inconnue";
   };
 
-  const getStudentById = (studentId: number) => {
+  const getStudent = (studentId: number) => {
     return students.find((student) => student.id === studentId);
   };
 
-  const addUniqueIds = (currentIds: number[], idsToAdd: number[]) => {
+  const addUniqueStudent = (currentIds: number[], idsToAdd: number[]) => {
     const nextIds = [...currentIds];
 
     for (const id of idsToAdd) {
@@ -108,12 +103,15 @@ function AnnouncementForm({
     return nextIds;
   };
 
-  const removeIds = (currentIds: number[], idsToRemove: number[]) => {
-    if (idsToRemove.length === 0) {
-      return currentIds;
+  const removeStudents = (
+    currentStudents: number[],
+    studentsToRemove: number[],
+  ) => {
+    if (studentsToRemove.length === 0) {
+      return currentStudents;
     }
 
-    return currentIds.filter((id) => !idsToRemove.includes(id));
+    return currentStudents.filter((id) => !studentsToRemove.includes(id));
   };
 
   const openFilterModal = () => {
@@ -147,12 +145,16 @@ function AnnouncementForm({
       setFilterSelectedClassroom((prev) =>
         prev.filter((id) => id !== classroomId),
       );
-      setFilterSelectedStudent((prev) => removeIds(prev, classroomStudentIds));
+      setFilterSelectedStudent((prev) =>
+        removeStudents(prev, classroomStudentIds),
+      );
       return;
     }
 
     setFilterSelectedClassroom((prev) => [...prev, classroomId]);
-    setFilterSelectedStudent((prev) => addUniqueIds(prev, classroomStudentIds));
+    setFilterSelectedStudent((prev) =>
+      addUniqueStudent(prev, classroomStudentIds),
+    );
   };
 
   const toggleFilterStudent = (studentId: number) => {
@@ -171,7 +173,7 @@ function AnnouncementForm({
     const classroomStudentIds = getStudentsByClassroom(classroomId).map(
       (student) => student.id,
     );
-    setSelectedStudent((prev) => removeIds(prev, classroomStudentIds));
+    setSelectedStudent((prev) => removeStudents(prev, classroomStudentIds));
   };
 
   const removeStudentSelection = (studentId: number) => {
@@ -224,11 +226,11 @@ function AnnouncementForm({
   });
 
   const individualStudents = (
-    selectedStudent.map((studentId) => getStudentById(studentId)) as Student[]
+    selectedStudent.map((student) => getStudent(student)) as Student[]
   ).filter((student) => !fullySelectedClassroom.includes(student.classroomId));
 
   const filterSelectedStudents = filterSelectedStudent
-    .map((studentId) => getStudentById(studentId))
+    .map((student) => getStudent(student))
     .filter((student): student is Student => student !== undefined);
 
   return (
@@ -288,14 +290,7 @@ function AnnouncementForm({
           <legend className={styles.form_label}>Motif de l'annonce* :</legend>
           <ul>
             {announcementCategories.map((category) => {
-              const config = CATEGORY_BUTTON_CONFIG_BY_ID[category.id];
-
-              if (!config) {
-                return null;
-              }
-
-              const IconComponent = config.Icon;
-              const categoryColor = config.color;
+              const IconComponent = LUCIDE_ICON[category.icon];
 
               return (
                 <li key={category.id}>
@@ -318,7 +313,7 @@ function AnnouncementForm({
                   >
                     <span
                       className={styles.category_icon_wrapper}
-                      style={{ backgroundColor: `#${categoryColor}` }}
+                      style={{ backgroundColor: `#${category.color}` }}
                     >
                       <IconComponent className={styles.category_icon} />
                     </span>

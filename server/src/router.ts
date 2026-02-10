@@ -14,6 +14,7 @@ router.post(
   announcementActions.validate,
   announcementActions.add,
 );
+router.delete("/announcements/:id", announcementActions.destroy);
 
 router.get("/announcements-categories", announcementCategoryActions.browseAll);
 

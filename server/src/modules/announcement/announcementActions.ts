@@ -73,6 +73,34 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
   }
 };
 
+const destroy: RequestHandler = async (req, res, next) => {
+  try {
+    const announcementId = Number(req.params.id);
+
+    if (!Number.isInteger(announcementId)) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Identifiant d'annonce invalide" });
+      return;
+    }
+
+    const SCHOOLID = 1; // to change with context?
+    const deletedCount = await announcementRepository.delete(
+      announcementId,
+      SCHOOLID,
+    );
+
+    if (deletedCount === 0) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
+      return;
+    }
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const validate: RequestHandler = async (req, res, next) => {
   try {
     const newAnnouncement = joi.object({
@@ -140,5 +168,6 @@ export default {
   browseByParent,
   browseRecentByParent,
   browseBySchool,
+  destroy,
   validate,
 };

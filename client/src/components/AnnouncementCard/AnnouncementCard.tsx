@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Announcement } from "../../types/Announcement";
 import styles from "./AnnouncementCard.module.css";
@@ -6,12 +7,15 @@ type AnnouncementCardProps = {
   announcement: Announcement;
   userRole: "parent" | "school";
   variant?: "default" | "dashboard";
+  onDelete?: (announcementId: number) => void;
+  isDeleting?: boolean;
 };
 
 function AnnouncementCard({
   announcement,
   userRole,
   variant = "default",
+  onDelete,
 }: AnnouncementCardProps) {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -96,6 +100,7 @@ function AnnouncementCard({
   };
 
   const targetBadge = getTargetBadge();
+  const canDelete = userRole === "school" && typeof onDelete === "function";
 
   return (
     <>
@@ -143,6 +148,16 @@ function AnnouncementCard({
           >
             {formattedDate}
           </time>
+          {canDelete && (
+            <button
+              type="button"
+              className={styles.delete_button}
+              onClick={() => onDelete(announcement.id)}
+            >
+              <Trash2 className={styles.delete_icon} aria-hidden="true" />
+              <span className={styles.delete_label}>Supprimer</span>
+            </button>
+          )}
         </footer>
       </article>
 
