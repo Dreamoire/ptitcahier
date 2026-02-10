@@ -1,43 +1,68 @@
 import express from "express";
 import announcementActions from "./modules/announcement/announcementActions";
 import authActions from "./modules/auth/authActions";
-import parentRepository from "./modules/parent/parentRepository";
 import schoolActions from "./modules/school/schoolActions";
-import schoolRepository from "./modules/school/schoolRepository";
-
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
 import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
 
 const router = express.Router();
 
-// Define auth-related routes
-router.post("/login-parent", authActions.login("parent", parentRepository));
-// router.post("/login-school", authActions.login("school", schoolRepository));
+router.post("/login", authActions.login);
 
-// Authentication wall
-// router.use(authActions.verifyToken);
-
-// GENERAL protected routes
-router.get("/ticket-categories", ticketCategoryActions.browseAll);
+router.use(authActions.verifyToken);
 
 // PARENT protected routes
 
-router.post("/tickets", ticketActions.validate, ticketActions.add);
-router.get("/parents/me/announcements", announcementActions.browseByParent);
-router.get("/parents/me/school", schoolActions.browseByParent);
-router.get("/parents/me/tickets/recent", ticketActions.browseRecentByParent);
+router.get(
+  "/ticket-categories",
+  authActions.verifyRole("parent"),
+  ticketCategoryActions.browseAll,
+);
+
+router.post(
+  "/tickets",
+  authActions.verifyRole("parent"),
+  ticketActions.validate,
+  ticketActions.add,
+);
+
+router.get(
+  "/parents/me/announcements",
+  authActions.verifyRole("parent"),
+  announcementActions.browseByParent,
+);
+
+router.get(
+  "/parents/me/school",
+  authActions.verifyRole("parent"),
+  schoolActions.browseByParent,
+);
+
+router.get(
+  "/parents/me/tickets/recent",
+  authActions.verifyRole("parent"),
+  ticketActions.browseRecentByParent,
+);
+
 router.get(
   "/parents/me/announcements/recent",
+  authActions.verifyRole("parent"),
   announcementActions.browseRecentByParent,
 );
-router.get("/parents/me/students", studentActions.browseByParent);
+
+router.get(
+  "/parents/me/students",
+  authActions.verifyRole("parent"),
+  studentActions.browseByParent,
+);
 
 // SCHOOL protected routes
 
-router.get("/schools/me/tickets", ticketActions.browseBySchool);
-//jennifer US4
-//jenn partie 2 (page annonces avec le bouton create new annonce)
-//tdb school US09 ?
+router.get(
+  "/schools/me/tickets",
+  authActions.verifyRole("school"),
+  ticketActions.browseBySchool,
+);
 
 export default router;

@@ -1,13 +1,14 @@
+import type { School } from "./School.ts";
+
 export type Auth = {
   token: string;
-  user: Parent;
+  profile: Parent | School;
   role: "parent" | "school";
 };
 
-type Parent = {
+export type Parent = {
   id: number;
-  email: string;
-  last_name: string;
-  first_name: string;
+  lastName: string;
+  firstName: string;
   genre: string;
 };

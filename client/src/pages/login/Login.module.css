@@ -30,7 +30,7 @@
 }
 
 .logo {
-  width: 200px;
+  width: 250px;
 }
 
 .form {
@@ -226,6 +226,10 @@
 @media (max-width: 600px) {
   .form {
     padding: 1rem;
+  }
+
+  .logo {
+    width: 180px;
   }
 
   .background_parent_login {

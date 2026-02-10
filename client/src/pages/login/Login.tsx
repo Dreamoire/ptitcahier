@@ -2,9 +2,10 @@ import { CircleUserRound, Eye, EyeOff, Lock } from "lucide-react";
 import type { FormEventHandler } from "react";
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import logo_site from "../../assets/images/logo_site.png";
+import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import styles from "./Login.module.css";
+import type { Auth } from "../../types/Auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ function Login() {
     useState<boolean>(false);
   const [invalidLoginWarning, setInvalidLoginWarning] =
     useState<boolean>(false);
+  const [loginErrorWarning, setLoginErrorWarning] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const { setAuth } = useOutletContext<OutletAuthContext>();
@@ -57,7 +59,7 @@ function Login() {
       return;
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/login-${role}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -65,6 +67,7 @@ function Login() {
       body: JSON.stringify({
         email,
         password,
+        role,
       }),
     })
       .then((response) => {
@@ -74,14 +77,16 @@ function Login() {
         }
 
         if (!response.ok) {
-          setInvalidLoginWarning(true);
+          setLoginErrorWarning(true);
           return;
         }
 
         return response.json();
       })
-      .then((auth) => {
+      .then((auth: Auth | null) => {
+        if (!auth?.role) return;
         setAuth(auth);
+        localStorage.setItem("auth", JSON.stringify(auth));
         navigate(`/${auth.role}/home`);
       });
   };
@@ -89,7 +94,11 @@ function Login() {
   return (
     <main className={styles[`background_${role}_login`]}>
       <div className={styles.login_container}>
-        <img src={logo_site} alt="Le P'tit Cahier" className={styles.logo} />
+        <img
+          src={ptit_cahier_logo_original}
+          alt="Le P'tit Cahier"
+          className={styles.logo}
+        />
 
         {parentMessage ? (
           <div className={styles.form}>
@@ -145,7 +154,7 @@ function Login() {
                     role === "school" ? styles.label_checked_school : ""
                   }`}
                 >
-                  School
+                  École
                 </label>
               </fieldset>
 
@@ -178,7 +187,7 @@ function Login() {
                 }`}
               >
                 <label htmlFor="password" className="sr-only">
-                  Password
+                  Mot de passe
                 </label>
                 <Lock className={styles.icon} />
                 <input
@@ -189,7 +198,7 @@ function Login() {
                     setPassword(event.target.value);
                     clearWarnings();
                   }}
-                  placeholder="Password"
+                  placeholder="Mot de passe"
                   className={styles.input_field}
                 />
                 <button
@@ -235,13 +244,19 @@ function Login() {
 
               {submitValidationWarning && (
                 <p className={styles.warning} role="alert" aria-live="polite">
-                  Veuillez saisir une adresse e-mail et un mot de passe valides.
+                  Veuillez saisir une adresse mail et un mot de passe valides.
                 </p>
               )}
 
               {invalidLoginWarning && (
                 <p className={styles.warning} role="alert" aria-live="polite">
-                  Adresse e-mail ou mot de passe invalide.
+                  Adresse mail ou mot de passe invalide.
+                </p>
+              )}
+
+              {loginErrorWarning && (
+                <p className={styles.warning} role="alert" aria-live="polite">
+                  Une erreur est survenue. Veuillez renvoyer votre demande.
                 </p>
               )}
             </form>
@@ -251,7 +266,9 @@ function Login() {
               onClick={fillDemoCredentials}
               className={styles.demo}
             >
-              {`Connexion en démo ${role}`}
+              {role === "parent"
+                ? "Connexion en démo Parent"
+                : "Connexion en démo École"}
             </button>
           </>
         )}

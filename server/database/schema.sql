@@ -1,17 +1,8 @@
-CREATE TABLE school (
+CREATE TABLE user (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
     hashed_password VARCHAR(255) NOT NULL,
-    name VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE parent (
-    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    hashed_password VARCHAR(255) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    first_name VARCHAR(100) NOT NULL,
-    genre VARCHAR(1) NOT NULL
+    role ENUM('parent', 'school') NOT NULL
 );
 
 CREATE TABLE announcement_category (
@@ -25,6 +16,22 @@ CREATE TABLE ticket_category (
     description VARCHAR(120),
     color VARCHAR(6) NOT NULL,
     icon VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE school (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    user_id INT UNSIGNED NOT NULL UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE parent (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    last_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    genre VARCHAR(1) NOT NULL,
+    user_id INT UNSIGNED NOT NULL UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 CREATE TABLE classroom (
@@ -95,17 +102,26 @@ VALUES
 (3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)", "16a249", "NotebookPen"),
 (4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)", "0da2e7", "ShieldUser");
 
-INSERT INTO school (email, hashed_password, name)
+INSERT INTO user (email, hashed_password, role)
 VALUES
-("example@school1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "École Primaire Emile Zola"),
-("example@school2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "École Primaire Voltaire");
+  ("example@school1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "school"),
+  ("example@school2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "school"),
+  ("example@parent1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
+  ("example@parent2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
+  ("example@parent3.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
+  ("example@parent4.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent");
 
-INSERT INTO parent (email, hashed_password, last_name, first_name, genre)
+INSERT INTO school (name, user_id)
 VALUES
-("example@parent1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Martin", "Laurent", "M"),
-("example@parent2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Leroy", "Patricia", "F"),
-("example@parent3.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Perrin", "Jean", "M"),
-("example@parent4.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "Turin", "Isabelle", "F");
+  ("École Primaire Emile Zola", 1),
+  ("École Primaire Voltaire", 2);
+
+INSERT INTO parent (last_name, first_name, genre, user_id)
+VALUES
+  ("Martin", "Laurent", "M", 3),
+  ("Leroy", "Patricia", "F", 4),
+  ("Perrin", "Jean", "M", 5),
+  ("Turin", "Isabelle", "F", 6);
 
 INSERT INTO classroom (name, school_id)
 VALUES
