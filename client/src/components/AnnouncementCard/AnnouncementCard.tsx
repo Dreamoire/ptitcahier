@@ -8,16 +8,12 @@ type AnnouncementCardProps = {
   variant?: "default" | "dashboard";
 };
 
-function AnnouncementCard({
-  announcement,
-  userRole,
-  variant = "default",
-}: AnnouncementCardProps) {
+function AnnouncementCard({ announcement, userRole }: AnnouncementCardProps) {
   const [isImageOpen, setIsImageOpen] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const dialogReference = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    const dialogElement = dialogRef.current;
+    const dialogElement = dialogReference.current;
     if (!dialogElement) return;
 
     if (isImageOpen) {
@@ -27,153 +23,151 @@ function AnnouncementCard({
     }
   }, [isImageOpen]);
 
-  const closeDialogClick = (event: React.MouseEvent) => {
-    if (event.target === dialogRef.current) {
+  const closeDialogOnBackdrop = (event: React.MouseEvent) => {
+    if (event.target === dialogReference.current) {
       setIsImageOpen(false);
     }
   };
 
-  useEffect(() => {
-    const dialogElement = dialogRef.current;
-    if (!dialogElement) return;
-
-    if (isImageOpen) {
-      dialogElement.showModal();
-    } else {
-      dialogElement.close();
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setIsImageOpen(false);
     }
-  }, [isImageOpen]);
+  };
 
   const formattedDate = new Date(announcement.createdAt).toLocaleDateString(
     "fr-FR",
-    { dateStyle: "medium" },
+    {
+      dateStyle: "medium",
+    },
   );
 
-  const getCategoryStyle = (category: string): string => {
-    switch (category) {
+  const studentList = announcement.studentNames
+    ? announcement.studentNames.split(",").map((name) => name.trim())
+    : [];
+
+  const rowsClassrooms = announcement.classroomNames
+    ? announcement.classroomNames.split(",").map((c) => c.trim())
+    : [];
+
+  const counts: Record<string, number> = {};
+  for (const name of rowsClassrooms) {
+    counts[name] = (counts[name] || 0) + 1;
+  }
+
+  const classroomsWithCounts = Object.keys(counts).map((name) => ({
+    name: name,
+    count: counts[name],
+  }));
+
+  const getCategoryStyle = (categoryName: string) => {
+    switch (categoryName) {
       case "Vie de l'école":
         return styles.an_badge_school_life;
       case "Administratif":
         return styles.an_badge_admin;
       case "Evénement":
         return styles.an_badge_event;
+      case "Classe":
+        return styles.an_badge_class;
       default:
         return styles.an_badge_default;
     }
   };
 
-  const getTargetBadge = () => {
-    if (userRole === "parent") {
-      return {
-        label: announcement.studentNames,
-        style: styles.an_student_tag,
-      };
-    }
-
-    const count = announcement.studentCount || 0;
-    const total = announcement.totalStudents || 0;
-
-    if (total > 0 && count >= total - 2) {
-      return {
-        label: "Toutes les classes",
-        style: styles.an_school_tag,
-      };
-    }
-
-    if (count > 5) {
-      return {
-        label: `${announcement.classroomNames} (${count} élèves)`,
-        style: styles.an_class_tag,
-      };
-    }
-
-    return {
-      label:
-        announcement.studentNames ||
-        (count === 1 ? "1 élève" : `${count} élèves`),
-      style: styles.an_student_tag,
-    };
-  };
-
-  const targetBadge = getTargetBadge();
-
   return (
-    <>
-      <article
-        className={`${styles.an_card} ${
-          variant === "dashboard" ? styles.an_card_dashboard : styles.list
-        }`}
-      >
-        <header className={styles.an_card_header}>
-          <h2 className={styles.card_title}>{announcement.title}</h2>
-
-          <div className={styles.an_badges_container}>
-            <span
-              className={`${styles.an_badge} ${getCategoryStyle(
-                announcement.announcementCategoryName,
-              )}`}
-            >
-              {announcement.announcementCategoryName}
-            </span>
-            {targetBadge.label && (
-              <span className={targetBadge.style}>{targetBadge.label}</span>
-            )}
-          </div>
+    <article className={styles.ann_card}>
+      <section className={styles.content_card}>
+        <header>
+          <h2 className={styles.title}>{announcement.title}</h2>
         </header>
 
         <button
           type="button"
-          className={styles.imageContainer}
+          className={styles.imageTrigger}
           onClick={() => setIsImageOpen(true)}
-          aria-label="Agrandir l'image"
         >
           <img
             src={`https://picsum.photos/seed/${announcement.id}/800/600`}
-            alt="Illustration de l'annonce"
-            className={styles.realImage}
+            alt="Illustration"
+            className={styles.mainImage}
           />
         </button>
 
         <p className={styles.text}>{announcement.content}</p>
 
-        <footer className={styles.an_card_footer}>
-          <time
-            className={styles.an_date}
-            dateTime={String(announcement.createdAt)}
-          >
-            {formattedDate}
-          </time>
+        <footer className={styles.footerInfo}>
+          <time className={styles.dateLabel}>Publié le {formattedDate}</time>
         </footer>
-      </article>
+      </section>
 
-      {isImageOpen && (
-        <dialog
-          ref={dialogRef}
-          className={styles.modal_dialog}
-          onClick={closeDialogClick}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setIsImageOpen(false);
-          }}
-          onClose={() => setIsImageOpen(false)}
+      <aside className={styles.badgeSidebar}>
+        <span
+          className={getCategoryStyle(announcement.announcementCategoryName)}
         >
-          <div className={styles.modal_content}>
-            <button
-              type="button"
-              className={styles.modal_close}
-              onClick={() => setIsImageOpen(false)}
-              aria-label="Fermer"
-            >
-              &times;
-            </button>
-            <img
-              src={`https://picsum.photos/seed/${announcement.id}/1200/800`}
-              alt="Vue agrandie"
-              className={styles.modal_image}
-            />
-          </div>
-        </dialog>
-      )}
-    </>
+          {announcement.announcementCategoryName}
+        </span>
+
+        {userRole === "school" && (
+          <ul className={styles.tagList}>
+            {(announcement.totalStudents || 0) > 0 &&
+            (announcement.studentCount || 0) >=
+              (announcement.totalStudents || 0) - 2 ? (
+              <li className={styles.an_badge_all_school}>Toutes les classes</li>
+            ) : (announcement.studentCount || 0) > 5 ? (
+              <>
+                {classroomsWithCounts.map((item) => (
+                  <li key={item.name} className={styles.an_badge_class}>
+                    {item.name} ({item.count})
+                  </li>
+                ))}
+                <li className={styles.an_count_tag}>
+                  Total élèves: {announcement.studentCount}
+                </li>
+              </>
+            ) : (
+              studentList.map((studentName) => (
+                <li key={studentName} className={styles.an_student_tag}>
+                  {studentName}
+                </li>
+              ))
+            )}
+          </ul>
+        )}
+
+        {userRole === "parent" && studentList.length > 0 && (
+          <ul className={styles.tagList}>
+            {studentList.map((studentName) => (
+              <li key={studentName} className={styles.an_student_tag}>
+                {studentName}
+              </li>
+            ))}
+          </ul>
+        )}
+      </aside>
+
+      <dialog
+        ref={dialogReference}
+        className={styles.imageModal}
+        onClick={closeDialogOnBackdrop}
+        onKeyDown={handleKeyDown}
+      >
+        <div className={styles.modalWrapper}>
+          <button
+            type="button"
+            className={styles.closeButton}
+            onClick={() => setIsImageOpen(false)}
+          >
+            &times;
+          </button>
+          <img
+            src={`https://picsum.photos/seed/${announcement.id}/1200/800`}
+            alt="Zoom"
+            className={styles.fullSizeImage}
+          />
+        </div>
+      </dialog>
+    </article>
   );
 }
 

@@ -1,22 +1,10 @@
 import databaseClient from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
-
-type Student = {
-  id: number;
-  firstName: string;
-  lastName: string;
-};
-
-type Announcement = {
-  id: number;
-  title: string;
-  content: string;
-  announcementCategoryId: number;
-  studentIds: number[];
-};
+import type { Announcement } from "../../types/express/Announcement";
+import type { NewAnnouncement } from "../../types/express/newAnnouncement";
 
 class AnnouncementRepository {
-  async create(newAnnouncement: Omit<Announcement, "id">, schoolId: number) {
+  async create(newAnnouncement: NewAnnouncement, schoolId: number) {
     const { title, content, announcementCategoryId, studentIds } =
       newAnnouncement;
 
@@ -104,38 +92,46 @@ class AnnouncementRepository {
 
     return rows as Announcement[];
   }
-  async readAllBySchool(schoolId: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT 
-    a.id, 
-    a.title, 
-    a.content, 
-    a.created_at AS createdAt,
-    ac.name AS categoryName,
-    COUNT(DISTINCT s.id) AS studentCount,
-    (
-          SELECT COUNT(*) 
-          FROM student s2 
-          JOIN classroom c2 ON s2.classroom_id = c2.id 
-          WHERE c2.school_id = ?
-        ) AS totalStudents,
-    GROUP_CONCAT(DISTINCT CONCAT(s.first_name, ' ', s.last_name) SEPARATOR ', ') AS studentNames,
-    GROUP_CONCAT(DISTINCT c.classroom_name SEPARATOR ',') AS classroomNames
-FROM PTIT_CAHIER.announcement AS a
-JOIN PTIT_CAHIER.announcement_category AS ac ON a.announcement_category_id = ac.id
-LEFT JOIN PTIT_CAHIER.announcement_student AS ans ON ans.announcement_id = a.id
-LEFT JOIN PTIT_CAHIER.student AS s ON ans.student_id = s.id
-LEFT JOIN PTIT_CAHIER.classroom AS c ON s.classroom_id=c.id
-WHERE a.school_id = ?
-GROUP BY 
-    a.id, 
-    ac.name,
-    a.created_at
-ORDER BY a.created_at DESC;
-      `,
-      [schoolId, schoolId],
-    );
+  async readAllBySchool(schoolId: number, categoryId?: number) {
+    let sql = `
+    SELECT 
+      a.id, 
+      a.title, 
+      a.content, 
+      a.created_at AS createdAt,
+      ac.name AS announcementCategoryName,
+      COUNT(DISTINCT s.id) AS studentCount,
+      (
+        SELECT COUNT(*) 
+        FROM student s2 
+        JOIN classroom c2 ON s2.classroom_id = c2.id 
+        WHERE c2.school_id = ?
+      ) AS totalStudents,
+      GROUP_CONCAT(DISTINCT CONCAT(s.first_name, ' ', s.last_name) SEPARATOR ', ') AS studentNames,
+      GROUP_CONCAT( c.classroom_name SEPARATOR ',') AS classroomNames
+    FROM announcement AS a
+    JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
+    LEFT JOIN announcement_student AS ans ON ans.announcement_id = a.id
+    LEFT JOIN student AS s ON ans.student_id = s.id
+    LEFT JOIN classroom AS c ON s.classroom_id = c.id
+    WHERE a.school_id = ?
+  `;
+
+    const queryParams: (number | string)[] = [schoolId, schoolId];
+
+    if (categoryId !== undefined && categoryId !== null) {
+      sql += " AND a.announcement_category_id = ?";
+      queryParams.push(categoryId);
+    }
+
+    sql += `
+    GROUP BY a.id, ac.name, a.created_at
+    ORDER BY a.created_at DESC
+  `;
+
+    const [rows] = await databaseClient.query<Rows>(sql, queryParams);
     return rows as Announcement[];
   }
 }
+
 export default new AnnouncementRepository();

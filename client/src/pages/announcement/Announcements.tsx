@@ -31,6 +31,9 @@ function Announcements({ userRole }: AnnouncementsProps) {
         .then((response) => response.json())
         .then((students) => {
           setStudents(students);
+          if (students.length === 1) {
+            setSelectedStudent(students[0].id);
+          }
         });
     }
   }, [userRole]);
@@ -72,7 +75,7 @@ function Announcements({ userRole }: AnnouncementsProps) {
     }
   };
 
-  const navigate = useNavigate(userRole === "shool");
+  const navigate = useNavigate();
 
   return (
     <main className={backgroundClass}>
@@ -114,13 +117,15 @@ function Announcements({ userRole }: AnnouncementsProps) {
               {category.label}
             </button>
           ))}
-          <button
-            type="button"
-            className={`${styles.button_addannouncement}`}
-            onClick={() => navigate("/school/announcements/new")}
-          >
-            Nouvelle annonce
-          </button>
+          {userRole === "school" && (
+            <button
+              type="button"
+              className={`${styles.button_add_ann}`}
+              onClick={() => navigate("/school/announcements/new")}
+            >
+              Nouvelle annonce
+            </button>
+          )}
         </nav>
       </div>
       <section className={styles.an_section}>
@@ -131,7 +136,6 @@ function Announcements({ userRole }: AnnouncementsProps) {
                 <AnnouncementCard
                   announcement={announcement}
                   userRole={userRole}
-                  key={announcement.id}
                 />
               </li>
             ))

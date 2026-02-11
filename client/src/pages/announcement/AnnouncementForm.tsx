@@ -412,11 +412,11 @@ function AnnouncementForm({
 
         <div className={styles.ticket_buttons_container}>
           <button
-            onClick={() => navigate("/school/home")}
+            onClick={() => navigate("/school/announcements")}
             type="button"
             className="non-primary-button"
           >
-            Retourner à l'accueil
+            Retourner aux annonces
           </button>
           <button
             type="submit"
