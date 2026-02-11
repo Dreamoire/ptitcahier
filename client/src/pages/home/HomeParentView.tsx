@@ -14,7 +14,9 @@ import styles from "./HomeParentView.module.css";
 function HomeParentView() {
   const [school, setSchool] = useState<School | null>(null);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
-  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [recentAnnouncements, setRecentAnnouncements] = useState<
+    Announcement[]
+  >([]);
   const navigate = useNavigate();
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -38,20 +40,16 @@ function HomeParentView() {
         `${import.meta.env.VITE_API_URL}/api/parents/me/announcements/recent`,
         { headers },
       ).then((res) => {
-        if (!res.ok) {
-          navigate("/redirection");
-          return null;
-        }
         return res.json();
       }),
     ]).then(([school, recentTickets, recentAnnouncements]) => {
       setSchool(school);
       setRecentTickets(recentTickets);
-      setAnnouncements(recentAnnouncements);
+      setRecentAnnouncements(recentAnnouncements);
     });
-  }, [auth, navigate]);
+  }, [auth]);
 
-  const totalSlides = announcements.length;
+  const totalSlides = recentAnnouncements.length;
 
   const goToNextSlide = useCallback(() => {
     setActiveSlide((current) =>
@@ -88,7 +86,7 @@ function HomeParentView() {
             </div>
           </article>
         </header>
-
+        {/* regroup ici */}
         <div className={styles.main_content_grid}>
           <div className={styles.left_column}>
             <section aria-labelledby="messages-title">
@@ -157,7 +155,7 @@ function HomeParentView() {
                 className={styles.carousel_track}
                 style={{ transform: `translateX(-${activeSlide * 100}%)` }}
               >
-                {announcements.map((announcement, index) => (
+                {recentAnnouncements.map((announcement, index) => (
                   <li
                     key={announcement.id}
                     className={styles.carousel_item}

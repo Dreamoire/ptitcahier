@@ -8,8 +8,12 @@ function ParentLayout() {
 
   if (auth === undefined) return <div>Loading...</div>;
 
-  if (auth === null || auth.role !== "parent") {
+  if (auth === null) {
     return <Navigate to="/" replace />;
+  }
+
+  if (auth.role !== "parent") {
+    return <Navigate to="/redirection" replace />;
   }
 
   const parentProfile = auth.profile as Parent;

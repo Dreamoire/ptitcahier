@@ -17,8 +17,12 @@ function SchoolLayout() {
 
   if (auth === undefined) return <div>Loading...</div>;
 
-  if (auth === null || auth.role !== "school") {
+  if (auth === null) {
     return <Navigate to="/" replace />;
+  }
+
+  if (auth.role !== "school") {
+    return <Navigate to="/redirection" replace />;
   }
 
   const schoolProfile = auth.profile as School;

@@ -43,7 +43,7 @@ function AnnouncementsParentView() {
       </header>
 
       {loadingError ? (
-        <p>Échec de la récupération des tickets</p>
+        <p>Échec de la récupération des annonces</p>
       ) : (
         <section className={styles.an_section}>
           <ul>

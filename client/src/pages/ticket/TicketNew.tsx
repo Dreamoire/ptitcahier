@@ -15,27 +15,41 @@ function TicketNew() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { auth } = useOutletContext<OutletAuthContext>();
-
-  if (!auth) return;
+  const [loadingError, setLoadingError] = useState<boolean>(false);
 
   useEffect(() => {
-    const headers = { Authorization: `Bearer ${auth.token}` };
+    const headers = { Authorization: `Bearer ${auth?.token}` };
 
     Promise.all([
       fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`, {
         headers,
-      }).then((res) => res.json()),
+      }).then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          navigate("/redirection");
+          return;
+        }
+        if (!res.ok) {
+          setLoadingError(true);
+          return;
+        }
+        return res.json();
+      }),
 
       fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`, {
         headers,
       }).then((res) => {
-        if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
           navigate("/redirection");
-          return null;
+          return;
+        }
+        if (!res.ok) {
+          setLoadingError(true);
+          return;
         }
         return res.json();
       }),
     ]).then(([ticketCategories, students]) => {
+      if (!ticketCategories || !students) return;
       setTicketCategories(ticketCategories);
       setStudents(students);
     });
@@ -48,7 +62,7 @@ function TicketNew() {
           {error ? <p>{error}</p> : <p>Votre ticket a été bien envoyé!</p>}
           <div className={styles.ticket_buttons_container}>
             <button
-              onClick={() => navigate(`/${auth.role}/home`)}
+              onClick={() => navigate("/parent/home")}
               type="button"
               className="non-primary-button"
             >
@@ -66,6 +80,8 @@ function TicketNew() {
             </button>
           </div>
         </div>
+      ) : loadingError ? (
+        <p>Échec de la chargement du formulaire</p>
       ) : (
         <>
           <TicketForm
@@ -77,7 +93,7 @@ function TicketNew() {
                 method: "post",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${auth.token}`,
+                  Authorization: `Bearer ${auth?.token}`,
                 },
                 body: JSON.stringify(newTicket),
               })
