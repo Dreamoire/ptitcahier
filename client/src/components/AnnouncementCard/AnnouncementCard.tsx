@@ -1,9 +1,8 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Announcement } from "../../types/Announcement";
+import AnnouncementContentTextarea from "../AnnouncementContentTextarea/AnnouncementContentTextarea";
 import styles from "./AnnouncementCard.module.css";
-
-const MAX_CONTENT_LENGTH = 1000;
 
 type AnnouncementCardProps = {
   announcement: Announcement;
@@ -186,12 +185,10 @@ function AnnouncementCard({
 
         {isEditing ? (
           <div className={styles.edit_block}>
-            <textarea
-              className={styles.edit_textarea}
+            <AnnouncementContentTextarea
+              ariaLabel="Modifier le contenu de l'annonce"
               value={content}
-              onChange={(event) => setContent(event.target.value)}
-              maxLength={MAX_CONTENT_LENGTH}
-              aria-label="Modifier le contenu de l'annonce"
+              onChange={setContent}
             />
             <div className={styles.edit_actions}>
               <button
@@ -222,14 +219,13 @@ function AnnouncementCard({
           >
             {formattedDate}
           </time>
-          {(canEdit || canDelete) && (
+          {(canEdit || canDelete) && !isEditing && (
             <div className={styles.footer_actions}>
               {canEdit && (
                 <button
                   type="button"
                   className={styles.edit_button}
                   onClick={startEditing}
-                  disabled={isEditing}
                 >
                   <Pencil className={styles.edit_icon} aria-hidden="true" />
                   <span className={styles.edit_label}>Modifier</span>
@@ -240,7 +236,6 @@ function AnnouncementCard({
                   type="button"
                   className={styles.delete_button}
                   onClick={() => onDelete(announcement.id)}
-                  disabled={isEditing}
                 >
                   <Trash2 className={styles.delete_icon} aria-hidden="true" />
                   <span className={styles.delete_label}>Supprimer</span>

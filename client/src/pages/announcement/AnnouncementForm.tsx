@@ -1,11 +1,12 @@
 import { CalendarDays, ClipboardList, School } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
+import AnnouncementContentTextarea, {
+  MAX_ANNOUNCEMENT_CONTENT_LENGTH,
+} from "../../components/AnnouncementContentTextarea/AnnouncementContentTextarea";
 import FilterStudent from "../../components/FilterStudents/FilterStudent";
 import type { AnnouncementCategory } from "../../types/AnnouncementCategory";
 import styles from "./AnnouncementForm.module.css";
-
-const MAX_MESSAGE_LENGTH = 1000;
 
 const LUCIDE_ICON = {
   School,
@@ -385,24 +386,18 @@ function AnnouncementForm({
 
         <fieldset className={styles.fieldset_message}>
           <legend className={styles.form_label}>Message* :</legend>
-          <div className={styles.textarea_wrapper}>
-            <textarea
-              id="content"
-              name="content"
-              aria-required="true"
-              className={styles.textarea}
-              maxLength={MAX_MESSAGE_LENGTH}
-              placeholder="Écrivez votre annonce"
-              value={message}
-              onChange={(event) => {
-                setMessage(event.target.value);
-                clearWarning();
-              }}
-            />
-            <p className={styles.character_counter}>
-              {message.length} / {MAX_MESSAGE_LENGTH}
-            </p>
-          </div>
+          <AnnouncementContentTextarea
+            id="content"
+            name="content"
+            ariaRequired
+            maxLength={MAX_ANNOUNCEMENT_CONTENT_LENGTH}
+            placeholder="Écrivez votre annonce"
+            value={message}
+            onChange={(nextValue) => {
+              setMessage(nextValue);
+              clearWarning();
+            }}
+          />
         </fieldset>
 
         <div className={styles.ticket_buttons_container}>

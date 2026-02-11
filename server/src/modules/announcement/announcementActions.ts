@@ -85,12 +85,12 @@ const destroy: RequestHandler = async (req, res, next) => {
     }
 
     const SCHOOLID = 1; // to change with context?
-    const deletedCount = await announcementRepository.delete(
+    const deletedAnnouncement = await announcementRepository.delete(
       announcementId,
       SCHOOLID,
     );
 
-    if (deletedCount === 0) {
+    if (deletedAnnouncement === 0) {
       res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
       return;
     }
@@ -113,13 +113,13 @@ const update: RequestHandler = async (req, res, next) => {
     }
 
     const SCHOOLID = 1;
-    const updatedCount = await announcementRepository.updateContent(
+    const updatedAnnouncement = await announcementRepository.updateContent(
       announcementId,
       req.body.content,
       SCHOOLID,
     );
 
-    if (updatedCount === 0) {
+    if (updatedAnnouncement === 0) {
       res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
       return;
     }
