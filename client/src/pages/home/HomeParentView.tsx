@@ -33,7 +33,7 @@ function Home({ userRole }: HomeProps) {
       .then((res) => res.json())
       .then((school) => setSchool(school));
 
-    fetch(`${API_URL}/api/parents/me/tickets/recent`)
+    fetch(`${API_URL}/api/parents/me/tickets?limit=3`)
       .then((res) => res.json())
       .then((recentTickets) => setRecentTickets(recentTickets));
 

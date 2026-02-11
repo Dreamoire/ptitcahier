@@ -2,10 +2,13 @@ import type { Ticket } from "../../types/Ticket";
 import styles from "./TicketCard.module.css";
 import TicketIcon, { type TicketIconType } from "./TicketIcon";
 
+type UserRole = "parent" | "school";
+
 type TicketCardProps = {
   ticket: Ticket;
   onClick: (ticket: Ticket) => void;
   variant?: "default" | "dashboard";
+  userRole: UserRole;
 };
 
 const getTicketIconType = (categoryName: string): TicketIconType => {
@@ -21,8 +24,18 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
   }
 };
 
-function TicketCard({ ticket, onClick, variant = "default" }: TicketCardProps) {
+function TicketCard({
+  ticket,
+  onClick,
+  variant = "default",
+  userRole,
+}: TicketCardProps) {
   const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
+
+  const nameTitle =
+    userRole === "parent"
+      ? `Demande pour ${ticket.studentNames}`
+      : parentFullName;
 
   const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
     dateStyle: "medium",
@@ -45,7 +58,7 @@ function TicketCard({ ticket, onClick, variant = "default" }: TicketCardProps) {
       <div className={styles.body}>
         <header className={styles.header}>
           {variant !== "dashboard" && (
-            <h2 className={styles.parentName}>{parentFullName}</h2>
+            <h2 className={styles.nameTitle}>{nameTitle}</h2>
           )}
         </header>
         <p className={styles.content}>{ticket.content}</p>

@@ -142,7 +142,6 @@
   }
 }
 
-/* Modale */
 .imageModal {
   border: none;
   background: transparent;
@@ -198,7 +197,6 @@
   margin-top: 1.5rem;
 }
 
-/* --- Colonne de droite (Badges) --- */
 .badgeSidebar {
   display: flex;
   flex-direction: column;
@@ -243,15 +241,14 @@
   color: #9ca3af;
 }
 
-/* --- Responsive Smartphone --- */
 @media (max-width: 640px) {
   .announcementCard {
-    grid-template-columns: 1fr; /* On empile tout sur mobile */
+    grid-template-columns: 1fr;
     padding: 1rem;
   }
 
   .badgeSidebar {
-    order: -1; /* Les badges passent en premier sur smartphone */
+    order: -1;
     flex-direction: row;
     flex-wrap: wrap;
     min-width: 100%;
@@ -263,7 +260,6 @@
   }
 }
 
-/* Modale simplifiée */
 .imageModal {
   border: none;
   background: transparent;

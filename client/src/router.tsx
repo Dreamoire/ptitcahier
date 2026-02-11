@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         path: "tickets",
-        element: <Tickets />,
+        element: <Tickets userRole="parent" />,
       },
       {
         path: "tickets/new",
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: "tickets",
-        element: <Tickets />,
+        element: <Tickets userRole="school" />,
       },
     ],
   },

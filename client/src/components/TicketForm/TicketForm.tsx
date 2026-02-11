@@ -128,11 +128,11 @@ function TicketForm({ ticketCategories, students, onSubmit }: TicketFormProps) {
 
       <div className={styles.ticket_buttons_container}>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/parent/tickets")}
           type="button"
           className="non-primary-button"
         >
-          Retourner à l'accueil
+          Retourner aux demandes
         </button>
         <button
           type="submit"
