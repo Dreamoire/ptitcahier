@@ -12,6 +12,22 @@
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
+.cardButton {
+  width: 100%;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cardButton:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+  border-radius: var(--border-radius);
+}
+
 .card:hover {
   transform: translateY(-6px);
   box-shadow: var(--box-shadow-hover);
