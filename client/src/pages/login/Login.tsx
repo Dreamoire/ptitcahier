@@ -83,7 +83,7 @@ function Login() {
 
         return response.json();
       })
-      .then((auth: Auth | null) => {
+      .then((auth: Auth | undefined) => {
         if (!auth?.role) return;
         setAuth(auth);
         localStorage.setItem("auth", JSON.stringify(auth));

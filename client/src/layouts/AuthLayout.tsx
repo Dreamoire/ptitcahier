@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import type { Auth } from "../types/Auth";
 
 function AuthLayout() {
-  const [auth, setAuth] = useState<Auth | null>(null);
-  const location = useLocation();
+  const [auth, setAuth] = useState<Auth | null | undefined>(undefined); // undefined = loading
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("auth");
 
     if (storedAuth) {
       setAuth(JSON.parse(storedAuth));
+    } else {
+      setAuth(null);
     }
   }, []);
 
-  if (auth === null) {
-    return null;
-  }
-
-  if (!auth) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
+  if (auth === undefined) return <div>Loading...</div>; // wait until auth is loaded
 
   return <Outlet context={{ auth, setAuth }} />;
 }
