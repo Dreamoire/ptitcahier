@@ -1,4 +1,8 @@
 import { createBrowserRouter } from "react-router";
+
+import ParentLayout from "./layouts/ParentLayout";
+import SchoolLayout from "./layouts/SchoolLayout";
+
 import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
 import AnnouncementsSchoolView from "./pages/announcement/AnnouncementsSchoolView";
@@ -8,28 +12,44 @@ import Tickets from "./pages/ticket/Tickets";
 
 const router = createBrowserRouter([
   {
-    path: "/parent/home",
-    element: <HomeParentView />,
+    path: "/parent",
+    element: <ParentLayout />,
+    children: [
+      {
+        path: "announcements",
+        element: <AnnouncementsParentView />,
+      },
+      {
+        path: "tickets",
+        element: <Tickets />,
+      },
+      {
+        path: "tickets/new",
+        element: <TicketNew />,
+      },
+      {
+        path: "home",
+        element: <HomeParentView />,
+      },
+    ],
   },
   {
-    path: "/parent/announcements",
-    element: <AnnouncementsParentView />,
-  },
-  {
-    path: "/parent/tickets/new",
-    element: <TicketNew />,
-  },
-  {
-    path: "/school/tickets",
-    element: <Tickets />,
-  },
-  {
-    path: "/school/announcements",
-    element: <AnnouncementsSchoolView />,
-  },
-  {
-    path: "/school/announcements/new",
-    element: <AnnouncementNew />,
+    path: "/school",
+    element: <SchoolLayout />,
+    children: [
+      {
+        path: "announcements",
+        element: <AnnouncementsSchoolView />,
+      },
+      {
+        path: "announcements/new",
+        element: <AnnouncementNew />,
+      },
+      {
+        path: "tickets",
+        element: <Tickets />,
+      },
+    ],
   },
 ]);
 
