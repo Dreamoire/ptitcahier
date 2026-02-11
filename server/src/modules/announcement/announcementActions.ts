@@ -101,6 +101,35 @@ const destroy: RequestHandler = async (req, res, next) => {
   }
 };
 
+const update: RequestHandler = async (req, res, next) => {
+  try {
+    const announcementId = Number(req.params.id);
+
+    if (!Number.isInteger(announcementId)) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Identifiant d'annonce invalide" });
+      return;
+    }
+
+    const SCHOOLID = 1;
+    const updatedCount = await announcementRepository.updateContent(
+      announcementId,
+      req.body.content,
+      SCHOOLID,
+    );
+
+    if (updatedCount === 0) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
+      return;
+    }
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const validate: RequestHandler = async (req, res, next) => {
   try {
     const newAnnouncement = joi.object({
@@ -163,11 +192,34 @@ const validate: RequestHandler = async (req, res, next) => {
   }
 };
 
+const validateUpdate: RequestHandler = async (req, res, next) => {
+  try {
+    const updateAnnouncement = joi.object({
+      content: joi.string().max(1000).required(),
+    });
+
+    const { error } = updateAnnouncement.validate(req.body);
+
+    if (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Les donnÃ©es envoyÃ©es sont invalides" });
+      return;
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   add,
   browseByParent,
   browseRecentByParent,
   browseBySchool,
   destroy,
+  update,
   validate,
+  validateUpdate,
 };

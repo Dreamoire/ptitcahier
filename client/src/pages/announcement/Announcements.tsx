@@ -84,6 +84,29 @@ function Announcements({ userRole }: AnnouncementsProps) {
     );
   };
 
+  const editAnnouncement = async (announcementId: number, content: string) => {
+    fetch(
+      `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+      },
+    );
+
+    setAnnouncements((prev) =>
+      prev.map((announcement) =>
+        announcement.id === announcementId
+          ? { ...announcement, content }
+          : announcement,
+      ),
+    );
+
+    return true;
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -146,6 +169,7 @@ function Announcements({ userRole }: AnnouncementsProps) {
                   onDelete={
                     userRole === "school" ? deleteAnnouncement : undefined
                   }
+                  onEdit={userRole === "school" ? editAnnouncement : undefined}
                   key={announcement.id}
                 />
               </li>

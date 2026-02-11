@@ -15,6 +15,11 @@ router.post(
   announcementActions.add,
 );
 router.delete("/announcements/:id", announcementActions.destroy);
+router.put(
+  "/announcements/:id",
+  announcementActions.validateUpdate,
+  announcementActions.update,
+);
 
 router.get("/announcements-categories", announcementCategoryActions.browseAll);
 
