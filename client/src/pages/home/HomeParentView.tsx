@@ -88,6 +88,7 @@ function Home() {
                         onClick={() => navigate("/parent/tickets")}
                         ticket={ticket}
                         variant="dashboard"
+                        showStatusBadge
                       />
                     </li>
                   ))

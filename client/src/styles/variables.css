@@ -35,7 +35,7 @@
   --font-size-primary-title: clamp(1.8rem, 1.4rem + 2vw, 3rem);
   --font-size-card-title: clamp(1.25rem, 1.08rem + 1.10vw, 2rem);
   --font-size-text: clamp(1rem, 0.93rem + 0.30vw, 1.25rem);
-  --font-size-button: clamp(1.2rem, 1.1rem + 0.6vw, 1.5rem);
+  --font-size-button: clamp(1rem, 0.8rem + 0.6vw, 1.5rem);
   --font-size-form-label: clamp(1.1rem, 1.05rem + 0.5vw, 1.4rem);
 
   --border-radius: 15px;

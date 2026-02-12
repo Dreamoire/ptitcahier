@@ -4,16 +4,6 @@ import { Link } from "react-router";
 import styles from "./AnnouncementsSchoolView.module.css";
 
 const AnnouncementsSchoolView = () => {
-  //   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-
-  //   useEffect(() => {
-  //     fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/announcements`)
-  //       .then((response) => response.json())
-  //       .then((announcements) => {
-  //         setAnnouncements(announcements);
-  //       });
-  //   }, []);
-
   return (
     <main className="parent-background">
       <header className={styles.an_title}>
@@ -25,15 +15,6 @@ const AnnouncementsSchoolView = () => {
       >
         Nouvelle annonce
       </Link>
-      <section className={styles.an_section}>
-        {/* <ul>
-          {announcements.map((announcement) => (
-            <li key={announcement.id}>
-              <AnnouncementCard announcement={announcement} />
-            </li>
-          ))}
-        </ul> */}
-      </section>
     </main>
   );
 };

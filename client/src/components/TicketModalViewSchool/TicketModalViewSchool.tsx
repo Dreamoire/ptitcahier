@@ -6,6 +6,7 @@ import styles from "./TicketModalViewSchool.module.css";
 type TicketModalViewSchoolProps = {
   ticket: Ticket;
   onCloseComplete: () => void;
+  processTicket: (ticketId: number, processed: boolean) => Promise<void>;
 };
 
 const getTicketIconType = (categoryName: string): TicketIconType => {
@@ -24,6 +25,7 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
 function TicketModalViewSchool({
   ticket,
   onCloseComplete,
+  processTicket,
 }: TicketModalViewSchoolProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -140,6 +142,16 @@ function TicketModalViewSchool({
           <div className={styles.messageBox}>
             <p className={styles.messageText}>{ticket.content} </p>
           </div>
+        </div>
+
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.processButton}
+            onClick={() => processTicket(ticket.id, !ticket.processed)}
+          >
+            {ticket.processed ? "Non traité" : "Traité"}
+          </button>
         </div>
       </dialog>
     </div>

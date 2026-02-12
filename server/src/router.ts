@@ -34,6 +34,7 @@ router.get("/parents/me/students", studentActions.browseByParent);
 
 router.get("/schools/me/tickets", ticketActions.browseBySchool);
 router.post("/tickets", ticketActions.validate, ticketActions.add);
+router.patch("/tickets/:id/status", ticketActions.editStatus);
 
 router.get("/ticket-categories", ticketCategoryActions.browseAll);
 

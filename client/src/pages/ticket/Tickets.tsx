@@ -34,6 +34,39 @@ function Tickets() {
       });
   }, []);
 
+  const processTicket = async (ticketId: number, processed: boolean) => {
+    const updateProcessedStatus = (lastStatus: boolean) => {
+      setTickets((prevTickets) =>
+        prevTickets.map((ticket) =>
+          ticket.id === ticketId
+            ? { ...ticket, processed: lastStatus }
+            : ticket,
+        ),
+      );
+
+      setSelectedTicket((prevTicket) =>
+        prevTicket && prevTicket.id === ticketId
+          ? { ...prevTicket, processed: lastStatus }
+          : prevTicket,
+      );
+    };
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/tickets/${ticketId}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ processed }),
+    })
+      .then(
+        (response) =>
+          response.json() as Promise<{ id: number; processed: boolean }>,
+      )
+      .then((ticket) => {
+        updateProcessedStatus(ticket.processed);
+      });
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.container}>
@@ -52,7 +85,11 @@ function Tickets() {
             <ul className={styles.list}>
               {tickets.map((ticket) => (
                 <li key={ticket.id} className={styles.listItem}>
-                  <TicketCard ticket={ticket} onClick={setSelectedTicket} />
+                  <TicketCard
+                    ticket={ticket}
+                    onClick={setSelectedTicket}
+                    showStatusBadge
+                  />
                 </li>
               ))}
             </ul>
@@ -64,6 +101,7 @@ function Tickets() {
         <TicketModalViewSchool
           ticket={selectedTicket}
           onCloseComplete={() => setSelectedTicket(null)}
+          processTicket={processTicket}
         />
       ) : null}
     </main>

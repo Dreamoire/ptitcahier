@@ -68,6 +68,7 @@ CREATE TABLE ticket (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     content VARCHAR(1000) NOT NULL,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed TINYINT(1) NOT NULL DEFAULT 0,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (parent_id) REFERENCES parent(id),
@@ -418,4 +419,3 @@ VALUES
 ('Student148', 'Child148', '2012-04-08', 5, 148),
 ('Student149', 'Child149', '2013-05-09', 5, 149),
 ('Student150', 'Child150', '2014-06-10', 5, 150);
-

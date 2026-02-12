@@ -6,4 +6,5 @@ export type Ticket = {
   parentFirstName: string;
   parentLastName: string;
   studentNames: string;
+  processed: boolean;
 };

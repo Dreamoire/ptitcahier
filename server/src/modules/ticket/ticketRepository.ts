@@ -33,6 +33,7 @@ class TicketRepository {
         t.id,
         t.content,
         t.created_at AS createdAt,        
+        t.processed AS processed,
         tc.name AS ticketCategoryName,
         p.first_name AS parentFirstName,
         p.last_name AS parentLastName,
@@ -72,6 +73,15 @@ class TicketRepository {
       [parentId],
     );
     return rows;
+  }
+
+  async updateStatus(ticketId: number, processed: boolean) {
+    const [result] = await databaseClient.query<Result>(
+      "UPDATE ticket SET processed = ? WHERE id = ?",
+      [processed ? 1 : 0, ticketId],
+    );
+
+    return result.affectedRows > 0;
   }
 }
 export default new TicketRepository();
