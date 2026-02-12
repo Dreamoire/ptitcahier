@@ -1,16 +1,10 @@
 import databaseClient from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
-
-type Announcement = {
-  id: number;
-  title: string;
-  content: string;
-  announcementCategoryId: number;
-  studentIds: number[];
-};
+import type { Announcement } from "../../types/express/Announcement";
+import type { NewAnnouncement } from "../../types/express/newAnnouncement";
 
 class AnnouncementRepository {
-  async create(newAnnouncement: Omit<Announcement, "id">, schoolId: number) {
+  async create(newAnnouncement: NewAnnouncement, schoolId: number) {
     const { title, content, announcementCategoryId, studentIds } =
       newAnnouncement;
 
@@ -151,7 +145,7 @@ class AnnouncementRepository {
       a.title, 
       a.content, 
       a.created_at AS createdAt,
-      ac.name AS categoryName,
+      ac.name AS announcementCategoryName,
       COUNT(DISTINCT s.id) AS studentCount,
       (
         SELECT COUNT(*) 
@@ -160,7 +154,7 @@ class AnnouncementRepository {
         WHERE c2.school_id = ?
       ) AS totalStudents,
       GROUP_CONCAT(DISTINCT CONCAT(s.first_name, ' ', s.last_name) SEPARATOR ', ') AS studentNames,
-      GROUP_CONCAT(DISTINCT c.classroom_name SEPARATOR ',') AS classroomNames
+      GROUP_CONCAT( c.classroom_name SEPARATOR ',') AS classroomNames
     FROM announcement AS a
     JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
     LEFT JOIN announcement_student AS ans ON ans.announcement_id = a.id
@@ -184,4 +178,5 @@ class AnnouncementRepository {
     return rows as Announcement[];
   }
 }
+
 export default new AnnouncementRepository();
