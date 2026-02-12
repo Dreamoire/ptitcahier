@@ -1,11 +1,10 @@
 import type { RequestHandler } from "express";
 import classroomRepository from "./classroomRepository";
 
-const SCHOOL_ID = 1;
-
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
-    const classrooms = await classroomRepository.readAllBySchool(SCHOOL_ID);
+    const schoolId = 1;
+    const classrooms = await classroomRepository.readAllBySchool(schoolId);
     res.json(classrooms);
   } catch (err) {
     next(err);

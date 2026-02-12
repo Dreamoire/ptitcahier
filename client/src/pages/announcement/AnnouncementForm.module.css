@@ -1,13 +1,13 @@
 .form {
   background: rgba(248, 250, 252, 0.8);
-  width: 100%;
-  max-width: 900px;
+  width: 95%;
+  max-width: 700px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 1.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
 }
@@ -15,15 +15,16 @@
 .form h1 {
   margin: 0 auto;
   text-align: center;
+  font-size: 1.5rem;
 }
 
 .form_instructions {
   color: var(--primary-color-text);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-text);
+  font-size: 0.9rem;
   text-align: center;
-  margin: -1.5rem auto 0;
-  padding: 0.5rem;
+  margin: -1rem auto 0;
+  padding: 0.4rem;
   width: 100%;
   border-bottom: 1px solid var(--dark-blue);
 }
@@ -35,13 +36,13 @@
 
 .text_input {
   width: 100%;
-  padding: 0.6rem 0.8rem;
+  padding: 0.5rem 0.7rem;
   border: 1px solid var(--light-grey);
   border-radius: var(--border-radius);
   background: var(--white);
   color: var(--black);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-text);
+  font-size: 0.9rem;
 }
 
 .fieldset_categories {
@@ -52,11 +53,11 @@
 .fieldset_categories ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .fieldset_categories li {
-  flex: 0 0 calc(50% - 0.5rem);
+  flex: 0 0 calc(50% - 0.375rem);
 }
 
 .category_input {
@@ -70,18 +71,19 @@
   background-color: var(--white);
   display: flex;
   align-items: center;
-  padding-right: 0.5rem;
-  gap: 0.5rem;
+  padding-right: 0.4rem;
+  gap: 0.4rem;
   cursor: pointer;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;
   transition: transform 180ms ease, box-shadow 180ms ease;
+  height: 60px;
 }
 
 .category_button:hover {
   border: 1px solid var(--parent-blue);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -92,8 +94,8 @@
 
 .category_icon_wrapper {
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,8 +107,8 @@
 }
 
 .category_icon {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2rem;
+  height: 2rem;
   color: var(--white);
 }
 
@@ -117,57 +119,59 @@
   justify-content: center;
   color: var(--black);
   font-family: var(--font-family-card-title);
-  font-size: var(--font-size-form-label);
+  font-size: 0.9rem; /* Réduit */
   text-align: center;
+  line-height: 1.2;
 }
 
 .form_label {
   color: var(--primary-color-title);
   font-family: var(--font-family-primary-title);
-  font-size: var(--font-size-form-label);
-  padding-bottom: 0.5rem;
+  font-size: 1rem;
+  padding-bottom: 0.4rem;
 }
 
 .filter_section {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .filter_row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
 .selection_summary {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   border-radius: var(--border-radius);
   border: 1px solid var(--light-grey);
   background: var(--white);
   box-shadow: var(--box-shadow);
+  min-height: 40px;
 }
 
 .chip_row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .summary_chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.6rem;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 999px;
   background: #c2d9f0;
   color: var(--black);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-text);
+  font-size: 0.8rem;
 }
 
 .chip_remove {
@@ -176,12 +180,13 @@
   cursor: pointer;
   font-weight: 700;
   color: var(--dark-grey);
+  font-size: 0.9em;
 }
 
 .summary_empty {
   color: var(--dark-grey);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-text);
+  font-size: 0.85rem;
 }
 
 .fieldset_names {
@@ -190,11 +195,11 @@
 }
 
 .fieldset_names_wrapper {
-  padding-top: 1rem;
+  padding-top: 0.75rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem; /* Réduit de 2rem */
 }
 
 .fieldset_names_wrapper legend {
@@ -209,7 +214,7 @@
 
 .fieldset_names ul {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .checkbox_label {
@@ -218,8 +223,8 @@
   color: var(--dark-grey);
   border: 1px solid var(--light-grey);
   font-family: var(--font-family-button);
-  font-size: var(--font-size-form-label);
-  padding: 0.3em 0.5em;
+  font-size: 0.85rem; /* Réduit */
+  padding: 0.25em 0.5em; /* Padding réduit */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   cursor: pointer;
@@ -229,7 +234,7 @@
 .checkbox_label:hover {
   border: 1px solid var(--parent-blue);
   color: var(--parent-blue);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -246,8 +251,8 @@
 
 .textarea {
   width: 100%;
-  height: 150px;
-  padding: 1rem;
+  height: 120px;
+  padding: 0.75rem;
   resize: none;
   overflow-wrap: break-word;
   overflow-y: auto;
@@ -258,7 +263,7 @@
   color: var(--black);
   background-color: var(--white);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-text);
+  font-size: 0.9rem;
 }
 
 .textarea_wrapper {
@@ -267,42 +272,46 @@
 
 .character_counter {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 8px;
+  right: 8px;
   color: var(--dark-grey);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-text);
+  font-size: 0.75rem;
 }
 
 .ticket_buttons_container {
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .ticket_buttons_container button {
   flex: 1;
-  max-width: 350px;
+  max-width: 280px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
 }
 
 .warning {
   color: var(--red);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-card-title);
+  font-size: 0.9rem;
   text-align: center;
   margin: 0 auto;
 }
 
 @media (max-width: 768px) {
   .form {
-    width: 95%;
+    width: 96%;
+    padding: 1rem;
   }
 }
 
 @media (max-width: 600px) {
   .form {
-    padding: 1rem;
+    padding: 0.75rem;
+    gap: 1rem;
   }
 
   .fieldset_categories ul {
@@ -316,14 +325,23 @@
     max-width: calc(50% - 0.25rem);
   }
 
+  .category_button {
+    height: auto;
+    min-height: 50px;
+  }
+
   .category_icon_wrapper {
-    width: 35px;
-    height: 80px;
+    width: 40px;
+    height: 50px;
   }
 
   .category_icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .category_name {
+    font-size: 0.8rem;
   }
 
   .fieldset_names_wrapper {

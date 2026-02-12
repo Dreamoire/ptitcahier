@@ -14,6 +14,12 @@ router.post(
   announcementActions.validate,
   announcementActions.add,
 );
+router.delete("/announcements/:id", announcementActions.destroy);
+router.put(
+  "/announcements/:id",
+  announcementActions.validateUpdate,
+  announcementActions.update,
+);
 
 router.get("/announcements-categories", announcementCategoryActions.browseAll);
 
@@ -36,5 +42,8 @@ router.get("/schools/me/tickets", ticketActions.browseBySchool);
 router.post("/tickets", ticketActions.validate, ticketActions.add);
 
 router.get("/ticket-categories", ticketCategoryActions.browseAll);
+
+router.get("/school/announcements", announcementActions.browseBySchool);
+router.get("/school/classrooms", classroomActions.browseBySchool);
 
 export default router;

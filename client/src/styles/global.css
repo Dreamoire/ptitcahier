@@ -41,7 +41,7 @@
   color: var(--white);
   font-family: var(--font-family-button);
   font-size: var(--font-size-button);
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);

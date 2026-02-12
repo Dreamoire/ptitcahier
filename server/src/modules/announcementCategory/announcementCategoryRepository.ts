@@ -4,7 +4,7 @@ import type { Result, Rows } from "../../../database/client";
 class AnnouncementCategoryRepository {
   async readAll() {
     const [rows] = await databaseClient.query<Rows>(
-      "SELECT id, name FROM announcement_category ORDER BY name ASC",
+      "SELECT id, name, color, icon FROM announcement_category ORDER BY name ASC",
     );
 
     return rows;
