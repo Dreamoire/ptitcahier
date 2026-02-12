@@ -5,16 +5,24 @@ import SchoolLayout from "./layouts/SchoolLayout";
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
 import HomeParentView from "./pages/home/HomeParentView";
 import HomeSchoolView from "./pages/home/HomeSchoolView";
+import PublicHome from "./pages/home/PublicHome";
 import Login from "./pages/login/Login";
+import Register from "./pages/login/Register";
 import Redirection from "./pages/redirection/Redirection";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <PublicHome />,
+  },
+
+  {
     element: <AuthLayout />,
     children: [
-      { path: "/", element: <Login /> },
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
       { path: "/redirection", element: <Redirection /> },
 
       {
