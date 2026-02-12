@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom";
 import schoolVoltaire from "../assets/images/school_voltaire.jpg";
 import schoolZola from "../assets/images/school_zola.jpg";
-import NavBarSchool from "../components/NavBar/NavBarSchool";
+import NavBar from "../components/NavBar/NavBar";
 import type { OutletAuthContext } from "../types/OutletAuthContext";
 import type { School } from "../types/School";
 import styles from "./Layout.module.css";
@@ -21,7 +21,7 @@ function SchoolLayout() {
   if (auth === undefined) return <div>Loading...</div>;
 
   if (auth === null) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (auth.role !== "school") {
@@ -42,9 +42,10 @@ function SchoolLayout() {
   return (
     <>
       <div className={styles.layout}>
-        <NavBarSchool
-          logoUrl={schoolLogos[school]}
-          schoolName={schoolProfile.name}
+        <NavBar
+          variant="school"
+          avatarUrl={schoolLogos[school]}
+          displayName={schoolProfile.name}
         />
 
         <div className={styles.main}>

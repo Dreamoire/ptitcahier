@@ -37,6 +37,28 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   z-index: 1010;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 220ms
+    cubic-bezier(0.4, 0, 0.2, 1), background 220ms ease, color 220ms ease;
+}
+
+.toggleButton:hover {
+  transform: translateY(-2px) scale(1.06);
+  background: linear-gradient(
+    135deg,
+    var(--parent-blue) 0%,
+    color-mix(in srgb, var(--parent-blue) 70%, white) 100%
+  );
+  color: var(--white);
+  box-shadow: 0 10px 25px rgba(30, 108, 176, 0.35), 0 0 0 4px
+    rgba(30, 108, 176, 0.15);
+}
+
+.toggleButton:hover .toggleIcon {
+  transform: scale(1.1);
+}
+
+.toggleIcon {
+  transition: transform 200ms ease, color 200ms ease;
 }
 
 .profile {
@@ -133,27 +155,16 @@
   border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.logoutButton {
-  width: 100%;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 10px;
-  color: var(--dark-grey);
-  cursor: pointer;
-}
-
 .footerLogo {
-  width: 40px;
+  width: 50px;
   height: auto;
 }
 
 .footerText {
   font-size: 0.8rem;
   color: var(--dark-grey);
+  font-family: var(--font-family-text);
 }
-
-/* Mobile */
 
 .mobileNavParent {
   position: fixed;
@@ -172,11 +183,7 @@
   .mobileNavParent {
     display: block;
     padding: 10px 10px clamp(15px, 4vh, 25px);
-    background: color-mix(
-      in srgb,
-      var(--parent-blue) 20%,
-      var(--background-white)
-    );
+    background: color-mix(in srgb, var(--background-white) 35%, transparent);
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);

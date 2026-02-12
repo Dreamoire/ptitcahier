@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { CalendarDays, Home, Mail, Newspaper, School } from "lucide-react";
+import { CalendarDays, Home, Mail, Newspaper } from "lucide-react";
 
 export type NavItem = {
   to: string;
@@ -14,20 +14,20 @@ export const parentNavItems: NavItem[] = [
     Icon: Home,
   },
   {
-    to: "/parent/fil-actualite",
+    to: "/parent/announcements",
     label: "Fil d'actualité",
     Icon: Newspaper,
   },
   {
-    to: "/parent/demande-ecole",
+    to: "/parent/tickets",
     label: "Demande à l'école",
     Icon: Mail,
   },
-  {
-    to: "/parent/agenda",
-    label: "Agenda",
-    Icon: CalendarDays,
-  },
+  // {
+  //   to: "/parent/agenda",
+  //   label: "Agenda",
+  //   Icon: CalendarDays,
+  // },
 ];
 
 export const schoolNavItems: NavItem[] = [
@@ -37,18 +37,18 @@ export const schoolNavItems: NavItem[] = [
     Icon: Home,
   },
   {
-    to: "/school/fil-actualite",
+    to: "/school/announcements",
     label: "Fil d'actualité",
     Icon: Newspaper,
   },
   {
     to: "/school/tickets",
-    label: "Demandes à l'école",
-    Icon: School,
+    label: "Gestion des tickets",
+    Icon: Mail,
   },
-  {
-    to: "/school/agenda",
-    label: "Agenda",
-    Icon: CalendarDays,
-  },
+  // {
+  //   to: "/school/agenda",
+  //   label: "Agenda",
+  //   Icon: CalendarDays,
+  // },
 ];
