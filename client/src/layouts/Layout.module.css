@@ -1,0 +1,14 @@
+.layout {
+  min-height: 100vh;
+}
+
+.main {
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-left: 0;
+    padding-bottom: 84px;
+  }
+}

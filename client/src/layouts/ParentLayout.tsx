@@ -1,7 +1,9 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom";
-import LogoutButton from "../components/LogoutButton/LogoutButton";
+import parentAvatar from "../assets/images/parent_icon.jpg";
+import NavBarParent from "../components/NavBar/NavBarParent";
 import type { Parent } from "../types/Auth";
 import type { OutletAuthContext } from "../types/OutletAuthContext";
+import styles from "./Layout.module.css";
 
 function ParentLayout() {
   const { auth, setAuth } = useOutletContext<OutletAuthContext>();
@@ -20,17 +22,17 @@ function ParentLayout() {
 
   return (
     <>
-      <div>
-        <div>
-          PARENT NAV BAR ---- Logged in as : {auth.role}--
-          {parentProfile.firstName}--{parentProfile.lastName} <LogoutButton />
-        </div>
-        <div>
+      <div className={styles.layout}>
+        <NavBarParent
+          avatarUrl={parentAvatar}
+          parentName={parentProfile.firstName}
+        />
+
+        <div className={styles.main}>
           <Outlet context={{ auth, setAuth }} />
         </div>
       </div>
     </>
   );
 }
-
 export default ParentLayout;

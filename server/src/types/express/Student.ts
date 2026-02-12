@@ -5,4 +5,5 @@ export type Student = {
   bornAt: Date;
   classroomId: number;
   parentId: number;
+  schoolId: number;
 };

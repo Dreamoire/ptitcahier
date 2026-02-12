@@ -2,7 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
+import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
+import AnnouncementsSchoolView from "./pages/announcement/AnnouncementsSchoolView";
 import HomeParentView from "./pages/home/HomeParentView";
 import HomeSchoolView from "./pages/home/HomeSchoolView";
 import PublicHome from "./pages/home/PublicHome";
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
         element: <SchoolLayout />,
         children: [
           { path: "/school/home", element: <HomeSchoolView /> },
+          {
+            path: "/school/announcements",
+            element: <AnnouncementsSchoolView />,
+          },
+          {
+            path: "/school/announcements/new",
+            element: <AnnouncementNew />,
+          },
           { path: "/school/tickets", element: <Tickets /> },
         ],
       },

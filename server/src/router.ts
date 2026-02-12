@@ -1,6 +1,8 @@
 import express from "express";
 import announcementActions from "./modules/announcement/announcementActions";
+import announcementCategoryActions from "./modules/announcementCategory/announcementCategoryActions";
 import authActions from "./modules/auth/authActions";
+import classroomActions from "./modules/classroom/classroomActions";
 import schoolActions from "./modules/school/schoolActions";
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
@@ -20,6 +22,8 @@ router.post(
 );
 
 router.use(authActions.verifyToken);
+
+router.get("/announcements-categories", announcementCategoryActions.browseAll);
 
 // PARENT protected routes
 
@@ -73,5 +77,16 @@ router.get(
   authActions.verifyRole("school"),
   ticketActions.browseBySchool,
 );
+
+router.post(
+  "/announcements",
+  announcementActions.validate,
+  announcementActions.add,
+);
+
+router.get("/schools/me/classrooms", classroomActions.browseBySchool);
+router.get("/schools/me/students", studentActions.browseBySchool);
+router.get("/classrooms/:id/students", studentActions.browseByClassroom);
+router.get("/schools/me/announcements", announcementActions.browseBySchool);
 
 export default router;

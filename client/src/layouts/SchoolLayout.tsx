@@ -1,7 +1,10 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom";
-import LogoutButton from "../components/LogoutButton/LogoutButton";
+import schoolVoltaire from "../assets/images/school_voltaire.jpg";
+import schoolZola from "../assets/images/school_zola.jpg";
+import NavBarSchool from "../components/NavBar/NavBarSchool";
 import type { OutletAuthContext } from "../types/OutletAuthContext";
 import type { School } from "../types/School";
+import styles from "./Layout.module.css";
 
 function SchoolLayout() {
   const { auth, setAuth } = useOutletContext<OutletAuthContext>();
@@ -27,14 +30,24 @@ function SchoolLayout() {
 
   const schoolProfile = auth.profile as School;
 
+  type SchoolKey = "voltaire" | "zola";
+
+  const school: SchoolKey = "voltaire";
+
+  const schoolLogos: Record<SchoolKey, string> = {
+    voltaire: schoolVoltaire,
+    zola: schoolZola,
+  };
+
   return (
     <>
-      <div>
-        <div>
-          SCHOOL NAV BAR ---- Logged in as : {auth.role}--
-          {schoolProfile.name} <LogoutButton />
-        </div>
-        <div>
+      <div className={styles.layout}>
+        <NavBarSchool
+          logoUrl={schoolLogos[school]}
+          schoolName={schoolProfile.name}
+        />
+
+        <div className={styles.main}>
           <Outlet context={{ auth, setAuth }} />
         </div>
       </div>

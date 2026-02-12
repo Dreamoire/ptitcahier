@@ -4,5 +4,8 @@ export type Announcement = {
   content: string;
   createdAt: Date;
   announcementCategoryName: string;
-  studentNames: string;
+  studentNames?: string;
+  studentCount?: number;
+  totalStudents?: number;
+  classroomNames?: string;
 };

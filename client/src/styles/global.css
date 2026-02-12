@@ -23,7 +23,7 @@
 }
 
 .school-background {
-  background-color: var(--grey-background);
+  background-color: var(--background-grey);
   min-height: 100vh;
   padding-top: 2rem;
 }
