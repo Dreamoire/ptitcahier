@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import logo_site from "../../assets/images/logo_site.png";
+import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
@@ -37,8 +37,12 @@ function AnnouncementsParentView() {
 
   return (
     <main className="parent-background">
-      <header className={styles.an_title}>
-        <img src={logo_site} alt="Logo" className={styles.logo} />
+      <header className={styles.title}>
+        <img
+          src={ptit_cahier_logo_original}
+          alt="Le P'tit Cahier"
+          className={styles.logo}
+        />
         <h1 className="primary-title">Fil d'actualité</h1>
       </header>
 

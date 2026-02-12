@@ -3,8 +3,8 @@ import studentRepository from "./studentRepository";
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 1;
-    //hard coded for now
+    const parentId = Number(req.auth.sub);
+
     const students = await studentRepository.readAllByParent(parentId);
 
     res.json(students);

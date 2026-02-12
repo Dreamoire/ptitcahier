@@ -5,10 +5,19 @@ import schoolActions from "./modules/school/schoolActions";
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
 import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
+import userActions from "./modules/user/userActions";
 
 const router = express.Router();
 
 router.post("/login", authActions.login);
+
+router.post(
+  "/schools",
+  schoolActions.validate,
+  authActions.hashPassword,
+  userActions.add,
+  schoolActions.add,
+);
 
 router.use(authActions.verifyToken);
 

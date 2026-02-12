@@ -12,7 +12,7 @@ CREATE TABLE announcement_category (
 
 CREATE TABLE ticket_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(120) NOT NULL UNIQUE,
     description VARCHAR(120),
     color VARCHAR(6) NOT NULL,
     icon VARCHAR(20) NOT NULL
@@ -20,15 +20,15 @@ CREATE TABLE ticket_category (
 
 CREATE TABLE school (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(120) NOT NULL,
     user_id INT UNSIGNED NOT NULL UNIQUE,
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 CREATE TABLE parent (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    last_name VARCHAR(100) NOT NULL,
-    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(120) NOT NULL,
+    first_name VARCHAR(120) NOT NULL,
     genre VARCHAR(1) NOT NULL,
     user_id INT UNSIGNED NOT NULL UNIQUE,
     FOREIGN KEY (user_id) REFERENCES user(id)

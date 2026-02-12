@@ -8,11 +8,11 @@ import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import styles from "./Login.module.css";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("parent");
-  const [showPassword, setShowPassword] = useState(false);
-  const [parentMessage, setParentMessage] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [role, setRole] = useState<string>("parent");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [parentMessage, setParentMessage] = useState<boolean>(false);
   const [submitValidationWarning, setSubmitValidationWarning] =
     useState<boolean>(false);
   const [invalidLoginWarning, setInvalidLoginWarning] =
@@ -25,6 +25,7 @@ function Login() {
   const clearWarnings = () => {
     if (submitValidationWarning) setSubmitValidationWarning(false);
     if (invalidLoginWarning) setInvalidLoginWarning(false);
+    if (loginErrorWarning) setLoginErrorWarning(false);
   };
 
   const onRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,12 +50,10 @@ function Login() {
   const loginUser: FormEventHandler = async (event) => {
     event.preventDefault();
 
-    const trimmedEmail = email.trim();
-    const emailInvalid =
-      !trimmedEmail.includes("@") || !trimmedEmail.includes(".");
-    const passwordInvalid = !password || password.length < 6;
+    const emailInvalid = !email.includes("@") || !email.includes(".");
+    const passwordInvalid = !password;
 
-    if (!trimmedEmail || passwordInvalid || emailInvalid) {
+    if (emailInvalid || passwordInvalid) {
       setSubmitValidationWarning(true);
       return;
     }
@@ -160,7 +159,9 @@ function Login() {
 
               <div
                 className={`${styles.input_wrapper} ${
-                  submitValidationWarning ? styles.input_error : ""
+                  submitValidationWarning || invalidLoginWarning
+                    ? styles.input_error
+                    : ""
                 }`}
               >
                 <label htmlFor="email" className="sr-only">
@@ -171,10 +172,16 @@ function Login() {
                   id="email"
                   type="email"
                   value={email}
+                  maxLength={255}
                   autoComplete="email"
                   onChange={(event) => {
                     setEmail(event.target.value);
                     clearWarnings();
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === " ") {
+                      event.preventDefault();
+                    }
                   }}
                   placeholder="Email"
                   className={styles.input_field}
@@ -183,7 +190,9 @@ function Login() {
 
               <div
                 className={`${styles.input_wrapper} ${
-                  submitValidationWarning ? styles.input_error : ""
+                  submitValidationWarning || invalidLoginWarning
+                    ? styles.input_error
+                    : ""
                 }`}
               >
                 <label htmlFor="password" className="sr-only">
@@ -194,9 +203,15 @@ function Login() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
+                  maxLength={120}
                   onChange={(event) => {
                     setPassword(event.target.value);
                     clearWarnings();
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === " ") {
+                      event.preventDefault();
+                    }
                   }}
                   placeholder="Mot de passe"
                   className={styles.input_field}
@@ -228,7 +243,11 @@ function Login() {
                 )}
 
                 {role === "school" && (
-                  <button type="button" className="non-primary-button">
+                  <button
+                    type="button"
+                    className="non-primary-button"
+                    onClick={() => navigate("/register")}
+                  >
                     Créer un compte
                   </button>
                 )}

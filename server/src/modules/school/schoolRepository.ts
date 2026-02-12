@@ -1,8 +1,17 @@
 import databaseClient from "../../../database/client";
-import type { Rows } from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
 import type { School } from "../../types/express/School";
 
 class SchoolRepository {
+  async create(schoolName: string, newUserId: number) {
+    const [result] = await databaseClient.query<Result>(
+      "INSERT INTO school (name, user_id) values (?, ?)",
+      [schoolName, newUserId],
+    );
+
+    return result.insertId;
+  }
+
   async readByUserId(userId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 

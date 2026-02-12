@@ -40,7 +40,7 @@ const validate: RequestHandler = async (req, res, next) => {
         .required(),
     });
 
-    const { error } = newTicket.validate(req.body);
+    const { error, value } = newTicket.validate(req.body);
 
     if (error) {
       res
@@ -50,7 +50,7 @@ const validate: RequestHandler = async (req, res, next) => {
     }
 
     const currentTicketCategory = await ticketCategoryRepository.readById(
-      req.body.ticketCategoryId,
+      value.ticketCategoryId,
     );
 
     if (!currentTicketCategory) {
@@ -62,7 +62,7 @@ const validate: RequestHandler = async (req, res, next) => {
 
     const parentId = Number(req.auth.sub);
 
-    const studentIds = req.body.studentIds;
+    const studentIds = value.studentIds;
 
     for (const studentId of studentIds) {
       const currentStudent = await studentRepository.read(studentId);
