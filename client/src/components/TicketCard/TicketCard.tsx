@@ -72,7 +72,7 @@ function TicketCard({
 
       <button
         type="button"
-        className={styles.cardButton}
+        className={styles.overlayButton}
         onClick={() => onClick(ticket)}
         aria-label={`Ouvrir le ticket de ${parentFullName}`}
       />
