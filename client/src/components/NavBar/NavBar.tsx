@@ -1,24 +1,27 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 import siteLogo from "../../assets/images/logo_site.png";
+import type { Parent } from "../../types/Auth";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
+import type { School } from "../../types/School";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import parentStyles from "./NavBarParent.module.css";
 import schoolStyles from "./NavBarSchool.module.css";
-import { parentNavItems, schoolNavItems } from "./navItems";
+import { getNavItems } from "./navItems";
 
-type NavBarVariant = "parent" | "school";
+function NavBar() {
+  const { auth } = useOutletContext<OutletAuthContext>();
 
-type NavBarProps = {
-  variant: NavBarVariant;
-  avatarUrl: string;
-  displayName: string;
-};
+  const displayName =
+    auth?.role === "parent"
+      ? (auth?.profile as Parent).firstName
+      : (auth?.profile as School).name;
 
-function NavBar({ variant, avatarUrl, displayName }: NavBarProps) {
-  const isSchool = variant === "school";
+  const isSchool = auth?.role === "school";
 
   const styles = isSchool ? schoolStyles : parentStyles;
-  const items = isSchool ? schoolNavItems : parentNavItems;
+
+  const items = getNavItems(auth);
 
   const mobileContainerClass = isSchool
     ? schoolStyles.mobileNav
@@ -29,6 +32,8 @@ function NavBar({ variant, avatarUrl, displayName }: NavBarProps) {
   const toggleCollapse = () => {
     setIsCollapsed((prev) => !prev);
   };
+
+  const avatarSrc = auth?.profile.photoUrl;
 
   return (
     <>
@@ -50,7 +55,11 @@ function NavBar({ variant, avatarUrl, displayName }: NavBarProps) {
         </button>
 
         <div className={styles.profile}>
-          <img src={avatarUrl} alt="" className={styles.avatar} />
+          <img
+            src={avatarSrc || "/images/default_avatar.png"}
+            alt={displayName}
+            className={styles.avatar}
+          />
           {!isCollapsed ? (
             <span className={styles.displayName}>{displayName}</span>
           ) : null}
@@ -81,7 +90,7 @@ function NavBar({ variant, avatarUrl, displayName }: NavBarProps) {
           {!isCollapsed ? <LogoutButton /> : null}
 
           <NavLink
-            to="/"
+            to={`/${auth?.role}/home`}
             className={styles.footerLogoLink}
             aria-label="Accueil"
           >
@@ -96,7 +105,11 @@ function NavBar({ variant, avatarUrl, displayName }: NavBarProps) {
 
       <nav className={mobileContainerClass} aria-label="Navigation mobile">
         <div className={styles.mobileRow}>
-          <NavLink to="/" className={styles.mobileHome} aria-label="Accueil">
+          <NavLink
+            to={`/${auth?.role}/home`}
+            className={styles.mobileHome}
+            aria-label="Accueil"
+          >
             <img src={siteLogo} alt="Logo" className={styles.mobileLogo} />
           </NavLink>
 

@@ -1,9 +1,6 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom";
-import schoolVoltaire from "../assets/images/school_voltaire.jpg";
-import schoolZola from "../assets/images/school_zola.jpg";
 import NavBar from "../components/NavBar/NavBar";
 import type { OutletAuthContext } from "../types/OutletAuthContext";
-import type { School } from "../types/School";
 import styles from "./Layout.module.css";
 
 function SchoolLayout() {
@@ -28,26 +25,10 @@ function SchoolLayout() {
     return <Navigate to="/redirection" replace />;
   }
 
-  const schoolProfile = auth.profile as School;
-
-  type SchoolKey = "voltaire" | "zola";
-
-  const school: SchoolKey = "voltaire";
-
-  const schoolLogos: Record<SchoolKey, string> = {
-    voltaire: schoolVoltaire,
-    zola: schoolZola,
-  };
-
   return (
     <>
       <div className={styles.layout}>
-        <NavBar
-          variant="school"
-          avatarUrl={schoolLogos[school]}
-          displayName={schoolProfile.name}
-        />
-
+        <NavBar />
         <div className={styles.main}>
           <Outlet context={{ auth, setAuth }} />
         </div>
