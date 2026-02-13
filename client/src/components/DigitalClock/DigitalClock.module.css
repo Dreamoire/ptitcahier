@@ -1,0 +1,56 @@
+.clockContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 25px;
+  margin-bottom: 15px;
+}
+
+.glassMorphism {
+  background: rgba(255, 255, 255, 0.554);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 1.5rem;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.clockDisplay {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.timeUnit {
+  display: inline-block;
+  min-width: 1.2ch;
+}
+
+.separator {
+  color: #0668f0;
+  margin: 0 10px;
+  animation: pulse 3s infinite;
+}
+
+.accent {
+  color: #38bff8a9;
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}

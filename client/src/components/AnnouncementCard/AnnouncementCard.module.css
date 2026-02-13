@@ -272,3 +272,14 @@
   max-height: 80vh;
   border-radius: 0.5rem;
 }
+.card_dashboard {
+  width: 320px; /* Ajuste cette largeur selon tes besoins */
+  max-width: 320px;
+  height: 520px; /* Fixer une hauteur permet d'aligner toutes les cartes */
+  margin-right: 20px; /* Espace entre les cartes du carrousel */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+.card_dashboard .mainImage {
+  height: 120px; /* On réduit un peu l'image pour laisser de la place au texte */
+  object-fit: cover;
+}

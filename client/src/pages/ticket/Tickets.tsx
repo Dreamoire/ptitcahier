@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import styles from "./Tickets.module.css";
 import TicketCard from "../../components/TicketCard/TicketCard";
-import type { Ticket } from "../../types/Ticket";
 import TicketModalViewSchool from "../../components/TicketModalViewSchool/TicketModalViewSchool";
+import type { Ticket } from "../../types/Ticket";
+import styles from "./Tickets.module.css";
 
 type UserRole = "parent" | "school";
 

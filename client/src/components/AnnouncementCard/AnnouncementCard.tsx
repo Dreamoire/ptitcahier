@@ -8,7 +8,11 @@ type AnnouncementCardProps = {
   variant?: "default" | "dashboard";
 };
 
-function AnnouncementCard({ announcement, userRole }: AnnouncementCardProps) {
+function AnnouncementCard({
+  announcement,
+  userRole,
+  variant = "default",
+}: AnnouncementCardProps) {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const dialogReference = useRef<HTMLDialogElement>(null);
 
@@ -76,7 +80,9 @@ function AnnouncementCard({ announcement, userRole }: AnnouncementCardProps) {
   };
 
   return (
-    <article className={styles.ann_card}>
+    <article
+      className={`${styles.ann_card} ${variant === "dashboard" ? styles.card_dashboard : ""}`}
+    >
       <section className={styles.content_card}>
         <header>
           <h2 className={styles.title}>{announcement.title}</h2>
