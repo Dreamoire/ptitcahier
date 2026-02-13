@@ -3,7 +3,7 @@ import schoolRepository from "./schoolRepository";
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 1;
+    const parentId = 2;
     const schoolData = await schoolRepository.findSchoolByParent(parentId);
     res.json(schoolData);
   } catch (err) {

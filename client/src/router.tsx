@@ -4,9 +4,9 @@ import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
 
 import AnnouncementNew from "./pages/announcement/AnnouncementNew";
-import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
-import AnnouncementsSchoolView from "./pages/announcement/AnnouncementsSchoolView";
+import Announcements from "./pages/announcement/Announcements";
 import HomeParentView from "./pages/home/HomeParentView";
+
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "announcements",
-        element: <AnnouncementsParentView />,
+        element: <Announcements userRole="parent" />,
       },
       {
         path: "tickets",
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "home",
-        element: <HomeParentView />,
+        element: <HomeParentView userRole="parent" />,
       },
     ],
   },
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "announcements",
-        element: <AnnouncementsSchoolView />,
+        element: <Announcements userRole="school" />,
       },
       {
         path: "announcements/new",

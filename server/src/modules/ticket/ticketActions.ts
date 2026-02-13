@@ -21,7 +21,7 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
 
 const browseRecentByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 1;
+    const parentId = 2;
     const tickets = await ticketRepository.readLastThreeByParent(parentId);
     res.json(tickets);
   } catch (err) {
@@ -61,7 +61,7 @@ const validate: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const parentId = 1;
+    const parentId = 2;
     // parent Id hard coded for now
     const studentIds = req.body.studentIds;
 
