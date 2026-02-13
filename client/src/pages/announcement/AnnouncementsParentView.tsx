@@ -28,10 +28,10 @@ function AnnouncementsParentView() {
       headers: { Authorization: `Bearer ${auth?.token}` },
     })
       .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          navigate("/redirection");
-          return;
-        }
+        // if (res.status === 401 || res.status === 403) {
+        //   navigate("/redirection");
+        //   return;
+        // }
 
         // if (!res.ok) {
         // setLoadingError(true);
@@ -44,7 +44,7 @@ function AnnouncementsParentView() {
         if (!students) return;
         setStudents(students);
       });
-  }, [auth, navigate]);
+  }, [auth]);
 
   useEffect(() => {
     const url = new URL(

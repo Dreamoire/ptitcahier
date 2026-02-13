@@ -47,7 +47,7 @@ function Register() {
       return;
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/schools`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/register/school`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,6 @@ function Register() {
         schoolName,
         email,
         password,
-        role: "school",
       }),
     }).then((response) => {
       if (response.status === 409) {
@@ -222,7 +221,7 @@ function Register() {
             <button
               type="button"
               className="non-primary-button"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/login")}
             >
               Annuler
             </button>

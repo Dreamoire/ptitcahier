@@ -10,7 +10,6 @@ const validate: RequestHandler = async (req, res, next) => {
       schoolName: joi.string().max(120).required(),
       email: joi.string().email().max(255).lowercase().required(),
       password: joi.string().min(8).max(120).required(),
-      role: joi.string().valid("school").required(),
     });
 
     const { error, value } = newUser.validate(req.body);
@@ -31,6 +30,7 @@ const validate: RequestHandler = async (req, res, next) => {
       return;
     }
 
+    value.role = "school";
     req.body = value;
 
     next();

@@ -24,10 +24,6 @@ function TicketNew() {
       fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`, {
         headers,
       }).then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          navigate("/redirection");
-          return;
-        }
         if (!res.ok) {
           setLoadingError(true);
           return;
@@ -49,6 +45,7 @@ function TicketNew() {
         return res.json();
       }),
     ]).then(([ticketCategories, students]) => {
+      //typing
       if (!ticketCategories || !students) return;
       setTicketCategories(ticketCategories);
       setStudents(students);
@@ -89,7 +86,7 @@ function TicketNew() {
             students={students}
             onSubmit={(newTicket) => {
               setError(null);
-              fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
+              fetch(`${import.meta.env.VITE_API_URL}/api/parents/tickets`, {
                 method: "post",
                 headers: {
                   "Content-Type": "application/json",

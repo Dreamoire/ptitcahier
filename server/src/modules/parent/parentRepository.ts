@@ -9,7 +9,8 @@ class ParentRepository {
         id,
         last_name AS lastName,
         first_name AS firstName,
-        genre
+        genre,
+        photo_url AS photoUrl
         FROM parent
         WHERE user_id = ?
         LIMIT 1`,

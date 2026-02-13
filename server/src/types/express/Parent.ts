@@ -3,4 +3,5 @@ export type Parent = {
   lastName: string;
   firstName: string;
   genre: string;
+  photoUrl: string;
 };

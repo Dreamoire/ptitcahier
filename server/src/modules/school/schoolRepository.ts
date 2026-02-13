@@ -16,7 +16,8 @@ class SchoolRepository {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
         id,
-        name
+        name,
+        photo_url AS photoUrl
         FROM school
         WHERE user_id = ?
         LIMIT 1`,

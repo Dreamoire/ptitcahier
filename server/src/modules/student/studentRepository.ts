@@ -48,7 +48,7 @@ class StudentRepository {
 		s.first_name AS firstname,
 		s.last_name AS lastname,
 		s.classroom_id AS classroomId,
-		c.classroom_name AS classroomName
+		c.name AS classroomName
 		FROM student s
 		JOIN classroom c ON c.id = s.classroom_id
 		WHERE c.school_id = ?

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import AnnouncementForm from "./AnnouncementForm";
 import styles from "./AnnouncementNew.module.css";
 
@@ -22,18 +23,30 @@ function AnnouncementNew() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { auth } = useOutletContext<OutletAuthContext>();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/announcements-categories`)
-      .then((res) => res.json())
-      .then((announcementCategories) =>
-        setAnnouncementCategories(announcementCategories),
-      );
+    const headers = { Authorization: `Bearer ${auth?.token}` };
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students`)
-      .then((res) => res.json())
-      .then((students) => setStudents(students));
-  }, []);
+    fetch(`${import.meta.env.VITE_API_URL}/api/announcement-categories`, {
+      headers,
+    })
+      .then((res) => res.json()) //handle errors
+      .then((announcementCategories) => {
+        //typing
+        if (!announcementCategories) return;
+        setAnnouncementCategories(announcementCategories);
+      });
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students`, {
+      headers,
+    })
+      .then((res) => res.json()) //handle errors
+      .then((students: Student[] | undefined) => {
+        if (!students) return;
+        setStudents(students);
+      });
+  }, [auth]);
 
   const classrooms = (): Classroom[] => {
     const classroomsById = new Map<number, string>();
@@ -83,10 +96,11 @@ function AnnouncementNew() {
           onSubmit={(newAnnouncement) => {
             setIsSubmitting(true);
             setError(null);
-            fetch(`${import.meta.env.VITE_API_URL}/api/announcements`, {
+            fetch(`${import.meta.env.VITE_API_URL}/api/schools/announcements`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${auth?.token}`,
               },
               body: JSON.stringify(newAnnouncement),
             })
