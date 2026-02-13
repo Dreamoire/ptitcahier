@@ -38,7 +38,7 @@
   right: 12px;
   z-index: 2;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: var(--border-radius);
   border: 1px solid transparent;
   font-family: var(--font-family-button);
   font-size: 0.78rem;

@@ -147,7 +147,7 @@ function TicketModalViewSchool({
         <div className={styles.actions}>
           <button
             type="button"
-            className={styles.processButton}
+            className={"primary-button"}
             onClick={() => processTicket(ticket.id, !ticket.processed)}
           >
             {ticket.processed ? "Non traité" : "Traité"}
