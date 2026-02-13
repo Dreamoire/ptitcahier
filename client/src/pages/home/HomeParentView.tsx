@@ -6,6 +6,7 @@ import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard
 import CalendarCard from "../../components/CalendarCard/CalendarCard";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import type { Announcement } from "../../types/Announcement";
+
 import type { School } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
 import styles from "./HomeParentView.module.css";
@@ -59,10 +60,9 @@ function Home({ userRole }: HomeProps) {
       .then((data) => setSchool(data))
       .catch(() => setSchool(null));
 
-    fetch(`${API_URL}/api/parents/me/tickets/recent`)
-      .then((res) => res.json() as Promise<Ticket[]>)
-      .then((data) => setRecentTickets(data))
-      .catch(() => setRecentTickets([]));
+    fetch(`${API_URL}/api/parents/me/tickets?limit=3`)
+      .then((res) => res.json())
+      .then((recentTickets) => setRecentTickets(recentTickets));
 
     fetch(`${API_URL}/api/parents/me/announcements/recent`)
       .then((res) => res.json() as Promise<Announcement[]>)
@@ -205,6 +205,7 @@ function Home({ userRole }: HomeProps) {
                       <TicketCard
                         onClick={() => navigate("/parent/tickets")}
                         ticket={ticket}
+                        userRole={userRole}
                         variant="dashboard"
                       />
                     </li>

@@ -19,10 +19,13 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
   }
 };
 
-const browseRecentByParent: RequestHandler = async (req, res, next) => {
+const browseByParent: RequestHandler = async (req, res, next) => {
   try {
+    // A modifier avec l'id de connexion
     const parentId = 2;
-    const tickets = await ticketRepository.readLastThreeByParent(parentId);
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const tickets = await ticketRepository.readAllByParent(parentId, limit);
+
     res.json(tickets);
   } catch (err) {
     next(err);
@@ -97,7 +100,7 @@ const add: RequestHandler = async (req, res, next) => {
       studentIds: req.body.studentIds,
     };
 
-    const parentId = 1;
+    const parentId = 2;
     //parent Id hard coded for now
 
     const newInsertedTicketId = await ticketRepository.create(
@@ -115,5 +118,5 @@ export default {
   browseBySchool,
   add,
   validate,
-  browseRecentByParent,
+  browseByParent,
 };

@@ -35,11 +35,11 @@ function TicketNew() {
           {error ? <p>{error}</p> : <p>Votre ticket a été bien envoyé!</p>}
           <div className={styles.ticket_buttons_container}>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/parent/tickets")}
               type="button"
               className="non-primary-button"
             >
-              Retourner à l'accueil
+              Retourner aux demandes
             </button>
             <button
               onClick={() => {

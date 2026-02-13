@@ -57,20 +57,34 @@ class TicketRepository {
     return rows as Ticket[];
   }
 
-  async readLastThreeByParent(parentId: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT
-        t.id,
-        t.content,
-        t.created_at,        
-        tc.name AS category_name
-      FROM ticket AS t    
-      JOIN ticket_category AS tc ON t.ticket_category_id = tc.id    
-      WHERE t.parent_id = ?
-      ORDER BY t.created_at DESC
-      LIMIT 3`,
-      [parentId],
-    );
+  async readAllByParent(parentId: number, limit?: number) {
+    let sql = `
+    SELECT
+      t.id,
+      t.content,
+      t.created_at AS createdAt,        
+      tc.name AS ticketCategoryName,
+      p.first_name AS parentFirstName,
+      p.last_name AS parentLastName,
+      GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
+    FROM ticket AS t    
+    JOIN ticket_category AS tc ON t.ticket_category_id = tc.id
+    JOIN parent AS p ON t.parent_id = p.id
+    JOIN ticket_student AS ts ON ts.ticket_id = t.id
+    JOIN student AS s ON ts.student_id = s.id
+    WHERE t.parent_id = ?
+    GROUP BY t.id
+    ORDER BY t.created_at DESC
+  `;
+
+    const sqlParams: (number | string)[] = [parentId];
+
+    if (limit) {
+      sql += " LIMIT ?";
+      sqlParams.push(limit);
+    }
+
+    const [rows] = await databaseClient.query<Rows>(sql, sqlParams);
     return rows;
   }
 }

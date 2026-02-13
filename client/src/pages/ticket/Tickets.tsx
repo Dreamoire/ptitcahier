@@ -1,103 +1,80 @@
-import { useEffect, useId, useRef, useState } from "react";
-import { useLocation } from "react-router";
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import TicketModalViewSchool from "../../components/TicketModalViewSchool/TicketModalViewSchool";
 import type { Ticket } from "../../types/Ticket";
-
 import styles from "./Tickets.module.css";
 
-function Tickets() {
-  const location = useLocation();
-  const isSchoolView = location.pathname.startsWith("/school");
+type UserRole = "parent" | "school";
 
-  const headingId = useId();
-  const lastActiveElementRef = useRef<HTMLElement | null>(null);
+interface TicketsProps {
+  userRole: UserRole;
+}
 
+function Tickets({ userRole }: TicketsProps) {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [hasError, setHasError] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const backgroundClass =
+    userRole === "school" ? "school-background" : "parent-background";
+
+  const titleText =
+    userRole === "school" ? "Gestion des Tickets" : "Mes Demandes";
 
   useEffect(() => {
-    const endpoint = isSchoolView
-      ? "/api/schools/me/tickets"
-      : "/api/parents/me/tickets";
-
-    setIsLoading(true);
-    setHasError(false);
-
-    fetch(`${import.meta.env.VITE_API_URL}${endpoint}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+    const endpoint =
+      userRole === "school"
+        ? `${import.meta.env.VITE_API_URL}/api/schools/me/tickets`
+        : `${import.meta.env.VITE_API_URL}/api/parents/me/tickets`;
+    fetch(endpoint)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
         }
-        return res.json() as Promise<Ticket[]>;
+        return response.json() as Promise<Ticket[]>;
       })
       .then((data) => {
         setTickets(data);
-      })
-      .catch(() => {
-        setHasError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
-  }, [isSchoolView]);
-
-  const openTicket = (ticket: Ticket) => {
-    lastActiveElementRef.current = document.activeElement as HTMLElement | null;
-    setSelectedTicket(ticket);
-  };
-
-  const closeModal = () => {
-    setSelectedTicket(null);
-    requestAnimationFrame(() => {
-      lastActiveElementRef.current?.focus();
-    });
-  };
+  }, [userRole]);
 
   return (
-    <main className={styles.page} aria-labelledby={headingId}>
+    <main className={`${styles.page} ${backgroundClass}`}>
       <div className={styles.container}>
-        <h1 id={headingId} className="primary-title">
-          Tickets
-        </h1>
+        <h1 className="primary-title">{titleText}</h1>
+        {userRole === "parent" && (
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => navigate("/parent/tickets/new")}
+          >
+            + Nouvelle demande
+          </button>
+        )}
 
-        <section
-          className={styles.contentArea}
-          aria-label="Liste des tickets"
-          aria-busy={isLoading}
-        >
-          {isLoading ? (
-            <output className="text-body" aria-live="polite">
-              Chargement en cours...
-            </output>
-          ) : null}
-
-          {hasError ? (
-            <p className="text-body" role="alert">
-              Erreur lors du chargement des tickets.
-            </p>
-          ) : null}
-
-          {!isLoading && !hasError ? (
-            <ul className={styles.list} aria-label="Tickets">
-              {tickets.map((ticket) => (
-                <li key={ticket.id} className={styles.listItem}>
-                  <TicketCard ticket={ticket} onClick={openTicket} />
-                </li>
-              ))}
-            </ul>
-          ) : null}
+        <section className={styles.contentArea} aria-label="Liste des tickets">
+          <ul className={styles.list} aria-label="Tickets">
+            {tickets.map((ticket) => (
+              <li key={ticket.id} className={styles.listItem}>
+                <TicketCard
+                  ticket={ticket}
+                  onClick={setSelectedTicket}
+                  userRole={userRole}
+                />
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
 
-      {isSchoolView && selectedTicket ? (
-        <TicketModalViewSchool
-          ticket={selectedTicket}
-          onCloseComplete={closeModal}
-        />
+      {selectedTicket ? (
+        userRole === "school" ? (
+          <TicketModalViewSchool
+            ticket={selectedTicket}
+            onCloseComplete={() => setSelectedTicket(null)}
+          />
+        ) : null
       ) : null}
     </main>
   );

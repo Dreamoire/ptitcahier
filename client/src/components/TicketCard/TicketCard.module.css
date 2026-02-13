@@ -103,7 +103,7 @@
   margin-bottom: 10px;
 }
 
-.parentName {
+.nameTitle {
   margin: 0;
   font-family: var(--font-family-primary-title);
   font-size: clamp(1.05rem, 0.95rem + 1vw, 1.6rem);
