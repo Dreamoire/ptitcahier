@@ -12,6 +12,22 @@
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
+.cardButton {
+  width: 100%;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cardButton:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+  border-radius: var(--border-radius);
+}
+
 .card:hover {
   transform: translateY(-6px);
   box-shadow: var(--box-shadow-hover);
@@ -89,12 +105,9 @@
 
 .parentName {
   margin: 0;
-
   font-family: var(--font-family-primary-title);
-  font-size: clamp(1.25rem, 1.08rem + 1.10vw, 2rem);
-  font-size: var(--font-size-card-title);
+  font-size: clamp(1.05rem, 0.95rem + 1vw, 1.6rem);
   color: var(--primary-color-title);
-
   line-height: 1.2;
 }
 
@@ -125,15 +138,15 @@
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
   color: var(--primary-color-text);
-
   line-height: 1.45;
-  max-width: calc(100% - 160px);
-
+  max-width: clamp(320px, 70vw, 700px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .date {
@@ -239,11 +252,6 @@
 .card_dashboard .body {
   padding: 10px 12px;
   gap: 1px;
-}
-
-.card_dashboard .parentName {
-  font-size: 0.95rem;
-  margin-bottom: px;
 }
 
 .card_dashboard .content {
