@@ -29,8 +29,12 @@ function NavBar({ variant, avatarUrl, displayName }: NavBarProps) {
   const [isPinned, setIsPinned] = useState(false);
 
   const togglePinned = () => {
-    setIsPinned((prev) => !prev);
-    setIsCollapsed(false);
+    setIsCollapsed((prev) => {
+      const nextCollapsed = !prev;
+      setIsPinned(!nextCollapsed);
+
+      return nextCollapsed;
+    });
   };
 
   const handleMouseEnter = () => {
