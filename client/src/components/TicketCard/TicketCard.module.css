@@ -141,15 +141,15 @@
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
   color: var(--primary-color-text);
-
   line-height: 1.45;
-  max-width: calc(100% - 160px);
-
+  max-width: clamp(320px, 70vw, 700px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .date {
