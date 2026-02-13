@@ -1,8 +1,10 @@
 .ann_card {
   display: grid;
-  grid-template-columns: 1fr 150px;
-  gap: 2.5rem;
-  padding: 2.2rem;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 220px);
+  grid-template-rows: auto 1fr auto;
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+  padding: 2rem;
   margin-top: 1rem;
   border-radius: 1rem;
   border: 1px solid #f0f0f0;
@@ -10,11 +12,24 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 950px;
+  align-items: start;
 }
 
 .content_card {
-  display: flex;
-  flex-direction: column;
+  display: contents;
+}
+
+.media_block {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+}
+
+.media_block header {
+  width: 100%;
+  justify-self: start;
 }
 
 .title {
@@ -22,6 +37,7 @@
   margin: 0;
   font-size: 1.5rem;
   color: #1a1a1a;
+  text-align: center;
 }
 
 .imageTrigger {
@@ -29,37 +45,90 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  margin-top: 1.5rem;
-  margin-right: 1rem;
-  width: 90%;
+  width: min(100%, 560px);
+  justify-self: center;
 }
 
 .mainImage {
   width: 100%;
-  height: 180px;
+  height: 250px;
   object-fit: cover;
   border-radius: 0.75rem;
+  display: block;
 }
 
 .text {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: center;
+  width: min(100%, 620px);
+  margin: 0;
   font-family: var(--font-family-text);
   font-weight: var(--font-weight-text);
   font-size: var(--font-size-text);
   text-align: justify;
   line-height: 1.6;
   color: #4b5563;
-  margin-top: 1.5rem;
+}
+
+.edit_block {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: center;
+  width: min(100%, 620px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.edit_actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footerInfo {
+  display: contents;
+}
+
+.dateLabel {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+  align-self: center;
+  margin: 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+.footer_actions {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: center;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  margin-left: -0.25rem;
+}
+
+.footer_actions > * {
+  flex-shrink: 0;
 }
 
 .badgeSidebar {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   min-width: 140px;
-}
-
-.categoryBadge {
-  border-radius: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: start;
 }
 
 .tagList {
@@ -67,6 +136,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .an_badge_school_life,
@@ -77,8 +149,9 @@
 .an_badge_class,
 .an_count_tag,
 .an_badge_all_school {
-  height: 28px;
-  width: 169px;
+  min-height: 28px;
+  width: 12rem;
+  padding: 0 0.75rem;
   border-radius: 1rem;
   display: flex;
   justify-content: center;
@@ -86,7 +159,8 @@
   color: var(--white);
   font-family: var(--font-family-text);
   font-weight: var(--font-weight-text);
-  border-radius: 1rem;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .an_badge_class,
@@ -112,49 +186,95 @@
 .an_badge_default {
   background-color: #f3f4f6;
 }
+
 .an_student_tag {
   background-color: var(--dark-blue);
 }
-.dateLabel {
-  display: block;
-  margin-top: 1rem;
+
+.edit_button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--dark-blue);
+  background-color: var(--background-white);
+  color: var(--dark-blue);
+  font-family: var(--font-family-button);
   font-size: 0.85rem;
-  font-style: italic;
-  color: #9ca3af;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-@media (max-width: 640px) {
-  .announcementCard {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-  }
+.edit_button:hover {
+  background-color: #e6f6fe;
+  border-color: #6ec4f1;
+}
 
-  .badgeSidebar {
-    order: -1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-width: 100%;
-  }
+.edit_button:focus-visible {
+  outline: 3px solid rgba(13, 162, 231, 0.35);
+  outline-offset: 2px;
+}
 
-  .tagList {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+.edit_icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.edit_label {
+  line-height: 1;
+}
+
+.delete_button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #f3b6b8;
+  background-color: var(--background-white);
+  color: var(--red);
+  font-family: var(--font-family-button);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.delete_button:hover {
+  background-color: #fdebec;
+  border-color: #ee9b9e;
+}
+
+.delete_button:focus-visible {
+  outline: 3px solid rgba(229, 72, 77, 0.35);
+  outline-offset: 2px;
+}
+
+.delete_icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.delete_label {
+  line-height: 1;
 }
 
 .imageModal {
   border: none;
   background: transparent;
 }
+
 .imageModal::backdrop {
   background: rgba(0, 0, 0, 0.85);
 }
+
 .fullSizeImage {
   max-width: 90vw;
   max-height: 80vh;
   border-radius: 0.5rem;
   margin: auto;
 }
+
 .closeButton {
   position: absolute;
   top: -40px;
@@ -165,13 +285,9 @@
   border: none;
   cursor: pointer;
 }
+
 .modalWrapper {
   position: relative;
-}
-.titleText {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #1a1a1a;
 }
 
 .imageTrigger {
@@ -214,16 +330,16 @@
   text-align: center;
 }
 
-.classroomList {
+/*.classroomList {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
+}*/
 
-.classroomBadge {
+/*.classroomBadge {
   background-color: #f3f4f6;
   color: #374151;
   border: 1px solid #e5e7eb;
@@ -231,7 +347,7 @@
   border-radius: 0.5rem;
   font-size: 0.8rem;
   text-align: center;
-}
+}$*/
 
 .dateLabel {
   display: block;
@@ -242,21 +358,55 @@
 }
 
 @media (max-width: 640px) {
-  .announcementCard {
+  .ann_card {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
     padding: 1rem;
   }
 
   .badgeSidebar {
-    order: -1;
+    order: 1;
+    grid-column: 1;
+    grid-row: 2;
     flex-direction: row;
     flex-wrap: wrap;
-    min-width: 100%;
+    justify-content: center;
   }
 
-  .classroomList {
+  .tagList {
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .text,
+  .edit_block {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+  }
+
+  .dateLabel {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .footer_actions {
+    grid-column: 1;
+    grid-row: 5;
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+
+  .an_badge_school_life,
+  .an_badge_admin,
+  .an_badge_event,
+  .an_badge_default,
+  .an_student_tag,
+  .an_badge_class,
+  .an_count_tag,
+  .an_badge_all_school {
+    max-width: 12rem;
   }
 }
 

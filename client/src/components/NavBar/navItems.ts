@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { CalendarDays, Home, Mail, Newspaper, School } from "lucide-react";
+import { CalendarDays, Home, Mail, Newspaper } from "lucide-react";
 
 export type NavItem = {
   to: string;
@@ -43,8 +43,8 @@ export const schoolNavItems: NavItem[] = [
   },
   {
     to: "/school/tickets",
-    label: "Demandes à l'école",
-    Icon: School,
+    label: "Gestion des tickets",
+    Icon: Mail,
   },
   {
     to: "/school/agenda",

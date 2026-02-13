@@ -14,7 +14,6 @@ interface AnnouncementsProps {
 
 function Announcements({ userRole }: AnnouncementsProps) {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
@@ -73,6 +72,42 @@ function Announcements({ userRole }: AnnouncementsProps) {
     } else {
       setSelectedStudent(student);
     }
+  };
+
+  const deleteAnnouncement = async (announcementId: number) => {
+    fetch(
+      `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
+      {
+        method: "DELETE",
+      },
+    );
+
+    setAnnouncements((prev) =>
+      prev.filter((announcement) => announcement.id !== announcementId),
+    );
+  };
+
+  const editAnnouncement = async (announcementId: number, content: string) => {
+    fetch(
+      `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+      },
+    );
+
+    setAnnouncements((prev) =>
+      prev.map((announcement) =>
+        announcement.id === announcementId
+          ? { ...announcement, content }
+          : announcement,
+      ),
+    );
+
+    return true;
   };
 
   const navigate = useNavigate();
@@ -136,6 +171,11 @@ function Announcements({ userRole }: AnnouncementsProps) {
                 <AnnouncementCard
                   announcement={announcement}
                   userRole={userRole}
+                  onDelete={
+                    userRole === "school" ? deleteAnnouncement : undefined
+                  }
+                  onEdit={userRole === "school" ? editAnnouncement : undefined}
+                  key={announcement.id}
                 />
               </li>
             ))

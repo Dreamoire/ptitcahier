@@ -1,15 +1,29 @@
+import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Announcement } from "../../types/Announcement";
+import AnnouncementContentTextarea from "../AnnouncementContentTextarea/AnnouncementContentTextarea";
 import styles from "./AnnouncementCard.module.css";
 
 type AnnouncementCardProps = {
   announcement: Announcement;
   userRole: "parent" | "school";
   variant?: "default" | "dashboard";
+  onDelete?: (announcementId: number) => void | Promise<void>;
+  onEdit?: (
+    announcementId: number,
+    nextContent: string,
+  ) => boolean | Promise<boolean>;
 };
 
-function AnnouncementCard({ announcement, userRole }: AnnouncementCardProps) {
+function AnnouncementCard({
+  announcement,
+  userRole,
+  onDelete,
+  onEdit,
+}: AnnouncementCardProps) {
   const [isImageOpen, setIsImageOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [content, setContent] = useState(announcement.content);
   const dialogReference = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -34,6 +48,12 @@ function AnnouncementCard({ announcement, userRole }: AnnouncementCardProps) {
       setIsImageOpen(false);
     }
   };
+
+  useEffect(() => {
+    if (!isEditing) {
+      setContent(announcement.content);
+    }
+  }, [announcement.content, isEditing]);
 
   const formattedDate = new Date(announcement.createdAt).toLocaleDateString(
     "fr-FR",
@@ -75,28 +95,114 @@ function AnnouncementCard({ announcement, userRole }: AnnouncementCardProps) {
     }
   };
 
+  const canDelete = userRole === "school" && typeof onDelete === "function";
+  const canEdit = userRole === "school" && typeof onEdit === "function";
+
+  const startEditing = () => {
+    setContent(announcement.content);
+    setIsEditing(true);
+  };
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+    setContent(announcement.content);
+  };
+
+  const saveEditing = async () => {
+    if (!onEdit) return;
+
+    const trimmedContent = content.trim();
+    if (trimmedContent.length === 0) {
+      return;
+    }
+
+    if (trimmedContent === announcement.content.trim()) {
+      setIsEditing(false);
+      return;
+    }
+
+    const result = await onEdit(announcement.id, trimmedContent);
+
+    if (result !== false) {
+      setIsEditing(false);
+    }
+  };
+
   return (
     <article className={styles.ann_card}>
       <section className={styles.content_card}>
-        <header>
-          <h2 className={styles.title}>{announcement.title}</h2>
-        </header>
+        <div className={styles.media_block}>
+          <header>
+            <h2 className={styles.title}>{announcement.title}</h2>
+          </header>
 
-        <button
-          type="button"
-          className={styles.imageTrigger}
-          onClick={() => setIsImageOpen(true)}
-        >
-          <img
-            src={`https://picsum.photos/seed/${announcement.id}/800/600`}
-            alt="Illustration"
-            className={styles.mainImage}
-          />
-        </button>
+          <button
+            type="button"
+            className={styles.imageTrigger}
+            onClick={() => setIsImageOpen(true)}
+          >
+            <img
+              src={`https://picsum.photos/seed/${announcement.id}/800/600`}
+              alt="Illustration"
+              className={styles.mainImage}
+            />
+          </button>
+        </div>
 
-        <p className={styles.text}>{announcement.content}</p>
+        {isEditing ? (
+          <div className={styles.edit_block}>
+            <AnnouncementContentTextarea
+              ariaLabel="Modifier le contenu de l'annonce"
+              value={content}
+              onChange={setContent}
+            />
+            <div className={styles.edit_actions}>
+              <button
+                type="button"
+                className="non-primary-button"
+                onClick={cancelEditing}
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                className="primary-button"
+                onClick={saveEditing}
+                disabled={content.trim().length === 0}
+              >
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className={styles.text}>{announcement.content}</p>
+        )}
 
         <footer className={styles.footerInfo}>
+          {(canEdit || canDelete) && !isEditing && (
+            <div className={styles.footer_actions}>
+              {canEdit && (
+                <button
+                  type="button"
+                  className={styles.edit_button}
+                  onClick={startEditing}
+                >
+                  <Pencil className={styles.edit_icon} aria-hidden="true" />
+                  <span className={styles.edit_label}>Modifier</span>
+                </button>
+              )}
+              {canDelete && (
+                <button
+                  type="button"
+                  className={styles.delete_button}
+                  onClick={() => onDelete(announcement.id)}
+                >
+                  <Trash2 className={styles.delete_icon} aria-hidden="true" />
+                  <span className={styles.delete_label}>Supprimer</span>
+                </button>
+              )}
+            </div>
+          )}
           <time className={styles.dateLabel}>Publié le {formattedDate}</time>
         </footer>
       </section>

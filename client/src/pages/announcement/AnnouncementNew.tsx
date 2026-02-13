@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import type { AnnouncementCategory } from "../../types/AnnouncementCategory";
 import AnnouncementForm from "./AnnouncementForm";
 import styles from "./AnnouncementNew.module.css";
 
-type AnnouncementCategory = { id: number; name: string };
 type Classroom = { id: number; name: string };
 type Student = {
   id: number;
@@ -56,7 +56,7 @@ function AnnouncementNew() {
           {error ? <p>{error}</p> : <p>Votre annonce a bien été envoyée !</p>}
           <div className={styles.ticket_buttons_container}>
             <button
-              onClick={() => navigate("/school/annoucements")}
+              onClick={() => navigate("/school/announcements")}
               type="button"
               className="non-primary-button"
             >
@@ -89,21 +89,9 @@ function AnnouncementNew() {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(newAnnouncement),
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error();
-                }
-              })
-              .catch(() => {
-                setError(
-                  "Une erreur est survenue. Veuillez renvoyer votre annonce.",
-                );
-              })
-              .finally(() => {
-                setFormSent(true);
-                setIsSubmitting(false);
-              });
+            });
+            setFormSent(true);
+            setIsSubmitting(false);
           }}
         />
       )}
