@@ -3,10 +3,8 @@ import AuthLayout from "./layouts/AuthLayout";
 import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
 import AnnouncementNew from "./pages/announcement/AnnouncementNew";
-import AnnouncementsParentView from "./pages/announcement/AnnouncementsParentView";
-import AnnouncementsSchoolView from "./pages/announcement/AnnouncementsSchoolView";
-import HomeParentView from "./pages/home/HomeParentView";
-import HomeSchoolView from "./pages/home/HomeSchoolView";
+import Announcements from "./pages/announcement/Announcements";
+import Home from "./pages/home/Home";
 import PublicHome from "./pages/home/PublicHome";
 import Login from "./pages/login/Login";
 import Register from "./pages/login/Register";
@@ -30,10 +28,10 @@ const router = createBrowserRouter([
       {
         element: <ParentLayout />,
         children: [
-          { path: "/parent/home", element: <HomeParentView /> },
+          { path: "/parent/home", element: <Home userRole="parent" /> },
           {
             path: "/parent/announcements",
-            element: <AnnouncementsParentView />,
+            element: <Announcements userRole="parent" />,
           },
           { path: "/parent/tickets/new", element: <TicketNew /> },
         ],
@@ -41,10 +39,10 @@ const router = createBrowserRouter([
       {
         element: <SchoolLayout />,
         children: [
-          { path: "/school/home", element: <HomeSchoolView /> },
+          { path: "/school/home", element: <Home userRole="school" /> },
           {
             path: "/school/announcements",
-            element: <AnnouncementsSchoolView />,
+            element: <Announcements userRole="school" />,
           },
           {
             path: "/school/announcements/new",

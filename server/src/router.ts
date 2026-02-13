@@ -58,8 +58,17 @@ schoolRouter.post(
   announcementActions.validate,
   announcementActions.add,
 ); //SCHOOL creates new annonce
+schoolRouter.delete("/announcements/:id", announcementActions.destroy); //SCHOOL deletes annonce
+schoolRouter.put(
+  "/announcements/:id",
+  announcementActions.validateUpdate,
+  announcementActions.update,
+); //SCHOOL A FAIRE
 
 router.use("/parents", parentRouter);
 router.use("/schools", schoolRouter);
+
+// router.get("/school/announcements", announcementActions.browseBySchool);
+// router.get("/school/classrooms", classroomActions.browseBySchool);
 
 export default router;

@@ -14,8 +14,8 @@ const add: RequestHandler = async (req, res, next) => {
       studentIds: req.body.studentIds,
     };
 
-    const SCHOOLID = 1; // to change later
-
+    const SCHOOLID = 1;
+    // update
     const newInsertedAnnouncementId = await announcementRepository.create(
       newAnnouncement,
       SCHOOLID,
@@ -55,9 +55,9 @@ const browseRecentByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = Number(req.auth.sub);
 
-    const annoucements =
+    const announcements =
       await announcementRepository.readLastThreeByParent(parentId);
-    res.json(annoucements);
+    res.json(announcements);
   } catch (err) {
     next(err);
   }
@@ -65,10 +65,75 @@ const browseRecentByParent: RequestHandler = async (req, res, next) => {
 
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
-    const SCHOOL_ID = 1;
-    const announcements =
-      await announcementRepository.readAllBySchool(SCHOOL_ID);
+    const schoolId = 1;
+
+    const categoryId = req.query.category
+      ? Number(req.query.category)
+      : undefined;
+
+    const announcements = await announcementRepository.readAllBySchool(
+      schoolId,
+      categoryId,
+    );
+
     res.json(announcements);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const destroy: RequestHandler = async (req, res, next) => {
+  try {
+    const announcementId = Number(req.params.id);
+
+    if (!Number.isInteger(announcementId)) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Identifiant d'annonce invalide" });
+      return;
+    }
+
+    const SCHOOLID = 1; // to change with context?
+    const deletedAnnouncement = await announcementRepository.delete(
+      announcementId,
+      SCHOOLID,
+    );
+
+    if (deletedAnnouncement === 0) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
+      return;
+    }
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const update: RequestHandler = async (req, res, next) => {
+  try {
+    const announcementId = Number(req.params.id);
+
+    if (!Number.isInteger(announcementId)) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Identifiant d'annonce invalide" });
+      return;
+    }
+
+    const SCHOOLID = 1;
+    const updatedAnnouncement = await announcementRepository.updateContent(
+      announcementId,
+      req.body.content,
+      SCHOOLID,
+    );
+
+    if (updatedAnnouncement === 0) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
+      return;
+    }
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (err) {
     next(err);
   }
@@ -108,7 +173,7 @@ const validate: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const SCHOOLID = 1; // to change later
+    const SCHOOLID = 1;
 
     const studentIds = req.body.studentIds;
 
@@ -136,10 +201,34 @@ const validate: RequestHandler = async (req, res, next) => {
   }
 };
 
+const validateUpdate: RequestHandler = async (req, res, next) => {
+  try {
+    const updateAnnouncement = joi.object({
+      content: joi.string().max(1000).required(),
+    });
+
+    const { error } = updateAnnouncement.validate(req.body);
+
+    if (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Les donnÃ©es envoyÃ©es sont invalides" });
+      return;
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   add,
   browseByParent,
   browseRecentByParent,
   browseBySchool,
+  destroy,
+  update,
   validate,
+  validateUpdate,
 };

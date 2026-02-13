@@ -1,17 +1,17 @@
-import databaseClient from "../../../database/client";
-import type { Result, Rows } from "../../../database/client";
+// import databaseClient from "../../../database/client";
+// import type { Result, Rows } from "../../../database/client";
 
-class ClassroomRepository {
-  async readAllBySchool(schoolId: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT id, classroom_name AS name
-       FROM classroom
-       WHERE school_id = ?`,
-      [schoolId],
-    );
+// class ClassroomRepository {
+//   async readAllBySchool(schoolId: number) {
+//     const [rows] = await databaseClient.query<Rows>(
+//       `SELECT id, classroom_name AS name
+//        FROM classroom
+//        WHERE school_id = ?`,
+//       [schoolId],
+//     );
 
-    return rows;
-  }
-}
+//     return rows;
+//   }
+// }
 
-export default new ClassroomRepository();
+// export default new ClassroomRepository();

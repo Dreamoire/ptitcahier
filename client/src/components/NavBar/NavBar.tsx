@@ -19,6 +19,8 @@ function NavBar() {
 
   const isSchool = auth?.role === "school";
 
+  const avatarSrc = auth?.profile.photoUrl;
+
   const styles = isSchool ? schoolStyles : parentStyles;
 
   const items = getNavItems(auth);
@@ -28,26 +30,46 @@ function NavBar() {
     : parentStyles.mobileNavParent;
 
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
 
-  const toggleCollapse = () => {
-    setIsCollapsed((prev) => !prev);
+  const togglePinned = () => {
+    setIsCollapsed((prev) => {
+      const nextCollapsed = !prev;
+      setIsPinned(!nextCollapsed);
+      return nextCollapsed;
+    });
   };
 
-  const avatarSrc = auth?.profile.photoUrl;
+  const handleMouseEnter = () => {
+    if (!isPinned) {
+      setIsCollapsed(false);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isPinned) {
+      setIsCollapsed(true);
+    }
+  };
 
   return (
     <>
       <aside
         id="sidebar"
-        className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : styles.expanded}`}
+        className={`${styles.sidebar} ${
+          isCollapsed ? styles.collapsed : styles.expanded
+        }`}
         aria-label="Navigation principale"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <button
           type="button"
           className={styles.toggleButton}
-          onClick={toggleCollapse}
+          onClick={togglePinned}
+          aria-pressed={isPinned}
           aria-expanded={!isCollapsed}
-          aria-label={isCollapsed ? "Déplier" : "Replier"}
+          aria-label={isPinned ? "Désépingler" : "Épingler"}
         >
           <span aria-hidden="true" className={styles.toggleIcon}>
             {isCollapsed ? "❯❯" : "❮❮"}

@@ -1,48 +1,174 @@
-.an_card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 10px;
-  gap: 20px;
-  padding: 20px;
+.ann_card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 220px);
+  grid-template-rows: auto 1fr auto;
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+  padding: 2rem;
+  margin-top: 1rem;
   border-radius: 1rem;
   border: 1px solid #f0f0f0;
-  width: 850px;
-  height: auto;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
-    rgba(0, 0, 0, 0.04);
-  background-color: var(--background-white);
+  background-color: var(--background-white, #ffffff);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 950px;
+  align-items: start;
 }
 
-.an_badge,
-.an_student_tag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
+.content_card {
+  display: contents;
+}
+
+.media_block {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+}
+
+.media_block header {
+  width: 100%;
+  justify-self: start;
+}
+
+.title {
+  font-family: var(--font-family-text);
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.imageTrigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: min(100%, 560px);
+  justify-self: center;
+}
+
+.mainImage {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  display: block;
+}
+
+.text {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: center;
+  width: min(100%, 620px);
+  margin: 0;
   font-family: var(--font-family-text);
   font-weight: var(--font-weight-text);
   font-size: var(--font-size-text);
-  width: 100%;
-  gap: 5px;
-  padding: 0 10px;
-  border-radius: 1rem;
-  box-shadow: 0 25px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
-    rgba(0, 0, 0, 0.04);
-  white-space: nowrap;
+  text-align: justify;
+  line-height: 1.6;
+  color: #4b5563;
 }
-.an_card_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.an_badges_container {
+
+.edit_block {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: center;
+  width: min(100%, 620px);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0.75rem;
 }
-.an_student_tag {
+
+.edit_actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footerInfo {
+  display: contents;
+}
+
+.dateLabel {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+  align-self: center;
+  margin: 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+.footer_actions {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: center;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  margin-left: -0.25rem;
+}
+
+.footer_actions > * {
+  flex-shrink: 0;
+}
+
+.badgeSidebar {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 140px;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: start;
+}
+
+.tagList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.an_badge_school_life,
+.an_badge_admin,
+.an_badge_event,
+.an_badge_default,
+.an_student_tag,
+.an_badge_class,
+.an_count_tag,
+.an_badge_all_school {
+  min-height: 28px;
+  width: 12rem;
+  padding: 0 0.75rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-family: var(--font-family-text);
+  font-weight: var(--font-weight-text);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.an_badge_class,
+.an_badge_all_school,
+.an_count_tag {
   background-color: var(--dark-blue);
+  color: var(--white);
+  font-size: small;
 }
 
 .an_badge_school_life {
@@ -60,90 +186,158 @@
 .an_badge_default {
   background-color: #f3f4f6;
 }
+
 .an_student_tag {
   background-color: var(--dark-blue);
 }
-.an_card_footer {
-  display: flex;
-  justify-content: flex-end;
-}
-.an_date {
-  font-family: var(--font-family-text);
-  font-weight: var(--font-weight-text);
-  color: var(--dark-grey);
-}
-.realImage {
-  display: flex;
-  border-radius: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 75%;
+
+.edit_button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--dark-blue);
+  background-color: var(--background-white);
+  color: var(--dark-blue);
+  font-family: var(--font-family-button);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-@media (max-width: 600px) {
-  .an_card_header {
-    align-items: flex-start;
+.edit_button:hover {
+  background-color: #e6f6fe;
+  border-color: #6ec4f1;
+}
+
+.edit_button:focus-visible {
+  outline: 3px solid rgba(13, 162, 231, 0.35);
+  outline-offset: 2px;
+}
+
+.edit_icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.edit_label {
+  line-height: 1;
+}
+
+.delete_button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #f3b6b8;
+  background-color: var(--background-white);
+  color: var(--red);
+  font-family: var(--font-family-button);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.delete_button:hover {
+  background-color: #fdebec;
+  border-color: #ee9b9e;
+}
+
+.delete_button:focus-visible {
+  outline: 3px solid rgba(229, 72, 77, 0.35);
+  outline-offset: 2px;
+}
+
+.delete_icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.delete_label {
+  line-height: 1;
+}
+
+.imageModal {
+  border: none;
+  background: transparent;
+}
+
+.imageModal::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.fullSizeImage {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 0.5rem;
+  margin: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  color: white;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modalWrapper {
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .ann_card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    padding: 1rem;
   }
 
-  .an_badges_container {
-    align-items: flex-end;
+  .badgeSidebar {
+    grid-column: 1;
+    grid-row: 2;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tagList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .text,
+  .edit_block {
+    grid-column: 1;
+    grid-row: 3;
     width: 100%;
-    justify-content: space-between;
   }
 
-  .an_card {
-    padding: 5px;
-    height: auto;
+  .dateLabel {
+    grid-column: 1;
+    grid-row: 4;
   }
+
+  .footer_actions {
+    grid-column: 1;
+    grid-row: 5;
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+
   .an_badge_school_life,
   .an_badge_admin,
   .an_badge_event,
   .an_badge_default,
-  .an_student_tag {
-    font-size: 0.7rem;
-    width: auto;
-    height: 1rem;
+  .an_student_tag,
+  .an_badge_class,
+  .an_count_tag,
+  .an_badge_all_school {
+    max-width: 12rem;
   }
-}
-.an_card_dashboard {
-  display: flex;
-  flex-direction: column;
-  height: 450px;
-  width: 600px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-}
-
-.an_card_dashboard .imageContainer {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.an_card_dashboard .realImage {
-  width: 75%;
-  height: 75%;
-  object-fit: cover;
-}
-.an_card_dashboard .text {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.an_card_dashboard .title {
-  font-size: 1.1rem;
-}
-
-.an_card_dashboard .text {
-  font-size: 0.95rem;
-  color: #64748b;
-  overflow: hidden;
-  margin-bottom: 1rem;
-}
-
-.dashboard .an_card_footer {
-  margin-top: auto;
 }

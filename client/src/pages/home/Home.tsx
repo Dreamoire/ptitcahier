@@ -9,9 +9,15 @@ import type { Announcement } from "../../types/Announcement";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { School } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
-import styles from "./HomeParentView.module.css";
+import styles from "./Home.module.css";
 
-function HomeParentView() {
+type UserRole = "parent" | "school";
+
+interface HomeProps {
+  userRole: UserRole;
+}
+
+function Home({ userRole }: HomeProps) {
   const [school, setSchool] = useState<School | null>(null);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [recentAnnouncements, setRecentAnnouncements] = useState<
@@ -163,7 +169,8 @@ function HomeParentView() {
                   >
                     <AnnouncementCard
                       announcement={announcement}
-                      variant="dashboard"
+                      userRole={userRole}
+                      key={announcement.id}
                     />
                   </li>
                 ))}
@@ -176,4 +183,4 @@ function HomeParentView() {
   );
 }
 
-export default HomeParentView;
+export default Home;
