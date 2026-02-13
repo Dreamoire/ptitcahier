@@ -105,12 +105,9 @@
 
 .parentName {
   margin: 0;
-
   font-family: var(--font-family-primary-title);
-  font-size: clamp(1.25rem, 1.08rem + 1.10vw, 2rem);
-  font-size: var(--font-size-card-title);
+  font-size: clamp(1.05rem, 0.95rem + 1vw, 1.6rem);
   color: var(--primary-color-title);
-
   line-height: 1.2;
 }
 
@@ -255,11 +252,6 @@
 .card_dashboard .body {
   padding: 10px 12px;
   gap: 1px;
-}
-
-.card_dashboard .parentName {
-  font-size: 0.95rem;
-  margin-bottom: px;
 }
 
 .card_dashboard .content {
