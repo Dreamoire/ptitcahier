@@ -46,7 +46,9 @@ function TicketCard({
 
   return (
     <article
-      className={`${styles.card} ${variant === "dashboard" ? styles.card_dashboard : ""}`}
+      className={`${styles.card} ${
+        variant === "dashboard" ? styles.card_dashboard : ""
+      }`}
       data-type={iconType}
     >
       <div className={styles.leftPanel} aria-hidden="true">
@@ -70,10 +72,30 @@ function TicketCard({
 
       <button
         type="button"
-        className={styles.overlayButton}
+        className={styles.cardButton}
         onClick={() => onClick(ticket)}
         aria-label={`Ouvrir le ticket de ${parentFullName}`}
-      />
+      >
+        <div className={styles.leftPanel} aria-hidden="true">
+          <div className={styles.iconCircle}>
+            <TicketIcon type={iconType} className={styles.icon} />
+          </div>
+        </div>
+
+        <div className={styles.body}>
+          <header className={styles.header}>
+            {variant !== "dashboard" ? (
+              <h2 className={styles.parentName}>{parentFullName}</h2>
+            ) : null}
+          </header>
+
+          <p className={styles.content}>{ticket.content}</p>
+
+          <time className={styles.date} dateTime={ticket.createdAt}>
+            {createdAtLabel}
+          </time>
+        </div>
+      </button>
     </article>
   );
 }
