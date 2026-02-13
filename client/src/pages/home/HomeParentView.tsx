@@ -6,7 +6,8 @@ import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard
 import CalendarCard from "../../components/CalendarCard/CalendarCard";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import type { Announcement } from "../../types/Announcement";
-import type { School } from "../../types/school";
+
+import type { School } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
 import styles from "./HomeParentView.module.css";
 
