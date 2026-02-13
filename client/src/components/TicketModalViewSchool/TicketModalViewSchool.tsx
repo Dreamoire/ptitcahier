@@ -76,6 +76,7 @@ function TicketModalViewSchool({
           dialogRef.current = node;
         }}
         className={`${styles.modal} ${isOpen ? styles.modalOpen : ""}`}
+        data-type={ticketType}
         open
         aria-label="Détails du ticket"
         onTransitionEnd={(event) => {
@@ -137,7 +138,7 @@ function TicketModalViewSchool({
             </div>
           </div>
 
-          <div className={styles.messageBox}>
+          <div className={styles.messageBox} data-type={ticketType}>
             <p className={styles.messageText}>{ticket.content} </p>
           </div>
         </div>

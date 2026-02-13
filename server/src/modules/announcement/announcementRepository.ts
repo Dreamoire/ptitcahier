@@ -29,6 +29,51 @@ class AnnouncementRepository {
     return newAnnouncementId;
   }
 
+  async delete(announcementId: number, schoolId: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT id FROM announcement WHERE id = ? AND school_id = ?",
+      [announcementId, schoolId],
+    );
+
+    if (rows.length === 0) {
+      return 0;
+    }
+
+    await databaseClient.query<Result>(
+      "DELETE FROM announcement_student WHERE announcement_id = ?",
+      [announcementId],
+    );
+
+    const [result] = await databaseClient.query<Result>(
+      "DELETE FROM announcement WHERE id = ?",
+      [announcementId],
+    );
+
+    return result.affectedRows;
+  }
+
+  async updateContent(
+    announcementId: number,
+    content: string,
+    schoolId: number,
+  ) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT id FROM announcement WHERE id = ? AND school_id = ?",
+      [announcementId, schoolId],
+    );
+
+    if (rows.length === 0) {
+      return 0;
+    }
+
+    const [result] = await databaseClient.query<Result>(
+      "UPDATE announcement SET content = ? WHERE id = ?",
+      [content, announcementId],
+    );
+
+    return result.affectedRows;
+  }
+
   async readAllByParent(
     parentId: number,
     categoryId?: number,
@@ -92,6 +137,7 @@ class AnnouncementRepository {
 
     return rows as Announcement[];
   }
+
   async readAllBySchool(schoolId: number, categoryId?: number) {
     let sql = `
     SELECT 
@@ -114,8 +160,7 @@ class AnnouncementRepository {
     LEFT JOIN announcement_student AS ans ON ans.announcement_id = a.id
     LEFT JOIN student AS s ON ans.student_id = s.id
     LEFT JOIN classroom AS c ON s.classroom_id = c.id
-    WHERE a.school_id = ?
-  `;
+    WHERE a.school_id = ?`;
 
     const queryParams: (number | string)[] = [schoolId, schoolId];
 

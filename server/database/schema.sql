@@ -22,7 +22,9 @@ CREATE TABLE parent (
 );
 CREATE TABLE announcement_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE,
+    color VARCHAR(6) NOT NULL,
+    icon VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE ticket_category (
@@ -190,11 +192,11 @@ INSERT INTO user (email, password, role) VALUES
 ("JaquelineRichard@email.com", "password123", 'parent'),
 ("KevinDurand@email.com", "password123", 'parent');
 
-INSERT INTO announcement_category (id, name)
+INSERT INTO announcement_category (id, name, color, icon)
 VALUES
-(1, "Vie de l'école"),
-(2, "Administratif"),
-(3, "Evénement");
+(1, "Vie de l'école", "6d5bd0", "School"),
+(2, "Administratif", "16a249", "ClipboardList"),
+(3, "Evénement", "0da2e7", "CalendarDays");
 
 INSERT INTO ticket_category (id, name, description, color, icon)
 VALUES

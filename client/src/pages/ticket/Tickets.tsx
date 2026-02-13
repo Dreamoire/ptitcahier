@@ -14,8 +14,6 @@ interface TicketsProps {
 function Tickets({ userRole }: TicketsProps) {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [hasError, setHasError] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const backgroundClass =
@@ -25,9 +23,6 @@ function Tickets({ userRole }: TicketsProps) {
     userRole === "school" ? "Gestion des Tickets" : "Mes Demandes";
 
   useEffect(() => {
-    setIsLoading(true);
-    setHasError(false);
-
     const endpoint =
       userRole === "school"
         ? `${import.meta.env.VITE_API_URL}/api/schools/me/tickets`
@@ -39,14 +34,8 @@ function Tickets({ userRole }: TicketsProps) {
         }
         return response.json() as Promise<Ticket[]>;
       })
-      .then((fetchedTickets) => {
-        setTickets(fetchedTickets);
-      })
-      .catch(() => {
-        setHasError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
+      .then((data) => {
+        setTickets(data);
       });
   }, [userRole]);
 
@@ -65,27 +54,17 @@ function Tickets({ userRole }: TicketsProps) {
         )}
 
         <section className={styles.contentArea} aria-label="Liste des tickets">
-          {isLoading ? (
-            <p className="text-body">Chargement en cours...</p>
-          ) : null}
-
-          {hasError ? (
-            <p className="text-body">Erreur lors du chargement des tickets.</p>
-          ) : null}
-
-          {!isLoading && !hasError ? (
-            <ul className={styles.list}>
-              {tickets.map((ticket) => (
-                <li key={ticket.id} className={styles.listItem}>
-                  <TicketCard
-                    ticket={ticket}
-                    onClick={setSelectedTicket}
-                    userRole={userRole}
-                  />
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <ul className={styles.list} aria-label="Tickets">
+            {tickets.map((ticket) => (
+              <li key={ticket.id} className={styles.listItem}>
+                <TicketCard
+                  ticket={ticket}
+                  onClick={setSelectedTicket}
+                  userRole={userRole}
+                />
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
 

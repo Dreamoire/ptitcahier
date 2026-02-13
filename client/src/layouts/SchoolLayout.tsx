@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 
 import schoolVoltaire from "../assets/images/school_voltaire.jpg";
 import schoolZola from "../assets/images/school_zola.jpg";
-import NavBarSchool from "../components/NavBar/NavBarSchool";
+import NavBar from "../components/NavBar/NavBar";
 import styles from "./Layout.module.css";
 
 type SchoolKey = "voltaire" | "zola";
@@ -22,9 +22,10 @@ const schoolNames: Record<SchoolKey, string> = {
 function SchoolLayout() {
   return (
     <div className={styles.layout}>
-      <NavBarSchool
-        logoUrl={schoolLogos[school]}
-        schoolName={schoolNames[school]}
+      <NavBar
+        variant="school"
+        avatarUrl={schoolLogos[school]}
+        displayName={schoolNames[school]}
       />
       <main className={styles.main}>
         <Outlet />

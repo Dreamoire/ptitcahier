@@ -46,7 +46,9 @@ function TicketCard({
 
   return (
     <article
-      className={`${styles.card} ${variant === "dashboard" ? styles.card_dashboard : ""}`}
+      className={`${styles.card} ${
+        variant === "dashboard" ? styles.card_dashboard : ""
+      }`}
       data-type={iconType}
     >
       <div className={styles.leftPanel} aria-hidden="true">
