@@ -10,7 +10,6 @@ class StudentRepository {
 		s.id,
 		s.last_name AS lastName,
 		s.first_name AS firstName,
-		born_at AS bornAt,
 		classroom_id AS classroomId,
 		parent_id AS parentId
 		FROM student AS s
@@ -28,7 +27,6 @@ class StudentRepository {
 		s.id,
 		s.last_name AS lastName,
 		s.first_name AS firstName,
-		s.born_at AS bornAt,
 		s.classroom_id AS classroomId,
 		s.parent_id AS parentId,
 		c.school_id AS schoolId

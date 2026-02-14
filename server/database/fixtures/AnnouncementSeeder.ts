@@ -37,7 +37,7 @@ class AnnouncementSeeder extends AbstractSeeder {
     for (let i = 1; i < 3; i += 1) {
       const school = i;
 
-      for (let j = 0; j < 200; j += 1) {
+      for (let j = 0; j < 10; j += 1) {
         const category = Number(
           this.faker.helpers.arrayElement(Object.keys(sortedFakeTitles)),
         );
