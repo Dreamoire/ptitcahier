@@ -96,18 +96,12 @@ CREATE TABLE ticket_student (
 INSERT INTO user (email, hashed_password, role)
 VALUES
   ("example@school1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "school"),
+("example@school2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "school");
 
 INSERT INTO user (email, hashed_password, role)
 VALUES
 ("example@parent1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
 ("example@parent2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
--- INSERT INTO user (email, password, role) VALUES
--- ECOLES
--- ("contact@greenvalley.edu", "school123", 'school'),
--- ("admin@riverside-intl.edu", "school123", 'school'),
--- PARENTS
--- ("JeanDupont@email.com", "password123", 'parent'),
--- ("MarieMartin@email.com", "password123", 'parent'),
 ("PierreBernard@email.com", "password123", 'parent'),
 ("JulieThomas@email.com", "password123", 'parent'),
 ("LucPetit@email.com", "password123", 'parent'),
@@ -223,13 +217,6 @@ VALUES
   ("École Primaire Émile Zola", "/images/schools/school_profile_1_zola.png", 1),
   ("École Primaire Voltaire", "/images/schools/school_profile_2_voltaire.png", 2);
 
--- INSERT INTO parent (last_name, first_name, genre, photo_url, user_id)
--- VALUES
---   ("Martin", "Laurent", "M", "/images/parents/parent_profile_male.png", 3),
---   ("Leroy", "Patricia", "F", "/images/parents/parent_profile_female.png", 4),
---   ("Perrin", "Jean", "M", "/images/parents/parent_profile_male.png", 5),
---   ("Turin", "Isabelle", "F","/images/parents/parent_profile_female.png", 6);
-
 INSERT INTO parent (last_name, first_name, genre, photo_url, user_id)
 VALUES
 ("Dupont", "Jean", "M", "/images/parents/parent_profile_male.png", 3),
@@ -337,23 +324,10 @@ VALUES
 ("CE1 Les Explorateurs", 1),
 ("CE2 Les Artistes", 1),
 ("CM1 Les Genies", 1),
-("CM2 Les Aventuriers", 1),
--- ('CP', 2),
--- ('CE1', 2),
--- ('CE2', 2),
--- ('CM1', 2),
--- ('CM2', 2);
+("CM2 Les Aventuriers", 1);
 
 INSERT INTO student (last_name, first_name, born_at, classroom_id, parent_id)
 VALUES
-
--- ("Martin", "Sophie", "2014-05-14", 1, 1),
--- ("Martin", "Lucas", "2012-09-22", 2, 1),
--- ("Leroy", "Emma", "2013-11-30", 3, 2),
--- ("Perrin", "Lucie", "2016-03-24", 6, 3), 
--- ("Perin", "Michel", "2012-09-22", 7, 4), 
--- ("Turin", "Julie", "2013-11-30", 8, 4); 
-
 ("Dupont", "Lucas", "2018-05-14", 1, 1),
 ("Martin", "Léa", "2018-06-24", 1, 2),
 ("Bernard", "Léo", "2019-01-04", 1, 3),

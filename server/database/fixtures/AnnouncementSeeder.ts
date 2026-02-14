@@ -1,3 +1,4 @@
+//
 import AbstractSeeder from "./AbstractSeeder";
 
 class AnnouncementSeeder extends AbstractSeeder {
@@ -36,13 +37,13 @@ class AnnouncementSeeder extends AbstractSeeder {
     for (let i = 1; i < 3; i += 1) {
       const school = i;
 
-      for (let j = 0; j < 20; j += 1) {
+      for (let j = 0; j < 200; j += 1) {
         const category = Number(
           this.faker.helpers.arrayElement(Object.keys(sortedFakeTitles)),
         );
         const fakeAnnouncement = {
           title: this.faker.helpers.arrayElement(sortedFakeTitles[category]),
-          content: this.faker.lorem.sentences({ min: 1, max: 8 }),
+          content: this.faker.lorem.sentences({ min: 1, max: 3 }),
           announcement_category_id: category,
           school_id: school,
           refName: `announcement_${school}_${j}`,
