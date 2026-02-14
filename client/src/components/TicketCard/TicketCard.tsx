@@ -1,14 +1,13 @@
+import { useOutletContext } from "react-router-dom";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { Ticket } from "../../types/Ticket";
 import styles from "./TicketCard.module.css";
 import TicketIcon, { type TicketIconType } from "./TicketIcon";
-
-type UserRole = "parent" | "school";
 
 type TicketCardProps = {
   ticket: Ticket;
   onClick: (ticket: Ticket) => void;
   variant?: "default" | "dashboard";
-  userRole: UserRole;
 };
 
 const getTicketIconType = (categoryName: string): TicketIconType => {
@@ -24,13 +23,14 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
   }
 };
 
-function TicketCard({
-  ticket,
-  onClick,
-  variant = "default",
-  userRole,
-}: TicketCardProps) {
-  const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
+function TicketCard({ ticket, onClick, variant = "default" }: TicketCardProps) {
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  const userRole = auth?.role;
+
+  const parentTitle = ticket.genre === "M" ? "M." : "Mme";
+
+  const parentFullName = `${parentTitle} ${ticket.parentFirstName} ${ticket.parentLastName}`;
 
   const nameTitle =
     userRole === "parent"
@@ -38,8 +38,11 @@ function TicketCard({
       : parentFullName;
 
   const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
-    dateStyle: "medium",
-    timeStyle: "short",
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   const iconType = getTicketIconType(ticket.ticketCategoryName);
@@ -74,7 +77,11 @@ function TicketCard({
         type="button"
         className={styles.overlayButton}
         onClick={() => onClick(ticket)}
-        aria-label={`Ouvrir le ticket de ${parentFullName}`}
+        aria-label={
+          userRole === "parent"
+            ? `Demande pour ${ticket.studentNames}`
+            : `Ouvrir le ticket de ${parentFullName}`
+        }
       />
     </article>
   );

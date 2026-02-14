@@ -38,7 +38,7 @@ const login: RequestHandler = async (req, res, next) => {
       role: joi.string().valid("parent", "school").required(),
     });
 
-    const { error } = newLogin.validate(req.body);
+    const { error, value } = newLogin.validate(req.body);
 
     if (error) {
       res
@@ -47,17 +47,14 @@ const login: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const user = await userRepository.readByEmail(req.body.email);
+    const user = await userRepository.readByEmail(value.email);
 
-    if (!user || user.role !== req.body.role) {
+    if (!user || user.role !== value.role) {
       res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
       return;
     }
 
-    const verified = await argon2.verify(
-      user.hashed_password,
-      req.body.password,
-    );
+    const verified = await argon2.verify(user.hashed_password, value.password);
 
     if (!verified) {
       res.sendStatus(StatusCodes.UNPROCESSABLE_ENTITY);
@@ -80,7 +77,7 @@ const login: RequestHandler = async (req, res, next) => {
     };
 
     const token = await jwt.sign(myPayload, process.env.APP_SECRET as string, {
-      expiresIn: "1000h",
+      expiresIn: "1h",
     });
 
     res.json({

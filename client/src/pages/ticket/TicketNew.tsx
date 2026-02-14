@@ -34,10 +34,6 @@ function TicketNew() {
       fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`, {
         headers,
       }).then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          navigate("/redirection");
-          return;
-        }
         if (!res.ok) {
           setLoadingError(true);
           return;
@@ -45,12 +41,11 @@ function TicketNew() {
         return res.json();
       }),
     ]).then(([ticketCategories, students]) => {
-      //typing
       if (!ticketCategories || !students) return;
       setTicketCategories(ticketCategories);
       setStudents(students);
     });
-  }, [auth, navigate]);
+  }, [auth]);
 
   return (
     <main className="parent-background">
@@ -59,11 +54,11 @@ function TicketNew() {
           {error ? <p>{error}</p> : <p>Votre ticket a été bien envoyé!</p>}
           <div className={styles.ticket_buttons_container}>
             <button
-              onClick={() => navigate("/parent/home")}
+              onClick={() => navigate("/parent/tickets")}
               type="button"
               className="non-primary-button"
             >
-              Retour à l'accueil
+              Retourner aux demandes
             </button>
             <button
               onClick={() => {
@@ -78,7 +73,9 @@ function TicketNew() {
           </div>
         </div>
       ) : loadingError ? (
-        <p>Échec de la chargement du formulaire</p>
+        <p className="general_error_message">
+          Échec de la chargement du formulaire
+        </p>
       ) : (
         <>
           <TicketForm

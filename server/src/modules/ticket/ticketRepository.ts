@@ -34,6 +34,7 @@ class TicketRepository {
         t.content,
         t.created_at AS createdAt,        
         tc.name AS ticketCategoryName,
+        p.genre,
         p.first_name AS parentFirstName,
         p.last_name AS parentLastName,
       GROUP_CONCAT(
@@ -63,6 +64,7 @@ class TicketRepository {
       t.content,
       t.created_at AS createdAt,        
       tc.name AS ticketCategoryName,
+      p.genre,
       p.first_name AS parentFirstName,
       p.last_name AS parentLastName,
       GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
@@ -76,7 +78,7 @@ class TicketRepository {
     ORDER BY t.created_at DESC
   `;
 
-    const sqlParams: (number | string)[] = [parentId];
+    const sqlParams: number[] = [parentId];
 
     if (limit) {
       sql += " LIMIT ?";
@@ -84,7 +86,7 @@ class TicketRepository {
     }
 
     const [rows] = await databaseClient.query<Rows>(sql, sqlParams);
-    return rows;
+    return rows as Ticket[];
   }
 }
 export default new TicketRepository();

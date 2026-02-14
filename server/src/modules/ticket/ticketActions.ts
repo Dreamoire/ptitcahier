@@ -9,7 +9,6 @@ import ticketRepository from "./ticketRepository";
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
     const schoolId = Number(req.auth.sub);
-
     const tickets = await ticketRepository.readAllBySchool(schoolId);
     res.json(tickets);
   } catch (err) {
@@ -20,14 +19,8 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = Number(req.auth.sub);
-
-    // const tickets = await ticketRepository.readLastThreeByParent(parentId);
-    // A modifier avec l'id de connexion
-
-    // const parentId = 1;
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const tickets = await ticketRepository.readAllByParent(parentId, limit);
-
     res.json(tickets);
   } catch (err) {
     next(err);
@@ -117,7 +110,7 @@ const add: RequestHandler = async (req, res, next) => {
 
 export default {
   browseBySchool,
+  browseByParent,
   add,
   validate,
-  browseByParent,
 };

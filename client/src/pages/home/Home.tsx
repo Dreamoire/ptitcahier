@@ -97,7 +97,6 @@ function Home({ userRole }: HomeProps) {
         recentTickets.map((ticket) => (
           <li key={ticket.id}>
             <TicketCard
-              userRole={userRole}
               ticket={ticket}
               variant="dashboard"
               onClick={() => openTicketDetails(ticket.id)}

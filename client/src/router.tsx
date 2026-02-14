@@ -26,30 +26,32 @@ const router = createBrowserRouter([
       { path: "/redirection", element: <Redirection /> },
 
       {
+        path: "/parent",
         element: <ParentLayout />,
         children: [
-          { path: "/parent/home", element: <Home userRole="parent" /> },
+          { path: "home", element: <Home userRole="parent" /> },
           {
-            path: "/parent/announcements",
+            path: "announcements",
             element: <Announcements />,
           },
-          { path: "/parent/tickets", element: <Tickets userRole="parent" /> },
-          { path: "/parent/tickets/new", element: <TicketNew /> },
+          { path: "tickets", element: <Tickets /> },
+          { path: "tickets/new", element: <TicketNew /> },
         ],
       },
       {
+        path: "/school",
         element: <SchoolLayout />,
         children: [
-          { path: "/school/home", element: <Home userRole="school" /> },
+          { path: "home", element: <Home userRole="school" /> },
           {
-            path: "/school/announcements",
+            path: "announcements",
             element: <Announcements />,
           },
           {
-            path: "/school/announcements/new",
+            path: "announcements/new",
             element: <AnnouncementNew />,
           },
-          { path: "/school/tickets", element: <Tickets userRole="school" /> },
+          { path: "tickets", element: <Tickets /> },
         ],
       },
     ],

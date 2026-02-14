@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Ticket } from "../../types/Ticket";
 import TicketIcon, { type TicketIconType } from "../TicketCard/TicketIcon";
-import styles from "./TicketModalViewSchool.module.css";
+import styles from "./TicketModal.module.css";
 
-type TicketModalViewSchoolProps = {
+type TicketModalProps = {
   ticket: Ticket;
   onCloseComplete: () => void;
 };
@@ -21,10 +21,7 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
   }
 };
 
-function TicketModalViewSchool({
-  ticket,
-  onCloseComplete,
-}: TicketModalViewSchoolProps) {
+function TicketModal({ ticket, onCloseComplete }: TicketModalProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -51,7 +48,10 @@ function TicketModalViewSchool({
     };
   }, [requestClose]);
 
-  const parentFullName = `${ticket.parentFirstName} ${ticket.parentLastName}`;
+  const parentTitle = ticket.genre === "M" ? "M." : "Mme";
+
+  const parentFullName = `${parentTitle} ${ticket.parentFirstName} ${ticket.parentLastName}`;
+
   const ticketType = getTicketIconType(ticket.ticketCategoryName);
 
   const createdAtLabel = new Date(ticket.createdAt).toLocaleString("fr-FR", {
@@ -147,4 +147,4 @@ function TicketModalViewSchool({
   );
 }
 
-export default TicketModalViewSchool;
+export default TicketModal;

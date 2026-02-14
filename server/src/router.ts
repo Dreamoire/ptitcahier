@@ -10,7 +10,6 @@ import userActions from "./modules/user/userActions";
 
 const router = express.Router();
 
-//PARENT and SCHOOL login
 router.post("/login", authActions.login);
 
 //Register school
@@ -47,11 +46,12 @@ parentRouter.get(
 ); //PARENT home
 parentRouter.get("/me/announcements", announcementActions.browseByParent); //PARENT announces
 parentRouter.get("/me/students", studentActions.browseByParent); //PARENT new ticket form + PARENT announces
-parentRouter.post("/tickets", ticketActions.validate, ticketActions.add); //PARENT creates new ticket
+parentRouter.get("/me/tickets", ticketActions.browseByParent);
+parentRouter.post("/tickets", ticketActions.validate, ticketActions.add);
 
 /////////////////
 
-schoolRouter.get("/me/tickets", ticketActions.browseBySchool); //SCHOOL tickets
+schoolRouter.get("/me/tickets", ticketActions.browseBySchool);
 schoolRouter.get("/me/announcements", announcementActions.browseBySchool); //SCHOOL annonces
 schoolRouter.get("/me/students", studentActions.browseBySchool); //SCHOOL new annonce form
 schoolRouter.post(
@@ -80,7 +80,6 @@ router.use("/schools", schoolRouter);
 
 // router.get("/parents/me/announcements", announcementActions.browseByParent);
 // router.get("/parents/me/school", schoolActions.browseByParent);
-// router.get("/parents/me/tickets", ticketActions.browseByParent);
 
 // router.get(
 //   "/parents/me/announcements/recent",
@@ -89,7 +88,6 @@ router.use("/schools", schoolRouter);
 
 // router.get("/parents/me/students", studentActions.browseByParent);
 
-// router.get("/schools/me/tickets", ticketActions.browseBySchool);
 // router.post("/tickets", ticketActions.validate, ticketActions.add);
 
 // router.get("/ticket-categories", ticketCategoryActions.browseAll);

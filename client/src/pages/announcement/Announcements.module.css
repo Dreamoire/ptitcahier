@@ -1,7 +1,7 @@
 .logo {
   width: 7.5rem;
-  height: auto;
-  padding-bottom: 1rem;
+  /* height: auto;
+  padding-bottom: 1rem; */
 }
 
 .an_section {
@@ -15,7 +15,7 @@
 .an_title {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2.5rem;
   color: var(--dark-blue);
 }

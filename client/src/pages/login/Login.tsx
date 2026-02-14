@@ -38,13 +38,8 @@ function Login() {
 
   const fillDemoCredentials = () => {
     clearWarnings();
-    if (role === "parent") {
-      setEmail("example@parent1.com");
-      setPassword("Password123");
-    } else if (role === "school") {
-      setEmail("example@school1.com");
-      setPassword("Password123");
-    }
+    setEmail(`example@${role}1.com`);
+    setPassword("Password123");
   };
 
   const loginUser: FormEventHandler = async (event) => {
@@ -83,7 +78,7 @@ function Login() {
         return response.json();
       })
       .then((auth: Auth | undefined) => {
-        if (!auth?.role) return;
+        if (!auth) return;
         setAuth(auth);
         localStorage.setItem("auth", JSON.stringify(auth));
         navigate(`/${auth.role}/home`);
@@ -159,7 +154,9 @@ function Login() {
 
               <div
                 className={`${styles.input_wrapper} ${
-                  submitValidationWarning || invalidLoginWarning
+                  submitValidationWarning ||
+                  invalidLoginWarning ||
+                  loginErrorWarning
                     ? styles.input_error
                     : ""
                 }`}
@@ -190,7 +187,9 @@ function Login() {
 
               <div
                 className={`${styles.input_wrapper} ${
-                  submitValidationWarning || invalidLoginWarning
+                  submitValidationWarning ||
+                  invalidLoginWarning ||
+                  loginErrorWarning
                     ? styles.input_error
                     : ""
                 }`}
