@@ -54,8 +54,7 @@ const add: RequestHandler = async (req, res, next) => {
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = req.auth.sub;
-
+    const parentId = Number(req.auth.sub);
     const school = await schoolRepository.readByParent(parentId);
     res.json(school);
   } catch (err) {
@@ -65,7 +64,7 @@ const browseByParent: RequestHandler = async (req, res, next) => {
 
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
-    const schoolId = 1;
+    const schoolId = Number(req.auth.sub);
     const dashboardData = await schoolRepository.getDashboardData(schoolId);
     res.json(dashboardData);
   } catch (err) {

@@ -6,17 +6,6 @@ import styles from "./Layout.module.css";
 function SchoolLayout() {
   const { auth, setAuth } = useOutletContext<OutletAuthContext>();
 
-  //   if (auth === undefined) {
-  //   return (
-  //     <div style={{ textAlign: "center", marginTop: "2rem" }}>
-  //       <div className="spinner" />
-  //       <p>Loading...</p>
-  //     </div>
-  //   );
-  // }
-
-  if (auth === undefined) return <div>Loading...</div>;
-
   if (auth === null) {
     return <Navigate to="/login" replace />;
   }

@@ -21,7 +21,7 @@ function Tickets() {
     userRole === "school" ? "school-background" : "parent-background";
 
   const titleText =
-    userRole === "school" ? "Gestion des Tickets" : "Mes Demandes";
+    userRole === "school" ? "Gestion des tickets" : "Mes demandes";
 
   useEffect(() => {
     const headers = { Authorization: `Bearer ${auth?.token}` };

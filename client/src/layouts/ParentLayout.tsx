@@ -6,8 +6,6 @@ import styles from "./Layout.module.css";
 function ParentLayout() {
   const { auth, setAuth } = useOutletContext<OutletAuthContext>();
 
-  if (auth === undefined) return <div>Loading...</div>;
-
   if (auth === null) {
     return <Navigate to="/login" replace />;
   }

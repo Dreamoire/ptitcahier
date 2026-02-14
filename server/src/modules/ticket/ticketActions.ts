@@ -9,7 +9,8 @@ import ticketRepository from "./ticketRepository";
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
     const schoolId = Number(req.auth.sub);
-    const tickets = await ticketRepository.readAllBySchool(schoolId);
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const tickets = await ticketRepository.readAllBySchool(schoolId, limit);
     res.json(tickets);
   } catch (err) {
     next(err);

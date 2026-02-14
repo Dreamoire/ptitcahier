@@ -12,7 +12,6 @@ const router = express.Router();
 
 router.post("/login", authActions.login);
 
-//Register school
 router.post(
   "/register/school",
   schoolActions.validate,
@@ -21,13 +20,10 @@ router.post(
   schoolActions.add,
 );
 
-//Auth wall
 router.use(authActions.verifyToken);
 
-router.get("/ticket-categories", ticketCategoryActions.browseAll); //new Ticket form
-router.get("/announcement-categories", announcementCategoryActions.browseAll); //new Annonce form
-
-/////////////////
+router.get("/ticket-categories", ticketCategoryActions.browseAll);
+router.get("/announcement-categories", announcementCategoryActions.browseAll);
 
 const parentRouter = express.Router();
 parentRouter.use(authActions.verifyRole("parent"));
@@ -35,63 +31,30 @@ parentRouter.use(authActions.verifyRole("parent"));
 const schoolRouter = express.Router();
 schoolRouter.use(authActions.verifyRole("school"));
 
-/////////////////
-
-parentRouter.get("/me/school", schoolActions.browseByParent); //PARENT home
-// parentRouter.get("/me/tickets/recent", ticketActions.browseRecentByParent);
-// //PARENT home
-parentRouter.get(
-  "/me/announcements/recent",
-  announcementActions.browseRecentByParent,
-); //PARENT home
-parentRouter.get("/me/announcements", announcementActions.browseByParent); //PARENT announces
-parentRouter.get("/me/students", studentActions.browseByParent); //PARENT new ticket form + PARENT announces
+parentRouter.get("/me/school", schoolActions.browseByParent); //replace?
+parentRouter.get("/me/announcements", announcementActions.browseByParent);
+parentRouter.get("/me/students", studentActions.browseByParent);
 parentRouter.get("/me/tickets", ticketActions.browseByParent);
 parentRouter.post("/tickets", ticketActions.validate, ticketActions.add);
 
-/////////////////
-
+schoolRouter.get("/me", schoolActions.browseBySchool);
 schoolRouter.get("/me/tickets", ticketActions.browseBySchool);
-schoolRouter.get("/me/announcements", announcementActions.browseBySchool); //SCHOOL annonces
-schoolRouter.get("/me/students", studentActions.browseBySchool); //SCHOOL new annonce form
+schoolRouter.get("/me/announcements", announcementActions.browseBySchool);
+schoolRouter.get("/me/students", studentActions.browseBySchool);
 schoolRouter.post(
   "/announcements",
   announcementActions.validate,
   announcementActions.add,
-); //SCHOOL creates new annonce
-schoolRouter.delete("/announcements/:id", announcementActions.destroy); //SCHOOL deletes annonce
+);
+schoolRouter.delete("/me/announcements/:id", announcementActions.destroy); //SCHOOL deletes annonce
+
 schoolRouter.put(
-  "/announcements/:id",
+  "/me/announcements/:id",
   announcementActions.validateUpdate,
   announcementActions.update,
-); //SCHOOL A FAIRE
+);
 
 router.use("/parents", parentRouter);
 router.use("/schools", schoolRouter);
-
-// router.get("/school/announcements", announcementActions.browseBySchool);
-// router.get("/school/classrooms", classroomActions.browseBySchool);
-
-// from megrge
-// router.get("/schools/me/classrooms", classroomActions.browseBySchool);
-// router.get("/schools/me/students", studentActions.browseBySchool);
-// router.get("/classrooms/:id/students", studentActions.browseByClassroom);
-// router.get("/schools/me/announcements", announcementActions.browseBySchool);
-
-// router.get("/parents/me/announcements", announcementActions.browseByParent);
-// router.get("/parents/me/school", schoolActions.browseByParent);
-
-// router.get(
-//   "/parents/me/announcements/recent",
-//   announcementActions.browseRecentByParent,
-// );
-
-// router.get("/parents/me/students", studentActions.browseByParent);
-
-// router.post("/tickets", ticketActions.validate, ticketActions.add);
-
-// router.get("/ticket-categories", ticketCategoryActions.browseAll);
-// router.get("/school/classrooms", classroomActions.browseBySchool);
-// router.get("/schools/me", schoolActions.browseBySchool);
 
 export default router;

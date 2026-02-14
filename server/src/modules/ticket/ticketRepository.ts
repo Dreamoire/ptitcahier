@@ -27,9 +27,9 @@ class TicketRepository {
     return newTicketId;
   }
 
-  async readAllBySchool(schoolId: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT
+  async readAllBySchool(schoolId: number, limit?: number) {
+    let sql = `
+      SELECT
         t.id,
         t.content,
         t.created_at AS createdAt,        
@@ -50,10 +50,17 @@ class TicketRepository {
       JOIN classroom AS c ON s.classroom_id = c.id    
       WHERE c.school_id = ?
       GROUP BY t.id
-      ORDER BY t.created_at ASC`,
-      [schoolId],
-    );
+      ORDER BY t.created_at ASC
+      `;
 
+    const sqlParams: number[] = [schoolId];
+
+    if (limit) {
+      sql += " LIMIT ?";
+      sqlParams.push(limit);
+    }
+
+    const [rows] = await databaseClient.query<Rows>(sql, sqlParams);
     return rows as Ticket[];
   }
 

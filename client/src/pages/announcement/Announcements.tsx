@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
-import logo_site from "../../assets/images/logo_site.png";
+import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
@@ -12,29 +12,33 @@ function Announcements() {
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
-
+  const [loadingError, setLoadingError] = useState<boolean>(false);
+  const navigate = useNavigate();
   const { auth } = useOutletContext<OutletAuthContext>();
 
   const userRole = auth?.role;
 
   const backgroundClass =
     userRole === "school" ? "school-background" : "parent-background";
-  const titleText =
-    userRole === "school" ? "Fil d'actualité - École" : "Fil d'actualité";
 
   useEffect(() => {
     if (userRole === "parent") {
-      const API_URL = import.meta.env.VITE_API_URL;
-      fetch(`${API_URL}/api/parents/me/students`)
-        .then((response) => response.json())
-        .then((students) => {
-          setStudents(students);
-          if (students.length === 1) {
-            setSelectedStudent(students[0].id);
+      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`, {
+        headers: { Authorization: `Bearer ${auth?.token}` },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            setLoadingError(true);
+            return;
           }
+          return response.json();
+        })
+        .then((students: Student[] | undefined) => {
+          if (!students) return;
+          setStudents(students);
         });
     }
-  }, [userRole]);
+  }, [auth, userRole]);
 
   const categories = [
     { id: 0, label: "Toutes les catégories" },
@@ -73,23 +77,9 @@ function Announcements() {
     }
   };
 
-  // const deleteAnnouncement = async (announcementId: number) => {
-  //   fetch(
-  //     `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
-  //     {
-  //       method: "DELETE",
-  //       headers:
-  //     },
-  //   );
-
-  //   setAnnouncements((prev) =>
-  //     prev.filter((announcement) => announcement.id !== announcementId),
-  //   );
-  // };
-
   const deleteAnnouncement = (announcementId: number) => {
     fetch(
-      `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
+      `${import.meta.env.VITE_API_URL}/api/me/announcements/${announcementId}`,
       {
         method: "DELETE",
         headers: {
@@ -98,112 +88,128 @@ function Announcements() {
         },
       },
     ).then(() => {
-      // if (!response.ok) {
-      //   throw new Error("Failed to delete announcement");
-      // }
-
       setAnnouncements((prev) =>
         prev.filter((announcement) => announcement.id !== announcementId),
       );
     });
   };
 
-  const editAnnouncement = async (announcementId: number, content: string) => {
-    fetch(
-      `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
+  const editAnnouncement = (
+    announcementId: number,
+    content: string,
+  ): Promise<boolean> => {
+    return fetch(
+      `${import.meta.env.VITE_API_URL}/api/me/announcements/${announcementId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${auth?.token}`,
         },
         body: JSON.stringify({ content }),
       },
-    );
-
-    setAnnouncements((prev) =>
-      prev.map((announcement) =>
-        announcement.id === announcementId
-          ? { ...announcement, content }
-          : announcement,
-      ),
-    );
-
-    return true;
+    ).then(() => {
+      setAnnouncements((prev) =>
+        prev.map((announcement) =>
+          announcement.id === announcementId
+            ? { ...announcement, content }
+            : announcement,
+        ),
+      );
+      return true;
+    });
   };
-
-  const navigate = useNavigate();
 
   return (
     <main className={backgroundClass}>
-      <header className={styles.an_title}>
-        <img src={logo_site} alt="Logo" className={styles.logo} />
-        <h1 className="primary-title">{titleText}</h1>
-      </header>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <img
+            src={ptit_cahier_logo_original}
+            alt="Le P'tit Cahier"
+            className={styles.logo}
+          />
+          <h1 className="primary-title">Fil d'actualité</h1>
+        </header>
 
-      <div className={styles.filters_container}>
-        {students.length > 0 && (
-          <nav className={styles.filter_bar} aria-label="Filtrer par enfant">
-            <span className={styles.filter_label}>Enfants : </span>
-            {students.map((student) => (
-              <label key={student.id} className={styles.checkbox_label}>
-                <input
-                  type="checkbox"
-                  className={styles.filter_checkbox}
-                  checked={selectedStudent === student.id}
-                  onChange={() => checkBoxFilter(student.id)}
-                />
-                <span className={styles.checkbox_name}>
-                  {student.firstName}
-                </span>
-              </label>
-            ))}
-          </nav>
+        {userRole === "school" && (
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => navigate("/school/announcements/new")}
+          >
+            + Nouvelle annonce
+          </button>
         )}
 
-        <nav className={styles.filter_bar} aria-label="Filtrer par catégorie">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              type="button"
-              className={`${styles.filter_button} ${
-                selectedCategory === category.id ? styles.active : ""
-              }`}
-              onClick={() => setSelectedCategory(category.id)}
+        <div className={styles.filters_container}>
+          {students.length > 1 && (
+            <div
+              className={styles.filter_individual}
+              aria-label="Filtrer par enfant"
             >
-              {category.label}
-            </button>
-          ))}
-          {userRole === "school" && (
-            <button
-              type="button"
-              className={`${styles.button_add_ann}`}
-              onClick={() => navigate("/school/announcements/new")}
-            >
-              Nouvelle annonce
-            </button>
+              <span className={styles.filter_label}>Enfants : </span>
+              {students.map((student) => (
+                <label key={student.id} className={styles.checkbox_label}>
+                  <input
+                    type="checkbox"
+                    className={styles.filter_checkbox}
+                    checked={selectedStudent === student.id}
+                    onChange={() => checkBoxFilter(student.id)}
+                  />
+                  <span className={styles.checkbox_name}>
+                    {student.firstName}
+                  </span>
+                </label>
+              ))}
+            </div>
           )}
-        </nav>
+
+          <div
+            className={styles.filter_individual}
+            aria-label="Filtrer par catégorie"
+          >
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                className={`${styles.filter_button} ${
+                  selectedCategory === category.id ? styles.active : ""
+                }`}
+                onClick={() => setSelectedCategory(category.id)}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {loadingError ? (
+          <p className="general_error_message">
+            Échec de la récupération de vos annonces
+          </p>
+        ) : announcements.length === 0 ? (
+          <p className="general_error_message">Aucune annonce trouvée</p>
+        ) : (
+          <section aria-label="Liste des annonces">
+            <ul className={styles.list}>
+              {announcements.map((announcement) => (
+                <li key={announcement.id}>
+                  <AnnouncementCard
+                    announcement={announcement}
+                    onDelete={
+                      userRole === "school" ? deleteAnnouncement : undefined
+                    }
+                    onEdit={
+                      userRole === "school" ? editAnnouncement : undefined
+                    }
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
-      <section className={styles.an_section}>
-        <ul>
-          {announcements.length > 0 ? (
-            announcements.map((announcement) => (
-              <li key={announcement.id}>
-                <AnnouncementCard
-                  announcement={announcement}
-                  onDelete={
-                    userRole === "school" ? deleteAnnouncement : undefined
-                  }
-                  onEdit={userRole === "school" ? editAnnouncement : undefined}
-                  key={announcement.id}
-                />
-              </li>
-            ))
-          ) : (
-            <p className={styles.empty_message}>Aucune annonce trouvée.</p>
-          )}
-        </ul>
-      </section>
     </main>
   );
 }

@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
-import AnnouncementNew from "./pages/announcement/AnnouncementNew";
+// import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import Announcements from "./pages/announcement/Announcements";
 import Home from "./pages/home/Home";
 import PublicHome from "./pages/home/PublicHome";
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         path: "/parent",
         element: <ParentLayout />,
         children: [
-          { path: "home", element: <Home userRole="parent" /> },
+          { path: "home", element: <Home /> },
           {
             path: "announcements",
             element: <Announcements />,
@@ -42,15 +42,15 @@ const router = createBrowserRouter([
         path: "/school",
         element: <SchoolLayout />,
         children: [
-          { path: "home", element: <Home userRole="school" /> },
+          { path: "home", element: <Home /> },
           {
             path: "announcements",
             element: <Announcements />,
           },
-          {
-            path: "announcements/new",
-            element: <AnnouncementNew />,
-          },
+          // {
+          //   path: "announcements/new",
+          //   element: <AnnouncementNew />,
+          // },
           { path: "tickets", element: <Tickets /> },
         ],
       },

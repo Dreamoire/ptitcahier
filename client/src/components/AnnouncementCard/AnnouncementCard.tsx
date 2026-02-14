@@ -60,10 +60,14 @@ function AnnouncementCard({
     }
   }, [announcement.content, isEditing]);
 
-  const formattedDate = new Date(announcement.createdAt).toLocaleDateString(
+  const formattedDate = new Date(announcement.createdAt).toLocaleString(
     "fr-FR",
     {
-      dateStyle: "medium",
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      hour: "2-digit",
+      minute: "2-digit",
     },
   );
 

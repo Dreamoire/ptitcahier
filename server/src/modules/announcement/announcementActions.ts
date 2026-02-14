@@ -32,30 +32,19 @@ const add: RequestHandler = async (req, res, next) => {
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = Number(req.auth.sub);
-
     const categoryId = req.query.category
       ? Number(req.query.category)
       : undefined;
-
     const studentId = req.query.student ? Number(req.query.student) : undefined;
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
 
     const announcements = await announcementRepository.readAllByParent(
       parentId,
       categoryId,
       studentId,
+      limit,
     );
 
-    res.json(announcements);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const browseRecentByParent: RequestHandler = async (req, res, next) => {
-  try {
-    const parentId = Number(req.auth.sub);
-    const announcements =
-      await announcementRepository.readLastThreeByParent(parentId);
     res.json(announcements);
   } catch (err) {
     next(err);
@@ -143,7 +132,7 @@ const update: RequestHandler = async (req, res, next) => {
 const validate: RequestHandler = async (req, res, next) => {
   try {
     const newAnnouncement = joi.object({
-      title: joi.string().max(100).required(),
+      title: joi.string().max(120).required(),
       content: joi.string().max(1000).required(),
       announcementCategoryId: joi.number().integer().positive().required(),
       studentIds: joi
@@ -153,7 +142,7 @@ const validate: RequestHandler = async (req, res, next) => {
         .required(),
     });
 
-    const { error } = newAnnouncement.validate(req.body);
+    const { error, value } = newAnnouncement.validate(req.body);
 
     if (error) {
       res
@@ -164,7 +153,7 @@ const validate: RequestHandler = async (req, res, next) => {
 
     const currentAnnouncementCategory =
       await announcementCategoryRepository.readById(
-        req.body.announcementCategoryId,
+        value.announcementCategoryId,
       );
 
     if (!currentAnnouncementCategory) {
@@ -174,7 +163,7 @@ const validate: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const SCHOOLID = 1;
+    const schoolId = Number(req.auth.sub);
 
     const studentIds = req.body.studentIds;
 
@@ -188,7 +177,7 @@ const validate: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      if (currentStudent.schoolId !== SCHOOLID) {
+      if (currentStudent.schoolId !== schoolId) {
         res
           .status(StatusCodes.UNPROCESSABLE_ENTITY)
           .json({ error: "L'étudiant n'appartient pas à cette école" });
@@ -213,7 +202,7 @@ const validateUpdate: RequestHandler = async (req, res, next) => {
     if (error) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: "Les donnÃ©es envoyÃ©es sont invalides" }); //fix
+        .json({ error: "Les données envoyées sont invalides" });
       return;
     }
 
@@ -226,7 +215,6 @@ const validateUpdate: RequestHandler = async (req, res, next) => {
 export default {
   add,
   browseByParent,
-  browseRecentByParent,
   browseBySchool,
   destroy,
   update,

@@ -40,27 +40,11 @@ class SchoolRepository {
     return (rows[0] as School) ?? null;
   }
 
-  async findSchoolByParent(parentId: number): Promise<School> {
-    const sql = `
-      SELECT DISTINCT sc.id, sc.school_name AS name
-      FROM parent p
-      JOIN student s ON s.parent_id = p.id
-      JOIN classroom c ON s.classroom_id = c.id
-      JOIN school sc ON c.school_id = sc.id
-      WHERE p.id = ?
-      LIMIT 1
-    `;
-
-    const [rows] = await databaseClient.query<Rows>(sql, [parentId]);
-
-    return rows[0] as School;
-  }
-
-  async getDashboardData(schoolId: number): Promise<SchoolDashboard> {
+  async getDashboardData(schoolId: number) {
     const sql = `
       SELECT 
         s.id,
-        s.school_name AS name,
+        s.name,
         (SELECT COUNT(*) FROM announcement WHERE school_id = s.id) AS totalAnnouncements,
         (SELECT COUNT(*) FROM classroom WHERE school_id = s.id) AS totalClassrooms,
         (SELECT COUNT(*) FROM student st 
@@ -76,7 +60,7 @@ class SchoolRepository {
 
     const [rows] = await databaseClient.query<Rows>(sql, [schoolId]);
 
-    return rows[0] as SchoolDashboard;
+    return (rows[0] as SchoolDashboard) ?? null;
   }
 }
 
