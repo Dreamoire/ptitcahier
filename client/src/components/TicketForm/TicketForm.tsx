@@ -132,7 +132,7 @@ function TicketForm({ ticketCategories, students, onSubmit }: TicketFormProps) {
           type="button"
           className="non-primary-button"
         >
-          Retourner à l'accueil
+          Retourner aux demandes
         </button>
         <button
           type="submit"

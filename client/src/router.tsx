@@ -28,18 +28,19 @@ const router = createBrowserRouter([
       {
         element: <ParentLayout />,
         children: [
-          { path: "/parent/home", element: <Home /> },
+          { path: "/parent/home", element: <Home userRole="parent" /> },
           {
             path: "/parent/announcements",
             element: <Announcements />,
           },
+          { path: "/parent/tickets", element: <Tickets userRole="parent" /> },
           { path: "/parent/tickets/new", element: <TicketNew /> },
         ],
       },
       {
         element: <SchoolLayout />,
         children: [
-          { path: "/school/home", element: <Home /> },
+          { path: "/school/home", element: <Home userRole="school" /> },
           {
             path: "/school/announcements",
             element: <Announcements />,
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
             path: "/school/announcements/new",
             element: <AnnouncementNew />,
           },
-          { path: "/school/tickets", element: <Tickets /> },
+          { path: "/school/tickets", element: <Tickets userRole="school" /> },
         ],
       },
     ],

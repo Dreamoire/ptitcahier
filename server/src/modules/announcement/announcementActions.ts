@@ -54,7 +54,6 @@ const browseByParent: RequestHandler = async (req, res, next) => {
 const browseRecentByParent: RequestHandler = async (req, res, next) => {
   try {
     const parentId = Number(req.auth.sub);
-
     const announcements =
       await announcementRepository.readLastThreeByParent(parentId);
     res.json(announcements);

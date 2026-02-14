@@ -63,4 +63,14 @@ const browseByParent: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { validate, add, browseByParent };
+const browseBySchool: RequestHandler = async (req, res, next) => {
+  try {
+    const schoolId = 1;
+    const dashboardData = await schoolRepository.getDashboardData(schoolId);
+    res.json(dashboardData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { validate, add, browseByParent, browseBySchool };

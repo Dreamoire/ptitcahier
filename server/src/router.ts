@@ -39,7 +39,8 @@ schoolRouter.use(authActions.verifyRole("school"));
 /////////////////
 
 parentRouter.get("/me/school", schoolActions.browseByParent); //PARENT home
-parentRouter.get("/me/tickets/recent", ticketActions.browseRecentByParent); //PARENT home
+// parentRouter.get("/me/tickets/recent", ticketActions.browseRecentByParent);
+// //PARENT home
 parentRouter.get(
   "/me/announcements/recent",
   announcementActions.browseRecentByParent,
@@ -70,5 +71,29 @@ router.use("/schools", schoolRouter);
 
 // router.get("/school/announcements", announcementActions.browseBySchool);
 // router.get("/school/classrooms", classroomActions.browseBySchool);
+
+// from megrge
+// router.get("/schools/me/classrooms", classroomActions.browseBySchool);
+// router.get("/schools/me/students", studentActions.browseBySchool);
+// router.get("/classrooms/:id/students", studentActions.browseByClassroom);
+// router.get("/schools/me/announcements", announcementActions.browseBySchool);
+
+// router.get("/parents/me/announcements", announcementActions.browseByParent);
+// router.get("/parents/me/school", schoolActions.browseByParent);
+// router.get("/parents/me/tickets", ticketActions.browseByParent);
+
+// router.get(
+//   "/parents/me/announcements/recent",
+//   announcementActions.browseRecentByParent,
+// );
+
+// router.get("/parents/me/students", studentActions.browseByParent);
+
+// router.get("/schools/me/tickets", ticketActions.browseBySchool);
+// router.post("/tickets", ticketActions.validate, ticketActions.add);
+
+// router.get("/ticket-categories", ticketCategoryActions.browseAll);
+// router.get("/school/classrooms", classroomActions.browseBySchool);
+// router.get("/schools/me", schoolActions.browseBySchool);
 
 export default router;

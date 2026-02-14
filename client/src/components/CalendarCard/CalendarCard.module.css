@@ -1,8 +1,10 @@
 .calendarContainer {
-  background-color: white;
+  background: rgba(255, 255, 255, 0.554);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(15px);
   border-radius: 1rem;
   padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 450px;
   height: auto;

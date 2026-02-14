@@ -1,169 +1,243 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router";
 import logoSite from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import CalendarCard from "../../components/CalendarCard/CalendarCard";
+import DigitalClock from "../../components/DigitalClock/DigitalClock";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import type { Announcement } from "../../types/Announcement";
-import type { OutletAuthContext } from "../../types/OutletAuthContext";
-import type { School } from "../../types/School";
+import type { School, SchoolDashboard } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
 import styles from "./Home.module.css";
 
-function Home() {
-  const [school, setSchool] = useState<School | null>(null);
-  const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
-  const [recentAnnouncements, setRecentAnnouncements] = useState<
-    Announcement[]
-  >([]);
+interface HomeProps {
+  userRole: "parent" | "school";
+}
+
+function Home({ userRole }: HomeProps) {
   const navigate = useNavigate();
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const { auth } = useOutletContext<OutletAuthContext>();
+  const [school, setSchool] = useState<School | null>(null);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [dashboardStats, setDashboardStats] = useState<SchoolDashboard | null>(
+    null,
+  );
+  const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
+  const defaultBanner = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.src = "/images/schools/banner-0.jpg";
+  };
+
+  const fetchDashboardData = useCallback(async () => {
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    try {
+      if (userRole === "school") {
+        const [schoolRes, announcementsRes, ticketsRes] = await Promise.all([
+          fetch(`${API_URL}/api/schools/me`),
+          fetch(`${API_URL}/api/schools/me/announcements?limit=3`),
+          fetch(`${API_URL}/api/schools/me/tickets?limit=3`),
+        ]);
+
+        const schoolData = await schoolRes.json();
+        // setSchool({ id: schoolData.id, name: schoolData.name });
+        setDashboardStats(schoolData);
+        setAnnouncements(await announcementsRes.json());
+        setRecentTickets(await ticketsRes.json());
+      } else {
+        const [schoolRes, ticketsRes, announcementsRes] = await Promise.all([
+          fetch(`${API_URL}/api/parents/me/school`),
+          fetch(`${API_URL}/api/parents/me/tickets?limit=3`),
+          fetch(`${API_URL}/api/parents/me/announcements/recent`),
+        ]);
+
+        setSchool(await schoolRes.json());
+        setRecentTickets(await ticketsRes.json());
+        setAnnouncements(await announcementsRes.json());
+      }
+    } catch (error) {
+      console.error("Erreur lors du chargement du tableau de bord :", error);
+    }
+  }, [userRole]);
 
   useEffect(() => {
-    const headers = { Authorization: `Bearer ${auth?.token}` };
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
-    Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/school`, {
-        headers,
-      }).then((res) => res.json()),
+  const totalSlides = announcements.length;
 
-      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/tickets/recent`, {
-        headers,
-      }).then((res) => res.json()),
-
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/parents/me/announcements/recent`,
-        { headers },
-      ).then((res) => {
-        return res.json();
-      }),
-    ]).then(([school, recentTickets, recentAnnouncements]) => {
-      setSchool(school);
-      setRecentTickets(recentTickets);
-      setRecentAnnouncements(recentAnnouncements);
-    });
-  }, [auth]);
-
-  const totalSlides = recentAnnouncements.length;
-
-  const goToNextSlide = useCallback(() => {
-    setActiveSlide((current) =>
+  const showNextAnnouncement = useCallback(() => {
+    setActiveSlideIndex((current) =>
       current === totalSlides - 1 ? 0 : current + 1,
     );
   }, [totalSlides]);
 
-  const goToPreviousSlide = () => {
-    setActiveSlide((current) =>
+  const showPreviousAnnouncement = () => {
+    setActiveSlideIndex((current) =>
       current === 0 ? totalSlides - 1 : current - 1,
     );
   };
 
   useEffect(() => {
-    if (totalSlides <= 1 || isPaused) return;
+    if (userRole === "school" || totalSlides <= 1 || isCarouselPaused) return;
 
-    const timer = setInterval(goToNextSlide, 7000);
-    return () => clearInterval(timer);
-  }, [totalSlides, isPaused, goToNextSlide]);
+    const autoPlayTimer = setInterval(showNextAnnouncement, 7000);
+    return () => clearInterval(autoPlayTimer);
+  }, [totalSlides, isCarouselPaused, showNextAnnouncement, userRole]);
+
+  const openTicketDetails = (ticketId: number) => {
+    navigate(`/tickets/${ticketId}`);
+  };
+
+  const renderTicketsList = () => (
+    <ul className={styles.ticket_list}>
+      {recentTickets.length > 0 ? (
+        recentTickets.map((ticket) => (
+          <li key={ticket.id}>
+            <TicketCard
+              userRole={userRole}
+              ticket={ticket}
+              variant="dashboard"
+              onClick={() => openTicketDetails(ticket.id)}
+            />
+          </li>
+        ))
+      ) : (
+        <p className={styles.empty_message}>Aucun ticket récent.</p>
+      )}
+    </ul>
+  );
 
   return (
-    <main className={styles.parent_background}>
+    <main
+      className={
+        userRole === "school"
+          ? styles.school_background
+          : styles.parent_background
+      }
+    >
       <div className={styles.dashboard_container}>
         <header className={styles.home_header}>
-          <img src={logoSite} alt="Le P'tit Cahier" className={styles.logo} />
-          <article className={styles.ba_card}>
-            <div className={styles.ba_card_header}>
+          <img
+            src={logoSite}
+            alt="Logo Le Ptit Cahier"
+            className={styles.logo}
+          />
+          <section className={styles.ba_card} aria-labelledby="school-name">
+            <figure className={styles.ba_card_header}>
               <img
                 src={`/images/schools/banner-${school?.id ?? 0}.jpg`}
-                alt="Bannière de l'école"
+                alt={`Bannière de l'école ${school?.name}`}
                 className={styles.school_banner}
+                onError={defaultBanner}
               />
-              <h2 className={styles.card_title}>{school?.name ?? "Ecole"}</h2>
-            </div>
-          </article>
+              <figcaption>
+                <h1 id="school-name" className={styles.card_title}>
+                  {school?.name ?? "Chargement de l'école..."}
+                </h1>
+              </figcaption>
+            </figure>
+          </section>
         </header>
-        {/* regroup ici */}
+
         <div className={styles.main_content_grid}>
-          <div className={styles.left_column}>
-            <section aria-labelledby="messages-title">
-              <h2 id="messages-title" className={styles.section_title}>
-                Mes derniers messages
-              </h2>
-              <ul className={styles.ticket_list}>
-                {recentTickets.length > 0 ? (
-                  recentTickets.map((ticket) => (
-                    <li key={ticket.id}>
-                      <TicketCard
-                        onClick={() => navigate("/parent/tickets")}
-                        ticket={ticket}
-                        variant="dashboard"
-                      />
-                    </li>
-                  ))
-                ) : (
-                  <p className="text">Aucun message récent.</p>
-                )}
-              </ul>
-            </section>
+          <section className={styles.left_column}>
+            {userRole === "school" ? (
+              <article className={styles.stats_section}>
+                <h2 className={styles.section_title}>Indicateurs clés</h2>
+                <dl className={styles.stats_list}>
+                  {[
+                    {
+                      label: "Annonces",
+                      value: dashboardStats?.totalAnnouncements,
+                    },
+                    { label: "Élèves", value: dashboardStats?.totalStudents },
+                    {
+                      label: "Classes",
+                      value: dashboardStats?.totalClassrooms,
+                    },
+                    { label: "Parents", value: dashboardStats?.totalParents },
+                  ].map((stat) => (
+                    <div key={stat.label} className={styles.stat_group}>
+                      <dt>{stat.label}</dt>
+                      <dd>{stat.value ?? 0}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
+            ) : (
+              <section aria-labelledby="messages-title">
+                <h2 id="messages-title" className={styles.section_title}>
+                  Derniers messages
+                </h2>
+                {renderTicketsList()}
+              </section>
+            )}
 
-            <aside aria-label="Calendrier">
+            <footer className={styles.widgets_footer}>
+              <DigitalClock />
               <CalendarCard />
-            </aside>
-          </div>
+            </footer>
+          </section>
 
-          <section className={styles.right_column} aria-labelledby="news-title">
-            <h2 id="news-title" className={styles.section_title}>
-              Fil d'actualité
+          <section
+            className={styles.right_column}
+            aria-labelledby="right-col-title"
+          >
+            <h2 id="right-col-title" className={styles.section_title}>
+              {userRole === "school"
+                ? "Derniers Tickets Reçus"
+                : "Fil d'actualité"}
             </h2>
 
-            <section
-              className={styles.carousel_wrapper}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-              onFocus={() => setIsPaused(true)}
-              onBlur={() => setIsPaused(false)}
-              aria-roledescription="carousel"
-              aria-label="Annonces récentes de l'école"
-            >
-              {totalSlides > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={goToPreviousSlide}
-                    className={`${styles.nav_button} ${styles.left}`}
-                    aria-label="Annonce précédente"
-                  >
-                    <ChevronLeft size={28} />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={goToNextSlide}
-                    className={`${styles.nav_button} ${styles.right}`}
-                    aria-label="Annonce suivante"
-                  >
-                    <ChevronRight size={28} />
-                  </button>
-                </>
-              )}
-
-              <ul
-                className={styles.carousel_track}
-                style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+            {userRole === "school" ? (
+              renderTicketsList()
+            ) : (
+              <div
+                className={styles.carousel_wrapper}
+                onMouseEnter={() => setIsCarouselPaused(true)}
+                onMouseLeave={() => setIsCarouselPaused(false)}
               >
-                {recentAnnouncements.map((announcement, index) => (
-                  <li
-                    key={announcement.id}
-                    className={styles.carousel_item}
-                    aria-hidden={index !== activeSlide}
-                  >
-                    <AnnouncementCard announcement={announcement} />
-                  </li>
-                ))}
-              </ul>
-            </section>
+                {totalSlides > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={showPreviousAnnouncement}
+                      className={`${styles.nav_button} ${styles.left}`}
+                      aria-label="Annonce précédente"
+                    >
+                      <ChevronLeft size={28} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={showNextAnnouncement}
+                      className={`${styles.nav_button} ${styles.right}`}
+                      aria-label="Annonce suivante"
+                    >
+                      <ChevronRight size={28} />
+                    </button>
+                  </>
+                )}
+                <ul
+                  className={styles.carousel_track}
+                  style={{
+                    transform: `translateX(-${activeSlideIndex * 100}%)`,
+                  }}
+                >
+                  {announcements.map((announcement, index) => (
+                    <li
+                      key={announcement.id}
+                      className={styles.carousel_item}
+                      aria-hidden={index !== activeSlideIndex}
+                    >
+                      <AnnouncementCard announcement={announcement} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         </div>
       </div>
