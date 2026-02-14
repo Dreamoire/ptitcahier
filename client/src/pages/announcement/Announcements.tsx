@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import logo_site from "../../assets/images/logo_site.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import type { Announcement } from "../../types/Announcement";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { Student } from "../../types/Student";
 import styles from "./Announcements.module.css";
 
-type UserRole = "parent" | "school";
-
-interface AnnouncementsProps {
-  userRole: UserRole;
-}
-
-function Announcements({ userRole }: AnnouncementsProps) {
+function Announcements() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
+
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  const userRole = auth?.role;
 
   const backgroundClass =
     userRole === "school" ? "school-background" : "parent-background";
@@ -38,33 +37,33 @@ function Announcements({ userRole }: AnnouncementsProps) {
   }, [userRole]);
 
   const categories = [
-    { id: null, label: "Toutes les catégories" },
+    { id: 0, label: "Toutes les catégories" },
     { id: 1, label: "Vie de l'école" },
     { id: 2, label: "Administratif" },
     { id: 3, label: "Événement" },
   ];
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL;
-
+    const headers = { Authorization: `Bearer ${auth?.token}` };
     let endpoint = "";
 
     if (userRole === "school") {
-      endpoint = `${API_URL}/api/school/announcements`;
+      endpoint = `${import.meta.env.VITE_API_URL}/api/schools/me/announcements`;
     } else {
-      endpoint = `${API_URL}/api/parents/me/announcements`;
+      endpoint = `${import.meta.env.VITE_API_URL}/api/parents/me/announcements`;
     }
 
     const url = new URL(endpoint);
-    if (selectedCategory !== null)
+
+    if (selectedCategory !== 0)
       url.searchParams.append("category", String(selectedCategory));
     if (selectedStudent !== null)
       url.searchParams.append("student", String(selectedStudent));
 
-    fetch(url.toString())
+    fetch(url.toString(), { headers })
       .then((response) => response.json())
       .then((announcements) => setAnnouncements(announcements));
-  }, [selectedCategory, selectedStudent, userRole]);
+  }, [auth, selectedCategory, selectedStudent, userRole]);
 
   const checkBoxFilter = (student: number) => {
     if (selectedStudent === student) {
@@ -74,17 +73,39 @@ function Announcements({ userRole }: AnnouncementsProps) {
     }
   };
 
-  const deleteAnnouncement = async (announcementId: number) => {
+  // const deleteAnnouncement = async (announcementId: number) => {
+  //   fetch(
+  //     `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
+  //     {
+  //       method: "DELETE",
+  //       headers:
+  //     },
+  //   );
+
+  //   setAnnouncements((prev) =>
+  //     prev.filter((announcement) => announcement.id !== announcementId),
+  //   );
+  // };
+
+  const deleteAnnouncement = (announcementId: number) => {
     fetch(
       `${import.meta.env.VITE_API_URL}/api/announcements/${announcementId}`,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth?.token}`,
+        },
       },
-    );
+    ).then(() => {
+      // if (!response.ok) {
+      //   throw new Error("Failed to delete announcement");
+      // }
 
-    setAnnouncements((prev) =>
-      prev.filter((announcement) => announcement.id !== announcementId),
-    );
+      setAnnouncements((prev) =>
+        prev.filter((announcement) => announcement.id !== announcementId),
+      );
+    });
   };
 
   const editAnnouncement = async (announcementId: number, content: string) => {
@@ -170,7 +191,6 @@ function Announcements({ userRole }: AnnouncementsProps) {
               <li key={announcement.id}>
                 <AnnouncementCard
                   announcement={announcement}
-                  userRole={userRole}
                   onDelete={
                     userRole === "school" ? deleteAnnouncement : undefined
                   }

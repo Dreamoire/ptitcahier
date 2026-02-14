@@ -28,10 +28,10 @@ const router = createBrowserRouter([
       {
         element: <ParentLayout />,
         children: [
-          { path: "/parent/home", element: <Home userRole="parent" /> },
+          { path: "/parent/home", element: <Home /> },
           {
             path: "/parent/announcements",
-            element: <Announcements userRole="parent" />,
+            element: <Announcements />,
           },
           { path: "/parent/tickets/new", element: <TicketNew /> },
         ],
@@ -39,10 +39,10 @@ const router = createBrowserRouter([
       {
         element: <SchoolLayout />,
         children: [
-          { path: "/school/home", element: <Home userRole="school" /> },
+          { path: "/school/home", element: <Home /> },
           {
             path: "/school/announcements",
-            element: <Announcements userRole="school" />,
+            element: <Announcements />,
           },
           {
             path: "/school/announcements/new",

@@ -11,13 +11,7 @@ import type { School } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
 import styles from "./Home.module.css";
 
-type UserRole = "parent" | "school";
-
-interface HomeProps {
-  userRole: UserRole;
-}
-
-function Home({ userRole }: HomeProps) {
+function Home() {
   const [school, setSchool] = useState<School | null>(null);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [recentAnnouncements, setRecentAnnouncements] = useState<
@@ -28,10 +22,8 @@ function Home({ userRole }: HomeProps) {
   const [isPaused, setIsPaused] = useState(false);
   const { auth } = useOutletContext<OutletAuthContext>();
 
-  if (!auth) return;
-
   useEffect(() => {
-    const headers = { Authorization: `Bearer ${auth.token}` };
+    const headers = { Authorization: `Bearer ${auth?.token}` };
 
     Promise.all([
       fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/school`, {
@@ -167,11 +159,7 @@ function Home({ userRole }: HomeProps) {
                     className={styles.carousel_item}
                     aria-hidden={index !== activeSlide}
                   >
-                    <AnnouncementCard
-                      announcement={announcement}
-                      userRole={userRole}
-                      key={announcement.id}
-                    />
+                    <AnnouncementCard announcement={announcement} />
                   </li>
                 ))}
               </ul>

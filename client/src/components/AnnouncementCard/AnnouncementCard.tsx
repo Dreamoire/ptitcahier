@@ -1,12 +1,13 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import type { Announcement } from "../../types/Announcement";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import AnnouncementContentTextarea from "../AnnouncementContentTextarea/AnnouncementContentTextarea";
 import styles from "./AnnouncementCard.module.css";
 
 type AnnouncementCardProps = {
   announcement: Announcement;
-  userRole: "parent" | "school";
   variant?: "default" | "dashboard";
   onDelete?: (announcementId: number) => void | Promise<void>;
   onEdit?: (
@@ -17,7 +18,6 @@ type AnnouncementCardProps = {
 
 function AnnouncementCard({
   announcement,
-  userRole,
   onDelete,
   onEdit,
 }: AnnouncementCardProps) {
@@ -25,6 +25,10 @@ function AnnouncementCard({
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(announcement.content);
   const dialogReference = useRef<HTMLDialogElement>(null);
+
+  const { auth } = useOutletContext<OutletAuthContext>();
+
+  const userRole = auth?.role;
 
   useEffect(() => {
     const dialogElement = dialogReference.current;

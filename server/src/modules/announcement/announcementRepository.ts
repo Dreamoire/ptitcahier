@@ -154,7 +154,7 @@ class AnnouncementRepository {
         WHERE c2.school_id = ?
       ) AS totalStudents,
       GROUP_CONCAT(DISTINCT CONCAT(s.first_name, ' ', s.last_name) SEPARATOR ', ') AS studentNames,
-      GROUP_CONCAT( c.classroom_name SEPARATOR ',') AS classroomNames
+      GROUP_CONCAT( c.name SEPARATOR ',') AS classroomNames
     FROM announcement AS a
     JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
     LEFT JOIN announcement_student AS ans ON ans.announcement_id = a.id

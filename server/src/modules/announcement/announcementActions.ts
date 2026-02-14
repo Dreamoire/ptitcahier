@@ -14,11 +14,11 @@ const add: RequestHandler = async (req, res, next) => {
       studentIds: req.body.studentIds,
     };
 
-    const SCHOOLID = 1;
-    // update
+    const schoolId = Number(req.auth.sub);
+
     const newInsertedAnnouncementId = await announcementRepository.create(
       newAnnouncement,
-      SCHOOLID,
+      schoolId,
     );
 
     res.status(StatusCodes.CREATED).json({
@@ -65,7 +65,7 @@ const browseRecentByParent: RequestHandler = async (req, res, next) => {
 
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
-    const schoolId = 1;
+    const schoolId = Number(req.auth.sub);
 
     const categoryId = req.query.category
       ? Number(req.query.category)
@@ -93,10 +93,11 @@ const destroy: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const SCHOOLID = 1; // to change with context?
+    const schoolId = Number(req.auth.sub);
+
     const deletedAnnouncement = await announcementRepository.delete(
       announcementId,
-      SCHOOLID,
+      schoolId,
     );
 
     if (deletedAnnouncement === 0) {
@@ -121,11 +122,12 @@ const update: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const SCHOOLID = 1;
+    const schoolId = Number(req.auth.sub);
+
     const updatedAnnouncement = await announcementRepository.updateContent(
       announcementId,
       req.body.content,
-      SCHOOLID,
+      schoolId,
     );
 
     if (updatedAnnouncement === 0) {
@@ -212,7 +214,7 @@ const validateUpdate: RequestHandler = async (req, res, next) => {
     if (error) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: "Les donnÃ©es envoyÃ©es sont invalides" });
+        .json({ error: "Les donnÃ©es envoyÃ©es sont invalides" }); //fix
       return;
     }
 
