@@ -75,21 +75,23 @@ const destroy: RequestHandler = async (req, res, next) => {
     const announcementId = Number(req.params.id);
 
     if (!Number.isInteger(announcementId)) {
-      res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ error: "Identifiant d'annonce invalide" });
+      res.status(StatusCodes.BAD_REQUEST).json({
+        error: "Identifiant d'annonce invalide",
+      });
       return;
     }
 
     const schoolId = Number(req.auth.sub);
 
-    const deletedAnnouncement = await announcementRepository.delete(
+    const affectedRows = await announcementRepository.delete(
       announcementId,
       schoolId,
     );
 
-    if (deletedAnnouncement === 0) {
-      res.status(StatusCodes.NOT_FOUND).json({ error: "Annonce introuvable" });
+    if (affectedRows === 0) {
+      res.status(StatusCodes.NOT_FOUND).json({
+        error: "Annonce introuvable",
+      });
       return;
     }
 

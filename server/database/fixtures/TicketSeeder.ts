@@ -11,7 +11,7 @@ class TicketSeeder extends AbstractSeeder {
 
       for (let j = 0; j < 6; j += 1) {
         const fakeTicket = {
-          content: this.faker.lorem.sentences({ min: 1, max: 3 }),
+          content: this.faker.lorem.sentences({ min: 2, max: 10 }),
           parent_id: parent,
           ticket_category_id: this.faker.helpers.rangeToNumber({
             min: 1,

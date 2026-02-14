@@ -1,38 +1,3 @@
-// import AbstractSeeder from "./AbstractSeeder";
-// import AnnouncementSeeder from "./AnnouncementSeeder";
-
-// class AnnouncementStudentSeeder extends AbstractSeeder {
-//   constructor() {
-//     super({
-//       table: "announcement_student",
-//       truncate: true,
-//       dependencies: [AnnouncementSeeder],
-//     });
-//   }
-//   run() {
-//     for (let j = 0; j < 13; j += 1) {
-//       this.insert({
-//         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
-//         student_id: 1,
-//       });
-//     }
-//     for (let j = 0; j < 6; j += 1) {
-//       this.insert({
-//         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
-//         student_id: 2,
-//       });
-//     }
-//     for (let j = 0; j < 2; j += 1) {
-//       this.insert({
-//         announcement_id: this.getRef(`announcement_1_${j}`).insertId,
-//         student_id: 3,
-//       });
-//     }
-//   }
-// }
-
-// export default AnnouncementStudentSeeder;
-
 import AbstractSeeder from "./AbstractSeeder";
 import AnnouncementSeeder from "./AnnouncementSeeder";
 
@@ -46,23 +11,60 @@ class AnnouncementStudentSeeder extends AbstractSeeder {
   }
 
   run() {
-    const studentIds = Array.from({ length: 50 }, (_, i) => i + 1);
+    const allStudents1to50 = Array.from({ length: 50 }, (_, i) => i + 1);
+    const students1to10 = Array.from({ length: 10 }, (_, i) => i + 1);
+    const students31to50 = Array.from({ length: 20 }, (_, i) => i + 31);
 
-    for (let j = 0; j < 10; j += 1) {
-      const announcementRef = this.getRef(`announcement_1_${j}`);
+    for (let i = 0; i < 2; i++) {
+      const announcementRef = this.getRef(`announcement_1_${i}`);
+      if (!announcementRef) continue;
 
-      if (announcementRef) {
-        const randomStudents = this.faker.helpers.arrayElements(
-          studentIds as number[],
-          { min: 1, max: 50 },
-        );
+      for (const studentId of allStudents1to50) {
+        this.insert({
+          announcement_id: announcementRef.insertId,
+          student_id: studentId,
+        });
+      }
+    }
 
-        for (const studentId of randomStudents) {
-          this.insert({
-            announcement_id: announcementRef.insertId,
-            student_id: studentId,
-          });
-        }
+    for (let i = 2; i < 4; i++) {
+      const announcementRef = this.getRef(`announcement_1_${i}`);
+      if (!announcementRef) continue;
+
+      for (const studentId of students1to10) {
+        this.insert({
+          announcement_id: announcementRef.insertId,
+          student_id: studentId,
+        });
+      }
+    }
+
+    for (let i = 4; i < 6; i++) {
+      const announcementRef = this.getRef(`announcement_1_${i}`);
+      if (!announcementRef) continue;
+
+      for (const studentId of students31to50) {
+        this.insert({
+          announcement_id: announcementRef.insertId,
+          student_id: studentId,
+        });
+      }
+    }
+
+    for (let i = 6; i < 11; i++) {
+      const announcementRef = this.getRef(`announcement_1_${i}`);
+      if (!announcementRef) continue;
+
+      const randomStudents = this.faker.helpers.arrayElements(
+        allStudents1to50 as number[],
+        { min: 1, max: 4 },
+      );
+
+      for (const studentId of randomStudents) {
+        this.insert({
+          announcement_id: announcementRef.insertId,
+          student_id: studentId,
+        });
       }
     }
   }

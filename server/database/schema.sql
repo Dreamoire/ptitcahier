@@ -95,10 +95,6 @@ CREATE TABLE ticket_student (
 INSERT INTO user (email, hashed_password, role)
 VALUES
 ("example@school1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "school"),
-("example@school2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "school");
-
-INSERT INTO user (email, hashed_password, role)
-VALUES
 ("example@parent1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
 ("example@parent2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent");
 
@@ -115,16 +111,14 @@ VALUES
 (3, "Divers", "Poser une question ou obtenir un renseignement (Cantine, horaires, documents…)", "16a249", "NotebookPen"),
 (4, "Autorisation", "Demander une permission ou un accord spécifique (Sortie anticipée, droit à l'image…)", "0da2e7", "ShieldUser");
 
-
 INSERT INTO school (name, photo_url, user_id)
 VALUES
-  ("École Primaire Émile Zola", "/images/schools/school_profile_1_zola.png", 1),
-  ("École Primaire Voltaire", "/images/schools/school_profile_2_voltaire.png", 2);
+  ("École Primaire Émile Zola", "/images/schools/school_profile_1_zola.png", 1);
 
 INSERT INTO parent (last_name, first_name, genre, photo_url, user_id)
 VALUES
-("Dupont", "Jean", "M", "/images/parents/parent_profile_male.png", 3),
-("Martin", "Marie", "F", "/images/parents/parent_profile_female.png", 4);
+("Dupont", "Jean", "M", "/images/parents/parent_profile_male.png", 2),
+("Martin", "Marie", "F", "/images/parents/parent_profile_female.png", 3);
 
 INSERT INTO classroom (name, school_id)
 VALUES

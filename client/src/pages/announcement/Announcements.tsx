@@ -79,7 +79,7 @@ function Announcements() {
 
   const deleteAnnouncement = (announcementId: number) => {
     fetch(
-      `${import.meta.env.VITE_API_URL}/api/me/announcements/${announcementId}`,
+      `${import.meta.env.VITE_API_URL}/api/schools/me/announcements/${announcementId}`,
       {
         method: "DELETE",
         headers: {
@@ -99,7 +99,7 @@ function Announcements() {
     content: string,
   ): Promise<boolean> => {
     return fetch(
-      `${import.meta.env.VITE_API_URL}/api/me/announcements/${announcementId}`,
+      `${import.meta.env.VITE_API_URL}/api/schools/me/announcements/${announcementId}`,
       {
         method: "PUT",
         headers: {
