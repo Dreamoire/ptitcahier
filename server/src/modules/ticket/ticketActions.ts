@@ -11,7 +11,8 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
     const schoolId = 1;
     //school Id hard coded for now
 
-    const tickets = await ticketRepository.readAllBySchool(schoolId);
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const tickets = await ticketRepository.readAllBySchool(schoolId, limit);
 
     res.json(tickets);
   } catch (err) {

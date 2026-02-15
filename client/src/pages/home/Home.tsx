@@ -35,16 +35,15 @@ function Home({ userRole }: HomeProps) {
 
     try {
       if (userRole === "school") {
-        const [schoolRes, announcementsRes, ticketsRes] = await Promise.all([
+        const [schoolRes, ticketsRes] = await Promise.all([
           fetch(`${API_URL}/api/schools/me`),
-          fetch(`${API_URL}/api/schools/me/announcements?limit=3`),
-          fetch(`${API_URL}/api/schools/me/tickets?limit=3`),
+          fetch(`${API_URL}/api/schools/me/tickets?limit=6`),
         ]);
 
         const schoolData = await schoolRes.json();
         setSchool({ id: schoolData.id, name: schoolData.name });
         setDashboardStats(schoolData);
-        setAnnouncements(await announcementsRes.json());
+
         setRecentTickets(await ticketsRes.json());
       } else {
         const [schoolRes, ticketsRes, announcementsRes] = await Promise.all([
