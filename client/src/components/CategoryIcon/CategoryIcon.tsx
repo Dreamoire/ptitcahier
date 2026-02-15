@@ -1,7 +1,10 @@
 import {
   CalendarCheck,
+  CalendarDays,
+  ClipboardList,
   NotebookPen,
   OctagonAlert,
+  School,
   ShieldUser,
 } from "lucide-react";
 import type { TicketCategory } from "../../types/TicketCategory";
@@ -16,6 +19,9 @@ const ICON_MAP = {
   CalendarCheck,
   NotebookPen,
   ShieldUser,
+  School,
+  ClipboardList,
+  CalendarDays,
 } as const;
 
 type IconName = keyof typeof ICON_MAP;

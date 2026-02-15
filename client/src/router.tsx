@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
-// import AnnouncementNew from "./pages/announcement/AnnouncementNew";
+import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import Announcements from "./pages/announcement/Announcements";
 import Home from "./pages/home/Home";
 import PublicHome from "./pages/home/PublicHome";
@@ -47,10 +47,10 @@ const router = createBrowserRouter([
             path: "announcements",
             element: <Announcements />,
           },
-          // {
-          //   path: "announcements/new",
-          //   element: <AnnouncementNew />,
-          // },
+          {
+            path: "announcements/new",
+            element: <AnnouncementNew />,
+          },
           { path: "tickets", element: <Tickets /> },
         ],
       },

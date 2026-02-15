@@ -28,7 +28,7 @@ function TicketForm({ ticketCategories, students, onSubmit }: TicketFormProps) {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        const content = formData.get("content") as string;
+        const content = (formData.get("content") as string).trim();
         const ticketCategoryId = Number(
           formData.get("ticketCategoryId"),
         ) as number;
@@ -41,7 +41,7 @@ function TicketForm({ ticketCategories, students, onSubmit }: TicketFormProps) {
         );
 
         if (
-          content.trim().length === 0 ||
+          !content ||
           validStudentIds.length === 0 ||
           !Number.isInteger(ticketCategoryId) ||
           ticketCategoryId <= 0

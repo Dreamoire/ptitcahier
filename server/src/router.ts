@@ -31,7 +31,7 @@ parentRouter.use(authActions.verifyRole("parent"));
 const schoolRouter = express.Router();
 schoolRouter.use(authActions.verifyRole("school"));
 
-parentRouter.get("/me/school", schoolActions.browseByParent); //replace?
+parentRouter.get("/me/school", schoolActions.browseByParent);
 parentRouter.get("/me/announcements", announcementActions.browseByParent);
 parentRouter.get("/me/students", studentActions.browseByParent);
 parentRouter.get("/me/tickets", ticketActions.browseByParent);
@@ -46,8 +46,7 @@ schoolRouter.post(
   announcementActions.validate,
   announcementActions.add,
 );
-schoolRouter.delete("/me/announcements/:id", announcementActions.destroy); //SCHOOL deletes annonce
-
+schoolRouter.delete("/me/announcements/:id", announcementActions.destroy);
 schoolRouter.put(
   "/me/announcements/:id",
   announcementActions.validateUpdate,

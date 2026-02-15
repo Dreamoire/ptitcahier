@@ -1,9 +1,10 @@
+import type { AnnouncementCategory } from "../../types/AnnouncementCategory";
 import type { TicketCategory } from "../../types/TicketCategory";
 import CategoryIcon from "../CategoryIcon/CategoryIcon";
 import styles from "./CategoryFormButton.module.css";
 
 type CategoryFormButtonProps = {
-  category: TicketCategory;
+  category: TicketCategory | AnnouncementCategory;
   formName: string;
   onChange: () => void;
 };

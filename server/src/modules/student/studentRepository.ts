@@ -1,5 +1,4 @@
 import databaseClient from "../../../database/client";
-
 import type { Rows } from "../../../database/client";
 import type { Student } from "../../types/express/Student";
 
@@ -36,15 +35,15 @@ class StudentRepository {
       [studentId],
     );
 
-    return rows[0] as Student;
+    return (rows[0] as Student) ?? null;
   }
 
   async readAllStudentsBySchool(schoolId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT
 		s.id,
-		s.first_name AS firstname,
-		s.last_name AS lastname,
+		s.first_name AS firstName,
+		s.last_name AS lastName,
 		s.classroom_id AS classroomId,
 		c.name AS classroomName
 		FROM student s
@@ -54,20 +53,7 @@ class StudentRepository {
       [schoolId],
     );
 
-    return rows;
-  }
-
-  async readByClassroom(classroomId: number, SCHOOL_ID: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT s.id, s.first_name AS firstname, s.last_name AS lastname
-       FROM student s
-       JOIN classroom c ON c.id = s.classroom_id
-       WHERE c.id = ? AND c.school_id = ?
-       ORDER BY s.last_name ASC, s.first_name ASC`,
-      [classroomId, SCHOOL_ID],
-    );
-
-    return rows;
+    return rows as Student[];
   }
 }
 

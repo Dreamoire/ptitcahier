@@ -7,9 +7,10 @@ CREATE TABLE user (
 
 CREATE TABLE announcement_category (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(120) NOT NULL UNIQUE,
+    description VARCHAR(120),
     color VARCHAR(6) NOT NULL,
-    icon VARCHAR(30) NOT NULL
+    icon VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE ticket_category (
@@ -32,7 +33,7 @@ CREATE TABLE parent (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     last_name VARCHAR(120) NOT NULL,
     first_name VARCHAR(120) NOT NULL,
-    genre VARCHAR(1) NOT NULL,
+    genre ENUM('M', 'F') NOT NULL,
     photo_url VARCHAR(255) NULL,
     user_id INT UNSIGNED NOT NULL UNIQUE,
     FOREIGN KEY (user_id) REFERENCES user(id)
@@ -98,11 +99,19 @@ VALUES
 ("example@parent1.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent"),
 ("example@parent2.com", "$argon2id$v=19$m=19456,t=2,p=1$xsYzDUDCSLYdyxW34L88bw$kfEBBkMtmsHPuN7RVZYJ8tNfG6jj1an6aUB5Tiobf+c", "parent");
 
-INSERT INTO announcement_category (id, name, color, icon)
+INSERT INTO announcement_category (id, name, description, color, icon)
 VALUES
-(1, "Vie de l'école", "6d5bd0", "School"),
-(2, "Administratif", "16a249", "ClipboardList"),
-(3, "Evénement", "0da2e7", "CalendarDays");
+(1, "Vie de l'école", 
+ "Actualités et moments de vie de l'école (Projets, activités, sorties...)", 
+ "6d5bd0", "School"),
+
+(2, "Administratif", 
+ "Communications administratives (Bulletins, absences, rappels…)", 
+ "16a249", "ClipboardList"),
+
+(3, "Evénement", 
+ "Événements et temps forts à venir (Fêtes, spectacles…)", 
+ "0da2e7", "CalendarDays");
 
 INSERT INTO ticket_category (id, name, description, color, icon)
 VALUES
@@ -113,7 +122,7 @@ VALUES
 
 INSERT INTO school (name, photo_url, user_id)
 VALUES
-  ("École Primaire Émile Zola", "/images/schools/school_profile_1_zola.png", 1);
+("École Primaire Émile Zola", "/images/schools/school_profile_1_zola.png", 1);
 
 INSERT INTO parent (last_name, first_name, genre, photo_url, user_id)
 VALUES
