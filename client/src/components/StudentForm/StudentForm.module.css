@@ -23,34 +23,25 @@
   border-radius: 4px;
 }
 
-.form_buttons {
+.ticket_buttons_container {
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: center;
+  gap: 0.8rem;
 }
 
-.form_button_save {
-  background-color: #0da2e7;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
+.ticket_buttons_container button {
+  flex: 1;
+  max-width: 280px;
 }
 
-.form_button_save:hover {
-  background-color: #0b86c1;
-}
+@media (max-width: 600px) {
+  .ticket_buttons_container {
+    flex-direction: column-reverse;
+  }
 
-.form_button_cancel {
-  background-color: #ccc;
-  color: #333;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.form_button_cancel:hover {
-  background-color: #aaa;
+  .ticket_buttons_container button {
+    flex: 1;
+    max-width: 100%;
+  }
 }

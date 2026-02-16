@@ -6,12 +6,12 @@ class ParentRepository {
   async readByUserId(userId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
-         p.id AS parentId,
+        p.id,
         p.genre AS parentGenre,
-        p.first_name AS parentFirstName,
-        p.last_name AS parentLastName,
+        p.first_name AS firstName,
+        p.last_name AS lastName,
         photo_url AS photoUrl
-        FROM parent
+        FROM parent AS p
         WHERE user_id = ?
         LIMIT 1`,
       [userId],
@@ -22,19 +22,29 @@ class ParentRepository {
   async readAllBySchool(schoolId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT DISTINCT
-        p.id AS parentId,
+        p.id,
         p.genre AS parentGenre,
-        p.first_name AS parentFirstName,
-        p.last_name AS parentLastName
-     FROM parent AS p
-    JOIN student AS s ON p.id = s.parent_id
-     JOIN classroom AS c ON c.id = s.classroom_id
-     JOIN school AS sch ON sch.id = c.school_id
-     WHERE sch.id = ?`,
+        p.first_name AS firstName,
+        p.last_name AS lastName
+      FROM parent AS p
+      JOIN student AS s ON p.id = s.parent_id
+      JOIN classroom AS c ON c.id = s.classroom_id
+      JOIN school AS sch ON sch.id = c.school_id
+      WHERE sch.id = ?`,
       [schoolId],
     );
 
     return rows as Parent[];
   }
+
+  async readById(parentId: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM parent WHERE id = ?",
+      [parentId],
+    );
+
+    return (rows[0] as Parent) ?? null;
+  }
 }
+
 export default new ParentRepository();

@@ -5,7 +5,7 @@ export type Student = {
   classroomId: number;
   classroomName: string;
   schoolId: number;
-  parentId: number;
+  parentId: number | null;
   parentGenre: string;
   parentLastName: string;
   parentFirstName: string;

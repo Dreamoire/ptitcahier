@@ -58,6 +58,11 @@ schoolRouter.put(
 );
 schoolRouter.patch("/tickets/:id/status", ticketActions.editStatus);
 schoolRouter.delete("/me/students/:id", studentActions.destroy);
+schoolRouter.put(
+  "/me/students/:id",
+  studentActions.validate,
+  studentActions.update,
+);
 
 router.use("/parents", parentRouter);
 router.use("/schools", schoolRouter);

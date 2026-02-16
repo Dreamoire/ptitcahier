@@ -82,6 +82,8 @@ const validate: RequestHandler = async (req, res, next) => {
       }
     }
 
+    req.body = value;
+
     next();
   } catch (err) {
     next(err);
