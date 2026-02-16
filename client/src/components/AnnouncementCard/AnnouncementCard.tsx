@@ -18,6 +18,7 @@ type AnnouncementCardProps = {
 function AnnouncementCard({
   announcement,
   userRole,
+  variant = "default",
   onDelete,
   onEdit,
 }: AnnouncementCardProps) {
@@ -129,7 +130,9 @@ function AnnouncementCard({
   };
 
   return (
-    <article className={styles.ann_card}>
+    <article
+      className={`${styles.ann_card} ${variant === "dashboard" ? styles.card_dashboard : ""}`}
+    >
       <section className={styles.content_card}>
         <div className={styles.media_block}>
           <header>

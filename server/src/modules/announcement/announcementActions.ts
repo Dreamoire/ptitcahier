@@ -31,7 +31,7 @@ const add: RequestHandler = async (req, res, next) => {
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 2;
+    const parentId = 1;
 
     const categoryId = req.query.category
       ? Number(req.query.category)
@@ -53,7 +53,7 @@ const browseByParent: RequestHandler = async (req, res, next) => {
 
 const browseRecentByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 2;
+    const parentId = 1;
     const announcements =
       await announcementRepository.readLastThreeByParent(parentId);
     res.json(announcements);

@@ -3,7 +3,7 @@ import schoolRepository from "./schoolRepository";
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 2;
+    const parentId = 1;
     const schoolData = await schoolRepository.findSchoolByParent(parentId);
     res.json(schoolData);
   } catch (err) {
@@ -11,4 +11,14 @@ const browseByParent: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseByParent };
+const browseBySchool: RequestHandler = async (req, res, next) => {
+  try {
+    const schoolId = 1;
+    const dashboardData = await schoolRepository.getDashboardData(schoolId);
+    res.json(dashboardData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseByParent, browseBySchool };

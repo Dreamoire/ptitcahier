@@ -5,7 +5,7 @@ const SCHOOL_ID = 1;
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    const parentId = 2;
+    const parentId = 1;
     //hard coded for now
     const students = await studentRepository.readAllByParent(parentId);
 

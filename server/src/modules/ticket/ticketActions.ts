@@ -22,7 +22,7 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
     // A modifier avec l'id de connexion
-    const parentId = 2;
+    const parentId = 1;
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const tickets = await ticketRepository.readAllByParent(parentId, limit);
 
@@ -100,7 +100,7 @@ const add: RequestHandler = async (req, res, next) => {
       studentIds: req.body.studentIds,
     };
 
-    const parentId = 2;
+    const parentId = 1;
     //parent Id hard coded for now
 
     const newInsertedTicketId = await ticketRepository.create(

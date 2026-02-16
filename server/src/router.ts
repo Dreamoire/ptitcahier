@@ -43,8 +43,7 @@ router.get("/schools/me/tickets", ticketActions.browseBySchool);
 router.post("/tickets", ticketActions.validate, ticketActions.add);
 
 router.get("/ticket-categories", ticketCategoryActions.browseAll);
-
-router.get("/school/announcements", announcementActions.browseBySchool);
 router.get("/school/classrooms", classroomActions.browseBySchool);
+router.get("/schools/me", schoolActions.browseBySchool);
 
 export default router;

@@ -50,7 +50,7 @@ function Announcements({ userRole }: AnnouncementsProps) {
     let endpoint = "";
 
     if (userRole === "school") {
-      endpoint = `${API_URL}/api/school/announcements`;
+      endpoint = `${API_URL}/api/schools/me/announcements`;
     } else {
       endpoint = `${API_URL}/api/parents/me/announcements`;
     }
