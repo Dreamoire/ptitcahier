@@ -72,7 +72,7 @@ CREATE TABLE announcement_student (
     student_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (announcement_id, student_id),
     FOREIGN KEY (announcement_id) REFERENCES announcement(id),
-    FOREIGN KEY (student_id) REFERENCES student(id)
+    FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE CASCADE
 );
 
 CREATE TABLE ticket (
@@ -90,7 +90,7 @@ CREATE TABLE ticket_student (
     student_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (ticket_id, student_id),
     FOREIGN KEY (ticket_id) REFERENCES ticket(id),
-    FOREIGN KEY (student_id) REFERENCES student(id)
+    FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE CASCADE
 );
 
 INSERT INTO user (email, hashed_password, role)

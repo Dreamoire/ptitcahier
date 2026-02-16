@@ -1,9 +1,7 @@
 .page {
-  min-height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: var(--background-grey);
 }
 
 .header {
@@ -18,7 +16,7 @@
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 800px;
 
   display: flex;
