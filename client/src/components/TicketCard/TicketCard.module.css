@@ -139,7 +139,8 @@
   font-size: var(--font-size-text);
   color: var(--primary-color-text);
   line-height: 1.45;
-  max-width: clamp(320px, 70vw, 700px);
+  /* max-width: clamp(320px, 70vw, 700px); */
+  max-width: clamp(240px, 100%, 560px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
