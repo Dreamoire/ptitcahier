@@ -1,15 +1,18 @@
 .card {
+  --ticketcard-badge-space: 0px;
   display: flex;
   width: 100%;
   overflow: hidden;
   position: relative;
-
   border: 0;
   border-radius: var(--border-radius);
   background: var(--background-white);
   box-shadow: var(--box-shadow);
-
   transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.card[data-has-badge="true"] {
+  --ticketcard-badge-space: 95px;
 }
 
 .cardButton {
@@ -79,11 +82,9 @@
 .leftPanel {
   width: 120px;
   min-width: 120px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: 0;
   transition: filter 180ms ease;
 }
@@ -95,17 +96,12 @@
 .iconCircle {
   width: 64px;
   height: 64px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: 0;
   border-radius: 999px;
   background: rgba(248, 250, 252, 0.25);
-
-  box-shadow: none;
-  outline: none;
 }
 
 .icon {
@@ -116,70 +112,52 @@
 
 .body {
   flex: 1;
+  min-width: 0;
   padding: 18px 20px;
+  padding-right: calc(20px + var(--ticketcard-badge-space));
   border: 0;
   background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-
+  min-width: 0;
   gap: 12px;
-
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .nameTitle {
   margin: 0;
   font-family: var(--font-family-primary-title);
-  font-size: clamp(1.05rem, 0.95rem + 1vw, 1.6rem);
+  font-size: clamp(1.05rem, 0.95rem + 1vw, 1.4rem);
   color: var(--primary-color-title);
   line-height: 1.2;
-}
-
-.category {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 132px;
-  height: 32px;
-  padding: 0 14px;
-
-  border-radius: 999px;
-  border: 2px solid var(--light-grey);
-
-  font-family: var(--font-family-text);
-  font-size: 0.95rem;
-  color: var(--primary-color-title);
-
   white-space: nowrap;
-
-  background: transparent;
-  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .content {
-  margin: 0 0 12px;
-
+  width: 100%;
+  margin: 0 0 8px;
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
   color: var(--primary-color-text);
   line-height: 1.45;
-  width: 100%;
-  max-width: 560px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
-  text-overflow: ellipsis;
 }
 
 .date {
   display: inline-flex;
   margin: 0;
-
   font-family: var(--font-family-text);
   font-size: 0.95rem;
   color: var(--dark-grey);
@@ -188,15 +166,12 @@
 .card[data-type="urgent"] .leftPanel {
   background: var(--red);
 }
-
 .card[data-type="events"] .leftPanel {
   background: var(--orange);
 }
-
 .card[data-type="news"] .leftPanel {
   background: var(--green);
 }
-
 .card[data-type="notice"] .leftPanel {
   background: var(--blue);
 }
@@ -208,62 +183,43 @@
 }
 
 @media (max-width: 768px) {
+  .card[data-has-badge="true"] {
+    --ticketcard-badge-space: 85px;
+  }
   .leftPanel {
     width: 92px;
     min-width: 92px;
   }
-
-  .content {
-    max-width: calc(100vw - 140px);
-  }
-
-  .iconCircle {
-    width: 56px;
-    height: 56px;
-  }
-
-  .icon {
-    width: 24px;
-    height: 24px;
-  }
-
   .body {
     padding: 16px;
-  }
-
-  .category {
-    height: 30px;
-    padding: 0 12px;
-    font-size: 0.9rem;
-  }
-
-  .statusBadge {
-    top: 10px;
-    right: 10px;
-    font-size: 0.72rem;
+    padding-right: calc(16px + var(--ticketcard-badge-space));
   }
 }
 
 @media (max-width: 480px) {
+  .card[data-has-badge="true"] {
+    --ticketcard-badge-space: 75px;
+  }
   .leftPanel {
-    width: 84px;
-    min-width: 84px;
+    width: 80px;
+    min-width: 80px;
   }
-
   .body {
-    padding: 14px;
+    padding: 12px;
+    padding-right: calc(12px + var(--ticketcard-badge-space));
   }
-
-  .content {
-    max-width: calc(100vw - 120px);
-    display: block;
-    white-space: nowrap;
+  .nameTitle {
+    font-size: 1.1rem;
   }
 }
+
 .card_dashboard {
   min-height: 70px;
   box-shadow: 0 4px 10px rgba(15, 23, 41, 0.1);
-  padding-bottom: 0;
+}
+
+.card_dashboard[data-has-badge="true"] {
+  --ticketcard-badge-space: 70px;
 }
 
 .card_dashboard .statusBadge {
@@ -274,14 +230,14 @@
 }
 
 .card_dashboard .leftPanel {
-  width: 40px;
-  min-width: 40px;
+  width: 45px;
+  min-width: 45px;
 }
 
 .card_dashboard .iconCircle {
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .card_dashboard .icon {
@@ -291,17 +247,10 @@
 
 .card_dashboard .body {
   padding: 10px 12px;
-  gap: 1px;
+  padding-right: calc(12px + var(--ticketcard-badge-space));
 }
 
 .card_dashboard .content {
   font-size: 0.85rem;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
   margin-bottom: 0;
-}
-
-.card_dashboard .date {
-  font-size: 0.75rem;
-  margin-top: 2px;
 }

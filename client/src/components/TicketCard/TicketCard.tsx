@@ -63,6 +63,7 @@ function TicketCard({
         variant === "dashboard" ? styles.card_dashboard : ""
       }`}
       data-type={iconType}
+      data-has-badge={showStatusBadge ? "true" : "false"}
     >
       {showStatusBadge ? (
         <span
