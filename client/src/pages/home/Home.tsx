@@ -101,7 +101,13 @@ function Home() {
 
     const autoPlayTimer = setInterval(showNextAnnouncement, 7000);
     return () => clearInterval(autoPlayTimer);
-  }, [totalSlides, isCarouselPaused, showNextAnnouncement, userRole]);
+  }, [
+    totalSlides,
+    isCarouselPaused,
+    showNextAnnouncement,
+    userRole,
+    announcements.length,
+  ]);
 
   const renderTicketsList = () => (
     <ul className={styles.ticket_list}>
