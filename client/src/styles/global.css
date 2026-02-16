@@ -20,6 +20,7 @@
   background: var(--background-rainbow-light);
   min-height: 100vh;
   padding: 2rem 0;
+  background-attachment: fixed;
 }
 
 .school-background {

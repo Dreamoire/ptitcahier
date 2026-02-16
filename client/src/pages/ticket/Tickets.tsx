@@ -69,14 +69,17 @@ function Tickets() {
       );
     };
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/tickets/${ticketId}/status`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth?.token}`,
+    fetch(
+      `${import.meta.env.VITE_API_URL}/api/schools/tickets/${ticketId}/status`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth?.token}`,
+        },
+        body: JSON.stringify({ processed }),
       },
-      body: JSON.stringify({ processed }),
-    })
+    )
       .then(
         (response) =>
           response.json() as Promise<{ id: number; processed: boolean }>,

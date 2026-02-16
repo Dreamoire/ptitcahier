@@ -52,11 +52,9 @@ schoolRouter.put(
   announcementActions.validateUpdate,
   announcementActions.update,
 );
+schoolRouter.patch("/tickets/:id/status", ticketActions.editStatus);
 
 router.use("/parents", parentRouter);
 router.use("/schools", schoolRouter);
-
-router.post("/tickets", ticketActions.validate, ticketActions.add);
-router.patch("/tickets/:id/status", ticketActions.editStatus);
 
 export default router;
