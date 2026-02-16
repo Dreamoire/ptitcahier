@@ -166,7 +166,9 @@
 
 .carousel_item {
   box-sizing: border-box;
+  flex: 0 0 100%;
   min-width: 100%;
+  max-width: 100%;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -213,6 +215,14 @@
     grid-template-columns: 400px 1fr;
     align-items: start;
     gap: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .carousel_wrapper {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
   }
 }
 
