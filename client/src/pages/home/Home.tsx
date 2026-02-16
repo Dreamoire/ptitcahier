@@ -106,6 +106,7 @@ function Home() {
               ticket={ticket}
               variant="dashboard"
               onClick={() => navigate(`/${auth?.role}/tickets`)}
+              showStatusBadge
             />
           </li>
         ))
