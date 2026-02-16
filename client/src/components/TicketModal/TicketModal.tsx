@@ -6,6 +6,7 @@ import styles from "./TicketModal.module.css";
 type TicketModalProps = {
   ticket: Ticket;
   onCloseComplete: () => void;
+  processTicket: (ticketId: number, processed: boolean) => Promise<void>;
 };
 
 const getTicketIconType = (categoryName: string): TicketIconType => {
@@ -21,7 +22,11 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
   }
 };
 
-function TicketModal({ ticket, onCloseComplete }: TicketModalProps) {
+function TicketModal({
+  ticket,
+  onCloseComplete,
+  processTicket,
+}: TicketModalProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -141,6 +146,16 @@ function TicketModal({ ticket, onCloseComplete }: TicketModalProps) {
           <div className={styles.messageBox} data-type={ticketType}>
             <p className={styles.messageText}>{ticket.content} </p>
           </div>
+        </div>
+
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={"primary-button"}
+            onClick={() => processTicket(ticket.id, !ticket.processed)}
+          >
+            {ticket.processed ? "Non traité" : "Traité"}
+          </button>
         </div>
       </dialog>
     </div>

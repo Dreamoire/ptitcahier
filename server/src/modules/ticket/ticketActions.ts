@@ -109,9 +109,42 @@ const add: RequestHandler = async (req, res, next) => {
   }
 };
 
+const editStatus: RequestHandler = async (req, res, next) => {
+  try {
+    const ticketId = Number(req.params.id);
+
+    if (!Number.isInteger(ticketId) || ticketId <= 0) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        error: "Identifiant de ticket invalide",
+      });
+      return;
+    }
+
+    if (typeof req.body.processed !== "boolean") {
+      res.status(400).json({ error: "processed doit être un boolean" });
+      return;
+    }
+    const processed = req.body.processed;
+
+    const wasUpdated = await ticketRepository.updateStatus(ticketId, processed);
+
+    if (!wasUpdated) {
+      res.status(StatusCodes.NOT_FOUND).json({
+        error: "Ticket introuvable",
+      });
+      return;
+    }
+
+    res.status(StatusCodes.OK).json({ id: ticketId, processed });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   browseBySchool,
   browseByParent,
   add,
   validate,
+  editStatus,
 };

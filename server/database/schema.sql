@@ -79,6 +79,7 @@ CREATE TABLE ticket (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     content VARCHAR(1000) NOT NULL,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed TINYINT(1) NOT NULL DEFAULT 0,
     parent_id INT UNSIGNED NOT NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (parent_id) REFERENCES parent(id),

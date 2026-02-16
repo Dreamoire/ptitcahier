@@ -9,8 +9,10 @@ import PublicHome from "./pages/home/PublicHome";
 import Login from "./pages/login/Login";
 import Register from "./pages/login/Register";
 import Redirection from "./pages/redirection/Redirection";
+import StudentsTable from "./pages/student/StudentsTable";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
+// import StudentForm from "./components/StudentForm/StudentForm";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
             element: <AnnouncementNew />,
           },
           { path: "tickets", element: <Tickets /> },
+          {
+            path: "students",
+            element: <StudentsTable />,
+          },
+          // {
+          //   path: "students/modify/:id",
+          //   element: <StudentForm />,
+          // },
         ],
       },
     ],
