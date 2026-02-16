@@ -100,7 +100,7 @@ const StudentsTable = () => {
 
           <button
             type="button"
-            className="primary-button"
+            className={`primary-button ${styles.addParentButton}`}
             onClick={() => navigate("/school/parents/new")}
           >
             + Nouveau parent
@@ -124,7 +124,11 @@ const StudentsTable = () => {
               <tbody>
                 {students.map((student) => (
                   <tr key={student.id} className={styles["students-table_row"]}>
-                    <td>{student.classroomName || "N/A"}</td>
+                    <td className={styles.classroomColumn}>
+                      <span className={styles.classroomBadge}>
+                        {student.classroomName || "N/A"}
+                      </span>
+                    </td>
                     {/* fix */}
                     <td>{student.lastName}</td>
                     <td>{student.firstName}</td>

@@ -168,7 +168,7 @@
   color: var(--primary-color-text);
   line-height: 1.45;
   width: 100%;
-  max-width:  560px;
+  max-width: 560px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -256,8 +256,8 @@
 
   .content {
     max-width: calc(100vw - 120px);
-   display: block; 
-    white-space: nowrap;    
+    display: block;
+    white-space: nowrap;
   }
 }
 .card_dashboard {
