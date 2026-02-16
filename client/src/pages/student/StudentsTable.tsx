@@ -1,6 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import StudentForm from "../../components/StudentForm/StudentForm";
 import type { Classroom } from "../../types/Classroom";
@@ -16,7 +16,6 @@ const StudentsTable = () => {
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const { auth } = useOutletContext<OutletAuthContext>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!auth?.token) return;
@@ -110,13 +109,20 @@ const StudentsTable = () => {
             <h1 className="primary-title">Gestion des étudiants</h1>
           </header>
 
-          <button
-            type="button"
-            className={`primary-button ${styles.addParentButton}`}
-            onClick={() => navigate("/school/parents/new")}
-          >
-            + Nouveau parent
-          </button>
+          <div className={styles.buttons_container}>
+            <button
+              type="button"
+              className={`primary-button ${styles.addParentButton}`}
+            >
+              + Nouveau parent
+            </button>
+            <button
+              type="button"
+              className={`primary-button ${styles.addStudentButton}`}
+            >
+              + Nouveau étudiant
+            </button>
+          </div>
 
           {loadingError ? (
             <p className="general_error_message">

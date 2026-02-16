@@ -18,9 +18,34 @@
   width: 7.5rem;
 }
 
-.addParentButton {
+/* .addParentButton {
   align-self: flex-start;
   margin-top: 10px;
+} */
+
+.buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.buttons_container button {
+  flex: 1;
+  max-width: 280px;
+}
+
+.addStudentButton {
+  background: linear-gradient(135deg, #d85e10, #f97015, #ff8c3a) !important;
+  color: white !important;
+}
+
+.addStudentButton {
+  background: linear-gradient(135deg, #c6560f, #f97015, #ffa154) !important;
+}
+
+.addStudentButton {
+  background: linear-gradient(135deg, #a9470c, #d85e10, #f97015) !important;
 }
 
 .students-table_table {
@@ -171,9 +196,18 @@
     width: 6.25rem;
   }
 
-  .addParentButton {
+  /* .addParentButton {
     align-self: stretch;
     margin-top: 0;
+  } */
+
+  .buttons_container {
+    flex-direction: column;
+  }
+
+  .buttons_container button {
+    flex: 1;
+    max-width: 100%;
   }
 
   .students-table_table {
