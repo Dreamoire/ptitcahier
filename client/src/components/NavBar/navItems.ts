@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Home, Mail, Newspaper } from "lucide-react";
+import { BookUser, Home, Mail, Newspaper } from "lucide-react";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
 
 export type NavItem = {
@@ -25,4 +25,13 @@ export const getNavItems = (auth: OutletAuthContext["auth"]): NavItem[] => [
       auth?.role === "parent" ? "Demande à l'école" : "Gestion des tickets",
     Icon: Mail,
   },
+  ...(auth?.role === "school"
+    ? [
+        {
+          to: "/school/students",
+          label: "Gestion des étudiants",
+          Icon: BookUser,
+        },
+      ]
+    : []),
 ];

@@ -168,6 +168,7 @@ function Tickets() {
             + Nouvelle demande
           </button>
         )}
+
         {userRole === "school" && (
           <div className={styles.filters}>
             <div className={styles.filtersHeader}>
@@ -275,6 +276,7 @@ function Tickets() {
             </div>
           </div>
         )}
+
         {loadingError ? (
           <p className="general_error_message">
             Échec de la récupération de vos tickets

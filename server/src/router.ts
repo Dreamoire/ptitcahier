@@ -2,6 +2,8 @@ import express from "express";
 import announcementActions from "./modules/announcement/announcementActions";
 import announcementCategoryActions from "./modules/announcementCategory/announcementCategoryActions";
 import authActions from "./modules/auth/authActions";
+import classroomActions from "./modules/classroom/classroomActions";
+import parentActions from "./modules/parent/parentActions";
 import schoolActions from "./modules/school/schoolActions";
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
@@ -41,6 +43,8 @@ schoolRouter.get("/me", schoolActions.browseBySchool);
 schoolRouter.get("/me/tickets", ticketActions.browseBySchool);
 schoolRouter.get("/me/announcements", announcementActions.browseBySchool);
 schoolRouter.get("/me/students", studentActions.browseBySchool);
+schoolRouter.get("/me/parents", parentActions.browseBySchool);
+schoolRouter.get("/me/classrooms", classroomActions.browseBySchool);
 schoolRouter.post(
   "/announcements",
   announcementActions.validate,
@@ -53,6 +57,7 @@ schoolRouter.put(
   announcementActions.update,
 );
 schoolRouter.patch("/tickets/:id/status", ticketActions.editStatus);
+schoolRouter.delete("/me/students/:id", studentActions.destroy);
 
 router.use("/parents", parentRouter);
 router.use("/schools", schoolRouter);
