@@ -91,7 +91,13 @@ function Home() {
   };
 
   useEffect(() => {
-    if (userRole === "school" || totalSlides <= 1 || isCarouselPaused) return;
+    if (
+      userRole === "school" ||
+      totalSlides <= 1 ||
+      isCarouselPaused ||
+      announcements.length === 0
+    )
+      return;
 
     const autoPlayTimer = setInterval(showNextAnnouncement, 7000);
     return () => clearInterval(autoPlayTimer);
@@ -235,7 +241,10 @@ function Home() {
                       className={styles.carousel_item}
                       aria-hidden={index !== activeSlideIndex}
                     >
-                      <AnnouncementCard announcement={announcement} />
+                      <AnnouncementCard
+                        announcement={announcement}
+                        variant="dashboard"
+                      />
                     </li>
                   ))}
                 </ul>
