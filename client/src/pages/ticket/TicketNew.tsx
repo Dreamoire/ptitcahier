@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import TicketForm from "../../components/TicketForm/TicketForm";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { Student } from "../../types/Student";
 import type { TicketCategory } from "../../types/TicketCategory";
 import styles from "./TicketNew.module.css";
@@ -13,20 +14,38 @@ function TicketNew() {
   const [formSent, setFormSent] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { auth } = useOutletContext<OutletAuthContext>();
+  const [loadingError, setLoadingError] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`)
-      .then((response) => response.json())
-      .then((ticketCategories) => {
-        setTicketCategories(ticketCategories);
-      });
+    const headers = { Authorization: `Bearer ${auth?.token}` };
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`)
-      .then((response) => response.json())
-      .then((students) => {
-        setStudents(students);
-      });
-  }, []);
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/ticket-categories`, {
+        headers,
+      }).then((res) => {
+        if (!res.ok) {
+          setLoadingError(true);
+          return;
+        }
+        return res.json();
+      }),
+
+      fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/students`, {
+        headers,
+      }).then((res) => {
+        if (!res.ok) {
+          setLoadingError(true);
+          return;
+        }
+        return res.json();
+      }),
+    ]).then(([ticketCategories, students]) => {
+      if (!ticketCategories || !students) return;
+      setTicketCategories(ticketCategories);
+      setStudents(students);
+    });
+  }, [auth]);
 
   return (
     <main className="parent-background">
@@ -46,23 +65,28 @@ function TicketNew() {
                 setFormSent(false);
                 setError(null);
               }}
-              type="submit"
+              type="button"
               className="primary-button"
             >
               Nouvelle Demande
             </button>
           </div>
         </div>
+      ) : loadingError ? (
+        <p className="general_error_message">
+          Échec de la chargement du formulaire
+        </p>
       ) : (
         <TicketForm
           ticketCategories={ticketCategories}
           students={students}
           onSubmit={(newTicket) => {
             setError(null);
-            fetch(`${import.meta.env.VITE_API_URL}/api/tickets`, {
+            fetch(`${import.meta.env.VITE_API_URL}/api/parents/tickets`, {
               method: "post",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${auth?.token}`,
               },
               body: JSON.stringify(newTicket),
             })

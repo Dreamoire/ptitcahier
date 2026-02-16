@@ -27,13 +27,14 @@ class TicketRepository {
     return newTicketId;
   }
 
-  async readAllBySchool(schoolId: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT
+  async readAllBySchool(schoolId: number, limit?: number) {
+    let sql = `
+      SELECT
         t.id,
         t.content,
         t.created_at AS createdAt,        
         tc.name AS ticketCategoryName,
+        p.genre,
         p.first_name AS parentFirstName,
         p.last_name AS parentLastName,
       GROUP_CONCAT(
@@ -49,11 +50,17 @@ class TicketRepository {
       JOIN classroom AS c ON s.classroom_id = c.id    
       WHERE c.school_id = ?
       GROUP BY t.id
-      ORDER BY t.created_at ASC
-      `,
-      [schoolId],
-    );
+      ORDER BY t.created_at DESC
+      `;
 
+    const sqlParams: number[] = [schoolId];
+
+    if (limit) {
+      sql += " LIMIT ?";
+      sqlParams.push(limit);
+    }
+
+    const [rows] = await databaseClient.query<Rows>(sql, sqlParams);
     return rows as Ticket[];
   }
 
@@ -64,6 +71,7 @@ class TicketRepository {
       t.content,
       t.created_at AS createdAt,        
       tc.name AS ticketCategoryName,
+      p.genre,
       p.first_name AS parentFirstName,
       p.last_name AS parentLastName,
       GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
@@ -77,7 +85,7 @@ class TicketRepository {
     ORDER BY t.created_at DESC
   `;
 
-    const sqlParams: (number | string)[] = [parentId];
+    const sqlParams: number[] = [parentId];
 
     if (limit) {
       sql += " LIMIT ?";
@@ -85,7 +93,7 @@ class TicketRepository {
     }
 
     const [rows] = await databaseClient.query<Rows>(sql, sqlParams);
-    return rows;
+    return rows as Ticket[];
   }
 }
 export default new TicketRepository();

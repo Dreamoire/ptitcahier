@@ -1,49 +1,59 @@
 import express from "express";
 import announcementActions from "./modules/announcement/announcementActions";
 import announcementCategoryActions from "./modules/announcementCategory/announcementCategoryActions";
-import classroomActions from "./modules/classroom/classroomActions";
+import authActions from "./modules/auth/authActions";
 import schoolActions from "./modules/school/schoolActions";
 import studentActions from "./modules/student/studentActions";
 import ticketActions from "./modules/ticket/ticketActions";
 import ticketCategoryActions from "./modules/ticketCategory/ticketCategoryActions";
+import userActions from "./modules/user/userActions";
 
 const router = express.Router();
 
+router.post("/login", authActions.login);
+
 router.post(
+  "/register/school",
+  schoolActions.validate,
+  authActions.hashPassword,
+  userActions.add,
+  schoolActions.add,
+);
+
+router.use(authActions.verifyToken);
+
+router.get("/ticket-categories", ticketCategoryActions.browseAll);
+router.get("/announcement-categories", announcementCategoryActions.browseAll);
+
+const parentRouter = express.Router();
+parentRouter.use(authActions.verifyRole("parent"));
+
+const schoolRouter = express.Router();
+schoolRouter.use(authActions.verifyRole("school"));
+
+parentRouter.get("/me/school", schoolActions.browseByParent);
+parentRouter.get("/me/announcements", announcementActions.browseByParent);
+parentRouter.get("/me/students", studentActions.browseByParent);
+parentRouter.get("/me/tickets", ticketActions.browseByParent);
+parentRouter.post("/tickets", ticketActions.validate, ticketActions.add);
+
+schoolRouter.get("/me", schoolActions.browseBySchool);
+schoolRouter.get("/me/tickets", ticketActions.browseBySchool);
+schoolRouter.get("/me/announcements", announcementActions.browseBySchool);
+schoolRouter.get("/me/students", studentActions.browseBySchool);
+schoolRouter.post(
   "/announcements",
   announcementActions.validate,
   announcementActions.add,
 );
-router.delete("/announcements/:id", announcementActions.destroy);
-router.put(
-  "/announcements/:id",
+schoolRouter.delete("/me/announcements/:id", announcementActions.destroy);
+schoolRouter.put(
+  "/me/announcements/:id",
   announcementActions.validateUpdate,
   announcementActions.update,
 );
 
-router.get("/announcements-categories", announcementCategoryActions.browseAll);
-
-router.get("/schools/me/classrooms", classroomActions.browseBySchool);
-router.get("/schools/me/students", studentActions.browseBySchool);
-router.get("/classrooms/:id/students", studentActions.browseByClassroom);
-router.get("/schools/me/announcements", announcementActions.browseBySchool);
-
-router.get("/parents/me/announcements", announcementActions.browseByParent);
-router.get("/parents/me/school", schoolActions.browseByParent);
-router.get("/parents/me/tickets", ticketActions.browseByParent);
-
-router.get(
-  "/parents/me/announcements/recent",
-  announcementActions.browseRecentByParent,
-);
-
-router.get("/parents/me/students", studentActions.browseByParent);
-
-router.get("/schools/me/tickets", ticketActions.browseBySchool);
-router.post("/tickets", ticketActions.validate, ticketActions.add);
-
-router.get("/ticket-categories", ticketCategoryActions.browseAll);
-router.get("/school/classrooms", classroomActions.browseBySchool);
-router.get("/schools/me", schoolActions.browseBySchool);
+router.use("/parents", parentRouter);
+router.use("/schools", schoolRouter);
 
 export default router;

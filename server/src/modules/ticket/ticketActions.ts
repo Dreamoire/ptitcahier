@@ -8,11 +8,9 @@ import ticketRepository from "./ticketRepository";
 
 const browseBySchool: RequestHandler = async (req, res, next) => {
   try {
-    const schoolId = 1;
-    //school Id hard coded for now
-
-    const tickets = await ticketRepository.readAllBySchool(schoolId);
-
+    const schoolId = Number(req.auth.sub);
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const tickets = await ticketRepository.readAllBySchool(schoolId, limit);
     res.json(tickets);
   } catch (err) {
     next(err);
@@ -21,11 +19,9 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
 
 const browseByParent: RequestHandler = async (req, res, next) => {
   try {
-    // A modifier avec l'id de connexion
-    const parentId = 1;
+    const parentId = Number(req.auth.sub);
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const tickets = await ticketRepository.readAllByParent(parentId, limit);
-
     res.json(tickets);
   } catch (err) {
     next(err);
@@ -44,7 +40,7 @@ const validate: RequestHandler = async (req, res, next) => {
         .required(),
     });
 
-    const { error } = newTicket.validate(req.body);
+    const { error, value } = newTicket.validate(req.body);
 
     if (error) {
       res
@@ -54,7 +50,7 @@ const validate: RequestHandler = async (req, res, next) => {
     }
 
     const currentTicketCategory = await ticketCategoryRepository.readById(
-      req.body.ticketCategoryId,
+      value.ticketCategoryId,
     );
 
     if (!currentTicketCategory) {
@@ -64,9 +60,9 @@ const validate: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const parentId = 2;
-    // parent Id hard coded for now
-    const studentIds = req.body.studentIds;
+    const parentId = Number(req.auth.sub);
+
+    const studentIds = value.studentIds;
 
     for (const studentId of studentIds) {
       const currentStudent = await studentRepository.read(studentId);
@@ -100,8 +96,7 @@ const add: RequestHandler = async (req, res, next) => {
       studentIds: req.body.studentIds,
     };
 
-    const parentId = 1;
-    //parent Id hard coded for now
+    const parentId = Number(req.auth.sub);
 
     const newInsertedTicketId = await ticketRepository.create(
       newTicket,
@@ -116,7 +111,7 @@ const add: RequestHandler = async (req, res, next) => {
 
 export default {
   browseBySchool,
+  browseByParent,
   add,
   validate,
-  browseByParent,
 };

@@ -21,21 +21,21 @@ class TicketStudentSeeder extends AbstractSeeder {
     }
 
     for (let j = 0; j < 3; j += 1) {
-      const TicketParent1Student2 = {
+      const TicketParent1Student11 = {
         ticket_id: this.getRef(`ticket_1_${j}`).insertId,
-        student_id: 2,
+        student_id: 11,
       };
 
-      this.insert(TicketParent1Student2);
+      this.insert(TicketParent1Student11);
     }
 
     for (let j = 0; j < 6; j += 1) {
-      const TicketParent2Student3 = {
+      const TicketParent2Student2 = {
         ticket_id: this.getRef(`ticket_2_${j}`).insertId,
-        student_id: 3,
+        student_id: 2,
       };
 
-      this.insert(TicketParent2Student3);
+      this.insert(TicketParent2Student2);
     }
   }
 }

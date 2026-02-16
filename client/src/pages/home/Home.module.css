@@ -1,8 +1,8 @@
-.parent_background {
+/* .parent_background {
   min-height: 100vh;
   background: var(--background-rainbow-light);
   font-family: var(--font-family-text);
-}
+} */
 
 .dashboard_container {
   max-width: 1200px;

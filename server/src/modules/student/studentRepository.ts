@@ -1,6 +1,5 @@
 import databaseClient from "../../../database/client";
-
-import type { Rows } from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
 import type { Student } from "../../types/express/Student";
 
 class StudentRepository {
@@ -10,7 +9,6 @@ class StudentRepository {
 		s.id,
 		s.last_name AS lastName,
 		s.first_name AS firstName,
-		born_at AS bornAt,
 		classroom_id AS classroomId,
 		parent_id AS parentId
 		FROM student AS s
@@ -28,7 +26,6 @@ class StudentRepository {
 		s.id,
 		s.last_name AS lastName,
 		s.first_name AS firstName,
-		s.born_at AS bornAt,
 		s.classroom_id AS classroomId,
 		s.parent_id AS parentId,
 		c.school_id AS schoolId
@@ -38,38 +35,39 @@ class StudentRepository {
       [studentId],
     );
 
-    return rows[0] as Student;
+    return (rows[0] as Student) ?? null;
   }
 
   async readAllStudentsBySchool(schoolId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT
-		s.id,
-		s.first_name AS firstname,
-		s.last_name AS lastname,
-		s.classroom_id AS classroomId,
-		c.classroom_name AS classroomName
-		FROM student s
-		JOIN classroom c ON c.id = s.classroom_id
-		WHERE c.school_id = ?
-		ORDER BY s.last_name ASC, s.first_name ASC`,
+        s.id,
+        s.first_name AS firstName,
+        s.last_name AS lastName,
+        c.id AS classroomId,
+        c.name AS classroomName,
+        p.id AS parentId,
+        p.genre AS parentGenre,
+        p.first_name AS parentFirstName,
+        p.last_name AS parentLastName
+     FROM student s
+     JOIN classroom c ON c.id = s.classroom_id
+     LEFT JOIN parent p ON p.id = s.parent_id
+     WHERE c.school_id = ?
+     ORDER BY c.name ASC, s.last_name ASC, s.first_name ASC`,
       [schoolId],
     );
 
-    return rows;
+    return rows as Student[];
   }
 
-  async readByClassroom(classroomId: number, SCHOOL_ID: number) {
-    const [rows] = await databaseClient.query<Rows>(
-      `SELECT s.id, s.first_name AS firstname, s.last_name AS lastname
-       FROM student s
-       JOIN classroom c ON c.id = s.classroom_id
-       WHERE c.id = ? AND c.school_id = ?
-       ORDER BY s.last_name ASC, s.first_name ASC`,
-      [classroomId, SCHOOL_ID],
+  async delete(studentId: number) {
+    const [result] = await databaseClient.query<Result>(
+      "DELETE FROM student WHERE id = ?",
+      [studentId],
     );
 
-    return rows;
+    return result.affectedRows;
   }
 }
 

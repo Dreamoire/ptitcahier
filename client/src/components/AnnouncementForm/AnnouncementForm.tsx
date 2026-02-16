@@ -1,4 +1,3 @@
-import { CalendarDays, ClipboardList, School } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import AnnouncementContentTextarea, {
@@ -6,29 +5,11 @@ import AnnouncementContentTextarea, {
 } from "../../components/AnnouncementContentTextarea/AnnouncementContentTextarea";
 import FilterStudent from "../../components/FilterStudents/FilterStudent";
 import type { AnnouncementCategory } from "../../types/AnnouncementCategory";
+import type { AnnouncementNew } from "../../types/AnnouncementNew";
+import type { Classroom } from "../../types/Classroom";
+import type { Student } from "../../types/Student";
+import CategoryFormButton from "../CategoryFormButton/CategoryFormButton";
 import styles from "./AnnouncementForm.module.css";
-
-const LUCIDE_ICON = {
-  School,
-  ClipboardList,
-  CalendarDays,
-};
-
-type Classroom = { id: number; name: string };
-type Student = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  classroomId: number;
-  classroomName?: string;
-};
-
-export type AnnouncementNew = {
-  title: string;
-  content: string;
-  announcementCategoryId: number;
-  studentIds: number[];
-};
 
 type AnnouncementFormProps = {
   announcementCategories: AnnouncementCategory[];
@@ -45,9 +26,7 @@ function AnnouncementForm({
   onSubmit,
   isSubmitting = false,
 }: AnnouncementFormProps) {
-  const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedClassroom, setSelectedClassroom] = useState<number[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<number[]>([]);
   const [filterSelectedClassroom, setFilterSelectedClassroom] = useState<
@@ -188,7 +167,7 @@ function AnnouncementForm({
   const matchesStudent = (student: Student, searchValue: string) => {
     const classroomName =
       student.classroomName ?? getClassroomName(student.classroomId);
-    const fullName = `${student.firstname} ${student.lastname}`;
+    const fullName = `${student.firstName} ${student.lastName}`;
     const searchTarget = [fullName, classroomName]
       .map((item) => normalize(item))
       .join(" ");
@@ -244,13 +223,19 @@ function AnnouncementForm({
             return;
           }
 
-          const trimmedTitle = title.trim();
+          const formData = new FormData(event.currentTarget);
+          const title = (formData.get("title") as string).trim();
+          const announcementCategoryId = Number(
+            formData.get("announcementCategoryId"),
+          ) as number;
+
           const trimmedMessage = message.trim();
 
           if (
-            trimmedTitle.length === 0 ||
+            !title ||
             trimmedMessage.length === 0 ||
-            selectedCategory === null ||
+            !Number.isInteger(announcementCategoryId) ||
+            announcementCategoryId <= 0 ||
             selectedStudent.length === 0
           ) {
             setValidateWarning(true);
@@ -258,9 +243,9 @@ function AnnouncementForm({
           }
 
           onSubmit({
-            title: trimmedTitle,
+            title,
             content: trimmedMessage,
-            announcementCategoryId: selectedCategory,
+            announcementCategoryId,
             studentIds: selectedStudent,
           });
         }}
@@ -271,60 +256,32 @@ function AnnouncementForm({
           votre annonce.
         </p>
 
-        <fieldset className={styles.fieldset_title}>
-          <legend className={styles.form_label}>Titre* :</legend>
+        <div className={styles.fieldset_title}>
+          <label htmlFor="title" className={styles.form_label}>
+            Titre* :
+          </label>
           <input
-            id="announcement-title"
+            id="title"
             name="title"
             type="text"
             className={styles.text_input}
-            value={title}
-            onChange={(event) => {
-              setTitle(event.target.value);
-              clearWarning();
-            }}
+            onChange={clearWarning}
             aria-required="true"
           />
-        </fieldset>
+        </div>
 
         <fieldset className={styles.fieldset_categories}>
           <legend className={styles.form_label}>Motif de l'annonce* :</legend>
           <ul>
-            {announcementCategories.map((category) => {
-              const IconComponent = LUCIDE_ICON[category.icon];
-
-              return (
-                <li key={category.id}>
-                  <input
-                    type="radio"
-                    id={`category-${category.id}`}
-                    name="announcementCategoryId"
-                    value={category.id}
-                    checked={selectedCategory === category.id}
-                    onChange={() => {
-                      setSelectedCategory(category.id);
-                      clearWarning();
-                    }}
-                    className={styles.category_input}
-                    aria-required="true"
-                  />
-                  <label
-                    htmlFor={`category-${category.id}`}
-                    className={styles.category_button}
-                  >
-                    <span
-                      className={styles.category_icon_wrapper}
-                      style={{ backgroundColor: `#${category.color}` }}
-                    >
-                      <IconComponent className={styles.category_icon} />
-                    </span>
-                    <span className={styles.category_name}>
-                      {category.name}
-                    </span>
-                  </label>
-                </li>
-              );
-            })}
+            {announcementCategories.map((category) => (
+              <li key={category.id}>
+                <CategoryFormButton
+                  category={category}
+                  formName="announcementCategoryId"
+                  onChange={clearWarning}
+                />
+              </li>
+            ))}
           </ul>
         </fieldset>
 
@@ -360,20 +317,22 @@ function AnnouncementForm({
                   </button>
                 </span>
               ))}
+
               {individualStudents.map((student) => (
                 <span key={student.id} className={styles.summary_chip}>
-                  {student.firstname} {student.lastname} (
+                  {student.firstName} {student.lastName} (
                   {getClassroomName(student.classroomId)})
                   <button
                     type="button"
                     className={styles.chip_remove}
-                    aria-label={`Retirer ${student.firstname} ${student.lastname}`}
+                    aria-label={`Retirer ${student.firstName} ${student.lastName}`}
                     onClick={() => removeStudentSelection(student.id)}
                   >
                     {"\u00d7"}
                   </button>
                 </span>
               ))}
+
               {fullySelectedClassroom.length === 0 &&
                 individualStudents.length === 0 && (
                   <span className={styles.summary_empty}>

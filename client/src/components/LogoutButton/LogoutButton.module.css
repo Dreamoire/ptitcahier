@@ -1,0 +1,16 @@
+.logoutButton {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  color: var(--dark-grey);
+  cursor: pointer;
+  font-family: var(--font-family-text);
+}
+
+.logoutButton:hover {
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--red);
+  border-color: rgba(229, 72, 77, 0.3);
+}

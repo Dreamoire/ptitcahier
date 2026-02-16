@@ -152,7 +152,6 @@
   border-radius: var(--border-radius);
   border: 1px solid var(--light-grey);
   background: var(--white);
-  box-shadow: var(--box-shadow);
   min-height: 40px;
 }
 

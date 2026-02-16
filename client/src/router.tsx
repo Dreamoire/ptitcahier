@@ -1,58 +1,58 @@
-import { createBrowserRouter } from "react-router";
-
+import { createBrowserRouter } from "react-router-dom";
+import AuthLayout from "./layouts/AuthLayout";
 import ParentLayout from "./layouts/ParentLayout";
 import SchoolLayout from "./layouts/SchoolLayout";
-
 import AnnouncementNew from "./pages/announcement/AnnouncementNew";
 import Announcements from "./pages/announcement/Announcements";
 import Home from "./pages/home/Home";
-
+import PublicHome from "./pages/home/PublicHome";
+import Login from "./pages/login/Login";
+import Register from "./pages/login/Register";
+import Redirection from "./pages/redirection/Redirection";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
-import HomePage from "./pages/home/Home";
 
 const router = createBrowserRouter([
   {
-    path: "/parent",
-    element: <ParentLayout />,
-    children: [
-      {
-        path: "announcements",
-        element: <Announcements userRole="parent" />,
-      },
-      {
-        path: "tickets",
-        element: <Tickets userRole="parent" />,
-      },
-      {
-        path: "tickets/new",
-        element: <TicketNew />,
-      },
-      {
-        path: "home",
-        element: <HomePage userRole="parent" />,
-      },
-    ],
+    path: "/",
+    element: <PublicHome />,
   },
+
   {
-    path: "/school",
-    element: <SchoolLayout />,
+    element: <AuthLayout />,
     children: [
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
+      { path: "/redirection", element: <Redirection /> },
+
       {
-        path: "announcements",
-        element: <Announcements userRole="school" />,
+        path: "/parent",
+        element: <ParentLayout />,
+        children: [
+          { path: "home", element: <Home /> },
+          {
+            path: "announcements",
+            element: <Announcements />,
+          },
+          { path: "tickets", element: <Tickets /> },
+          { path: "tickets/new", element: <TicketNew /> },
+        ],
       },
       {
-        path: "announcements/new",
-        element: <AnnouncementNew />,
-      },
-      {
-        path: "tickets",
-        element: <Tickets userRole="school" />,
-      },
-      {
-        path: "home",
-        element: <Home userRole="school" />,
+        path: "/school",
+        element: <SchoolLayout />,
+        children: [
+          { path: "home", element: <Home /> },
+          {
+            path: "announcements",
+            element: <Announcements />,
+          },
+          {
+            path: "announcements/new",
+            element: <AnnouncementNew />,
+          },
+          { path: "tickets", element: <Tickets /> },
+        ],
       },
     ],
   },
