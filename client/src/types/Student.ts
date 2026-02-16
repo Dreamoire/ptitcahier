@@ -4,6 +4,9 @@ export type Student = {
   firstName: string;
   classroomId: number;
   classroomName: string;
-  parentId: number;
   schoolId: number;
+  parentId: number;
+  parentGenre: string;
+  parentLastName: string;
+  parentFirstName: string;
 };
