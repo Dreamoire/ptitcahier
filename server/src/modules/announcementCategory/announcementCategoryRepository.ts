@@ -1,13 +1,14 @@
 import databaseClient from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
+import type { AnnouncementCategory } from "../../types/express/AnnouncementCategory";
 
 class AnnouncementCategoryRepository {
   async readAll() {
     const [rows] = await databaseClient.query<Rows>(
-      "SELECT id, name, color, icon FROM announcement_category ORDER BY name ASC",
+      "SELECT * FROM announcement_category ORDER BY id",
     );
 
-    return rows;
+    return rows as AnnouncementCategory[];
   }
 
   async readById(announcementCategoryId: number) {
@@ -16,7 +17,7 @@ class AnnouncementCategoryRepository {
       [announcementCategoryId],
     );
 
-    return rows[0] ?? null;
+    return (rows[0] as AnnouncementCategory) ?? null;
   }
 }
 

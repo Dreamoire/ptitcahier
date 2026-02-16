@@ -1,36 +1,28 @@
-import { Outlet } from "react-router";
-
-import schoolVoltaire from "../assets/images/school_voltaire.jpg";
-import schoolZola from "../assets/images/school_zola.jpg";
+import { Navigate, Outlet, useOutletContext } from "react-router-dom";
 import NavBar from "../components/NavBar/NavBar";
+import type { OutletAuthContext } from "../types/OutletAuthContext";
 import styles from "./Layout.module.css";
 
-type SchoolKey = "voltaire" | "zola";
-
-const school: SchoolKey = "voltaire";
-
-const schoolLogos: Record<SchoolKey, string> = {
-  voltaire: schoolVoltaire,
-  zola: schoolZola,
-};
-
-const schoolNames: Record<SchoolKey, string> = {
-  voltaire: "École Voltaire",
-  zola: "École Zola",
-};
-
 function SchoolLayout() {
+  const { auth, setAuth } = useOutletContext<OutletAuthContext>();
+
+  if (auth === null) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (auth.role !== "school") {
+    return <Navigate to="/redirection" replace />;
+  }
+
   return (
-    <div className={styles.layout}>
-      <NavBar
-        variant="school"
-        avatarUrl={schoolLogos[school]}
-        displayName={schoolNames[school]}
-      />
-      <main className={styles.main}>
-        <Outlet />
-      </main>
-    </div>
+    <>
+      <div className={styles.layout}>
+        <NavBar />
+        <div className={styles.main}>
+          <Outlet context={{ auth, setAuth }} />
+        </div>
+      </div>
+    </>
   );
 }
 

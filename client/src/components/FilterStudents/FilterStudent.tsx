@@ -1,18 +1,7 @@
 import type { RefObject } from "react";
+import type { Classroom } from "../../types/Classroom";
+import type { Student } from "../../types/Student";
 import styles from "./FilterStudent.module.css";
-
-type Classroom = {
-  id: number;
-  name: string;
-};
-
-type Student = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  classroomId: number;
-  classroomName?: string;
-};
 
 type FilterStudentProps = {
   isFilterOpen: boolean;
@@ -150,7 +139,7 @@ const FilterStudent = ({
                           }}
                         >
                           <span>
-                            {student.firstname} {student.lastname} (
+                            {student.firstName} {student.lastName} (
                             {classroomName})
                           </span>
                           {isSelected && (
@@ -185,7 +174,7 @@ const FilterStudent = ({
                         onChange={() => togglefilterStudent(student.id)}
                       />
                       <span>
-                        {student.firstname} {student.lastname}
+                        {student.firstName} {student.lastName}
                       </span>
                       <span className={styles.filter_pill}>
                         {classroomName}

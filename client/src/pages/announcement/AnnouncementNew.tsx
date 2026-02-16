@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import AnnouncementForm from "../../components/AnnouncementForm/AnnouncementForm";
 import type { AnnouncementCategory } from "../../types/AnnouncementCategory";
-import AnnouncementForm from "./AnnouncementForm";
+import type { Classroom } from "../../types/Classroom";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
+import type { Student } from "../../types/Student";
 import styles from "./AnnouncementNew.module.css";
-
-type Classroom = { id: number; name: string };
-type Student = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  classroomId: number;
-  classroomName: string;
-};
 
 function AnnouncementNew() {
   const [announcementCategories, setAnnouncementCategories] = useState<
@@ -21,19 +15,39 @@ function AnnouncementNew() {
   const [formSent, setFormSent] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { auth } = useOutletContext<OutletAuthContext>();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/announcements-categories`)
-      .then((res) => res.json())
-      .then((announcementCategories) =>
-        setAnnouncementCategories(announcementCategories),
-      );
+    const headers = { Authorization: `Bearer ${auth?.token}` };
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students`)
-      .then((res) => res.json())
-      .then((students) => setStudents(students));
-  }, []);
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/announcement-categories`, {
+        headers,
+      }).then((res) => {
+        if (!res.ok) {
+          setLoadingError(true);
+          return;
+        }
+        return res.json();
+      }),
+
+      fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students`, {
+        headers,
+      }).then((res) => {
+        if (!res.ok) {
+          setLoadingError(true);
+          return;
+        }
+        return res.json();
+      }),
+    ]).then(([announcementCategories, students]) => {
+      if (!announcementCategories || !students) return;
+      setAnnouncementCategories(announcementCategories);
+      setStudents(students);
+    });
+  }, [auth]);
 
   const classrooms = (): Classroom[] => {
     const classroomsById = new Map<number, string>();
@@ -60,7 +74,7 @@ function AnnouncementNew() {
               type="button"
               className="non-primary-button"
             >
-              Retourner à l'accueil
+              Retourner aux annonces
             </button>
             <button
               onClick={() => {
@@ -74,6 +88,10 @@ function AnnouncementNew() {
             </button>
           </div>
         </div>
+      ) : loadingError ? (
+        <p className="general_error_message">
+          Échec de la chargement du formulaire
+        </p>
       ) : (
         <AnnouncementForm
           announcementCategories={announcementCategories}
@@ -83,15 +101,24 @@ function AnnouncementNew() {
           onSubmit={(newAnnouncement) => {
             setIsSubmitting(true);
             setError(null);
-            fetch(`${import.meta.env.VITE_API_URL}/api/announcements`, {
-              method: "POST",
+            fetch(`${import.meta.env.VITE_API_URL}/api/schools/announcements`, {
+              method: "post",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${auth?.token}`,
               },
               body: JSON.stringify(newAnnouncement),
-            });
-            setFormSent(true);
-            setIsSubmitting(false);
+            })
+              .then((response) => response.ok)
+              .then((ok) => {
+                if (!ok) {
+                  setError(
+                    "Une erreur est survenue. Veuillez renvoyer votre demande.",
+                  );
+                }
+                setFormSent(true);
+                setIsSubmitting(false);
+              });
           }}
         />
       )}

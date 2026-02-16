@@ -1,7 +1,7 @@
 .form {
   background: rgba(248, 250, 252, 0.8);
   width: 100%;
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 1.6rem;
   display: flex;
@@ -75,6 +75,7 @@
 
 .fieldset_names ul {
   gap: 0.8rem;
+  display: flex;
 }
 
 .checkbox_label {
@@ -154,7 +155,7 @@
 .warning {
   color: var(--red);
   font-family: var(--font-family-text);
-  font-size: var(--font-size-card-title);
+  font-size: var(--font-size-text);
   text-align: center;
   margin: 0 auto;
 }

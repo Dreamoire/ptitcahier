@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
-import { CalendarDays, Home, Mail, Newspaper } from "lucide-react";
+import { Home, Mail, Newspaper } from "lucide-react";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 
 export type NavItem = {
   to: string;
@@ -7,48 +8,21 @@ export type NavItem = {
   Icon: LucideIcon;
 };
 
-export const parentNavItems: NavItem[] = [
+export const getNavItems = (auth: OutletAuthContext["auth"]): NavItem[] => [
   {
-    to: "/",
+    to: `/${auth?.role}/home`,
     label: "Accueil",
     Icon: Home,
   },
   {
-    to: "/parent/fil-actualite",
+    to: `/${auth?.role}/announcements`,
     label: "Fil d'actualité",
     Icon: Newspaper,
   },
   {
-    to: "/parent/demande-ecole",
-    label: "Demande à l'école",
+    to: `/${auth?.role}/tickets`,
+    label:
+      auth?.role === "parent" ? "Demande à l'école" : "Gestion des tickets",
     Icon: Mail,
-  },
-  {
-    to: "/parent/agenda",
-    label: "Agenda",
-    Icon: CalendarDays,
-  },
-];
-
-export const schoolNavItems: NavItem[] = [
-  {
-    to: "/",
-    label: "Accueil",
-    Icon: Home,
-  },
-  {
-    to: "/school/fil-actualite",
-    label: "Fil d'actualité",
-    Icon: Newspaper,
-  },
-  {
-    to: "/school/tickets",
-    label: "Gestion des tickets",
-    Icon: Mail,
-  },
-  {
-    to: "/school/agenda",
-    label: "Agenda",
-    Icon: CalendarDays,
   },
 ];

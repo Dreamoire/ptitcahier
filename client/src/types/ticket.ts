@@ -3,6 +3,7 @@ export type Ticket = {
   content: string;
   createdAt: string;
   ticketCategoryName: string;
+  genre: string;
   parentFirstName: string;
   parentLastName: string;
   studentNames: string;

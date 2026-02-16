@@ -1,65 +1,76 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import logoSite from "../../assets/images/logo_site.png";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import CalendarCard from "../../components/CalendarCard/CalendarCard";
 import DigitalClock from "../../components/DigitalClock/DigitalClock";
 import TicketCard from "../../components/TicketCard/TicketCard";
 import type { Announcement } from "../../types/Announcement";
+import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { School, SchoolDashboard } from "../../types/School";
 import type { Ticket } from "../../types/Ticket";
 import styles from "./Home.module.css";
 
-interface HomeProps {
-  userRole: "parent" | "school";
-}
-
-function Home({ userRole }: HomeProps) {
+function Home() {
   const navigate = useNavigate();
   const [school, setSchool] = useState<School | null>(null);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [dashboardStats, setDashboardStats] = useState<SchoolDashboard | null>(
     null,
   );
-  const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
+  const { auth } = useOutletContext<OutletAuthContext>();
+  const userRole = auth?.role;
 
   const defaultBanner = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.src = "/images/schools/banner-0.jpg";
   };
 
   const fetchDashboardData = useCallback(async () => {
-    const API_URL = import.meta.env.VITE_API_URL;
-
+    const headers = { Authorization: `Bearer ${auth?.token}` };
     try {
       if (userRole === "school") {
-        const [schoolRes, ticketsRes] = await Promise.all([
-          fetch(`${API_URL}/api/schools/me`),
-          fetch(`${API_URL}/api/schools/me/tickets?limit=6`),
+        const [schoolData, tickets] = await Promise.all([
+          fetch(`${import.meta.env.VITE_API_URL}/api/schools/me`, { headers }),
+          fetch(
+            `${import.meta.env.VITE_API_URL}/api/schools/me/tickets?limit=6`,
+            { headers },
+          ),
         ]);
 
-        const schoolData = await schoolRes.json();
-        setSchool({ id: schoolData.id, name: schoolData.name });
-        setDashboardStats(schoolData);
-
-        setRecentTickets(await ticketsRes.json());
+        setSchool({
+          id: (auth?.profile as School).id,
+          name: (auth?.profile as School).name,
+        });
+        setDashboardStats(await schoolData.json());
+        setTickets(await tickets.json());
       } else {
-        const [schoolRes, ticketsRes, announcementsRes] = await Promise.all([
-          fetch(`${API_URL}/api/parents/me/school`),
-          fetch(`${API_URL}/api/parents/me/tickets?limit=3`),
-          fetch(`${API_URL}/api/parents/me/announcements/recent`),
+        const [school, tickets, announcements] = await Promise.all([
+          fetch(`${import.meta.env.VITE_API_URL}/api/parents/me/school`, {
+            headers,
+          }),
+          fetch(
+            `${import.meta.env.VITE_API_URL}/api/parents/me/tickets?limit=3`,
+            { headers },
+          ),
+          fetch(
+            `${import.meta.env.VITE_API_URL}/api/parents/me/announcements/?limit=3`,
+            { headers },
+          ),
         ]);
 
-        setSchool(await schoolRes.json());
-        setRecentTickets(await ticketsRes.json());
-        setAnnouncements(await announcementsRes.json());
+        setSchool(await school.json());
+        setTickets(await tickets.json());
+        setAnnouncements(await announcements.json());
       }
     } catch (error) {
       console.error("Erreur lors du chargement du tableau de bord :", error);
     }
-  }, [userRole]);
+  }, [auth, userRole]);
 
   useEffect(() => {
     fetchDashboardData();
@@ -86,20 +97,15 @@ function Home({ userRole }: HomeProps) {
     return () => clearInterval(autoPlayTimer);
   }, [totalSlides, isCarouselPaused, showNextAnnouncement, userRole]);
 
-  const openTicketDetails = (ticketId: number) => {
-    navigate(`/tickets/${ticketId}`);
-  };
-
   const renderTicketsList = () => (
     <ul className={styles.ticket_list}>
-      {recentTickets.length > 0 ? (
-        recentTickets.map((ticket) => (
+      {tickets.length > 0 ? (
+        tickets.map((ticket) => (
           <li key={ticket.id}>
             <TicketCard
-              userRole={userRole}
               ticket={ticket}
               variant="dashboard"
-              onClick={() => openTicketDetails(ticket.id)}
+              onClick={() => navigate(`/${auth?.role}/tickets`)}
             />
           </li>
         ))
@@ -112,16 +118,14 @@ function Home({ userRole }: HomeProps) {
   return (
     <main
       className={
-        userRole === "school"
-          ? styles.school_background
-          : styles.parent_background
+        userRole === "school" ? "school-background" : "parent-background"
       }
     >
       <div className={styles.dashboard_container}>
         <header className={styles.home_header}>
           <img
-            src={logoSite}
-            alt="Logo Le Ptit Cahier"
+            src={ptit_cahier_logo_original}
+            alt="Le P'tit Cahier"
             className={styles.logo}
           />
           <section className={styles.ba_card} aria-labelledby="school-name">
@@ -231,10 +235,7 @@ function Home({ userRole }: HomeProps) {
                       className={styles.carousel_item}
                       aria-hidden={index !== activeSlideIndex}
                     >
-                      <AnnouncementCard
-                        announcement={announcement}
-                        userRole={userRole}
-                      />
+                      <AnnouncementCard announcement={announcement} />
                     </li>
                   ))}
                 </ul>

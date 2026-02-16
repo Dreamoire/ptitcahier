@@ -179,25 +179,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.logoutButton {
-  width: 100%;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 12px;
-  color: var(--dark-grey);
-  cursor: pointer;
-  transition: all 200ms ease;
-}
-
-.logoutButton:hover {
-  background: rgba(255, 255, 255, 0.4);
-  color: var(--red);
-  border-color: rgba(229, 72, 77, 0.3);
 }
 
 .footerLogo {
@@ -209,6 +192,7 @@
 .footerText {
   font-size: 0.85rem;
   color: var(--dark-grey);
+  font-family: var(--font-family-text);
   margin: 0;
 }
 
