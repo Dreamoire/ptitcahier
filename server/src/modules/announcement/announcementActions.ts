@@ -133,8 +133,6 @@ const update: RequestHandler = async (req, res, next) => {
 
 const validate: RequestHandler = async (req, res, next) => {
   try {
-    console.log(req.body);
-
     const newAnnouncement = joi.object({
       title: joi.string().max(120).required(),
       content: joi.string().max(1000).required(),

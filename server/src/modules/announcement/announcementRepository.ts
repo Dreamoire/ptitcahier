@@ -1,10 +1,10 @@
 import databaseClient from "../../../database/client";
 import type { Result, Rows } from "../../../database/client";
 import type { Announcement } from "../../types/express/Announcement";
-import type { NewAnnouncement } from "../../types/express/newAnnouncement";
+import type { AnnouncementNew } from "../../types/express/AnnouncementNew";
 
 class AnnouncementRepository {
-  async create(newAnnouncement: NewAnnouncement, schoolId: number) {
+  async create(newAnnouncement: AnnouncementNew, schoolId: number) {
     const { title, content, announcementCategoryId, studentIds } =
       newAnnouncement;
 
