@@ -41,7 +41,10 @@ const StudentsTable = () => {
       ),
     )
       .then(([students, classrooms, parents]) => {
-        setStudents(students as Student[]);
+        const sortedStudents = (students as Student[]).sort(
+          (a, b) => (a.classroomId || 0) - (b.classroomId || 0),
+        );
+        setStudents(sortedStudents as Student[]);
         setClassrooms(classrooms as Classroom[]);
         setParents(parents as Parent[]);
       })
@@ -151,7 +154,7 @@ const StudentsTable = () => {
                     <td>{student.firstName}</td>
                     <td>
                       {student.parentLastName && student.parentFirstName
-                        ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentLastName} ${student.parentFirstName}`
+                        ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentFirstName} ${student.parentLastName}`
                         : ""}
                     </td>
                     <td>
