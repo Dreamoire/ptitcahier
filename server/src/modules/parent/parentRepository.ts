@@ -6,20 +6,12 @@ class ParentRepository {
   async readByUserId(userId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
-<<<<<<< HEAD
-         p.id, 
-=======
          p.id,
->>>>>>> 9371fa2ab550d2e39b1ef0ba9ed66c10fd2f9251
         p.genre AS parentGenre,
         p.first_name AS firstName,
         p.last_name AS lastName,
         photo_url AS photoUrl
-<<<<<<< HEAD
-        FROM parent AS p   
-=======
         FROM parent AS p
->>>>>>> 9371fa2ab550d2e39b1ef0ba9ed66c10fd2f9251
         WHERE user_id = ?
         LIMIT 1`,
       [userId],
@@ -30,11 +22,7 @@ class ParentRepository {
   async readAllBySchool(schoolId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT DISTINCT
-<<<<<<< HEAD
-        p.id,
-=======
         p.id
->>>>>>> 9371fa2ab550d2e39b1ef0ba9ed66c10fd2f9251
         p.genre AS parentGenre,
         p.first_name AS firstName,
         p.last_name AS lastName
