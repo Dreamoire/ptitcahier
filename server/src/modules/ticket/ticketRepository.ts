@@ -54,7 +54,7 @@ class TicketRepository {
       ORDER BY t.created_at DESC
       `;
 
-    const sqlParams: number[] = [schoolId];
+    const sqlParams: (number | string)[] = [schoolId];
 
     if (limit) {
       sql += " LIMIT ?";
