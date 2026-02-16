@@ -37,7 +37,7 @@ function Home() {
         const [schoolData, tickets] = await Promise.all([
           fetch(`${import.meta.env.VITE_API_URL}/api/schools/me`, { headers }),
           fetch(
-            `${import.meta.env.VITE_API_URL}/api/schools/me/tickets?limit=7`,
+            `${import.meta.env.VITE_API_URL}/api/schools/me/tickets?limit=6`,
             { headers },
           ),
         ]);
