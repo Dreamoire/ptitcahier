@@ -23,6 +23,15 @@ const StudentForm = ({
   const [classroomId, setClassroomId] = useState<number>(student.classroomId);
   const [parentId, setParentId] = useState<number>(student.parentId ?? 0);
 
+  // 1. Закрытие по клавише Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onCancel]);
+
   useEffect(() => {
     setFirstName(student.firstName);
     setLastName(student.lastName);
@@ -47,11 +56,26 @@ const StudentForm = ({
   };
 
   return (
-    <form className={styles.form_container} onSubmit={updateStudent}>
+    <form
+      className={styles.form_container}
+      onSubmit={updateStudent}
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      role="presentation"
+    >
+      <button
+        type="button"
+        className={styles.close_icon_button}
+        onClick={onCancel}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+
       <h2 className={styles.form_title}>Modifier l'étudiant</h2>
 
       <label className={styles.form_label}>
-        Nom:
+        Nom
         <input
           type="text"
           value={lastName}
@@ -62,7 +86,7 @@ const StudentForm = ({
       </label>
 
       <label className={styles.form_label}>
-        Prénom:
+        Prénom
         <input
           type="text"
           value={firstName}
@@ -73,7 +97,7 @@ const StudentForm = ({
       </label>
 
       <label className={styles.form_label}>
-        Classe:
+        Classe
         <select
           value={classroomId}
           onChange={(e) => setClassroomId(Number(e.target.value))}
@@ -89,7 +113,7 @@ const StudentForm = ({
       </label>
 
       <label className={styles.form_label}>
-        Parent:
+        Parent
         <select
           value={parentId}
           onChange={(e) => setParentId(Number(e.target.value))}
