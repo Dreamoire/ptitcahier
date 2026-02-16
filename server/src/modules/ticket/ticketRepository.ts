@@ -50,7 +50,7 @@ class TicketRepository {
       JOIN classroom AS c ON s.classroom_id = c.id    
       WHERE c.school_id = ?
       GROUP BY t.id
-      ORDER BY t.created_at ASC
+      ORDER BY t.created_at DESC
       `;
 
     const sqlParams: number[] = [schoolId];
