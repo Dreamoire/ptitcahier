@@ -82,7 +82,7 @@ const StudentsTable = () => {
     )
       .then((res) => {
         if (!res.ok) throw new Error("Erreur lors de la mise à jour");
-        return res.json(); // <-- expect backend to return the full updated student
+        return res.json();
       })
       .then((fullUpdatedStudent: Student) => {
         setStudents((prev) =>
@@ -90,7 +90,7 @@ const StudentsTable = () => {
             s.id === fullUpdatedStudent.id ? fullUpdatedStudent : s,
           ),
         );
-        setSelectedStudent(null); // close modal
+        setSelectedStudent(null);
       })
       .catch(() => {
         alert("Impossible de mettre à jour l'étudiant. Réessayez.");
@@ -112,7 +112,7 @@ const StudentsTable = () => {
 
           <button
             type="button"
-            className="primary-button"
+            className={`primary-button ${styles.addParentButton}`}
             onClick={() => navigate("/school/parents/new")}
           >
             + Nouveau parent
@@ -136,7 +136,11 @@ const StudentsTable = () => {
               <tbody>
                 {students.map((student) => (
                   <tr key={student.id} className={styles["students-table_row"]}>
-                    <td>{student.classroomName || "N/A"}</td>
+                    <td className={styles.classroomColumn}>
+                      <span className={styles.classroomBadge}>
+                        {student.classroomName}
+                      </span>
+                    </td>
                     <td>{student.lastName}</td>
                     <td>{student.firstName}</td>
                     <td>
@@ -174,22 +178,22 @@ const StudentsTable = () => {
               </tbody>
             </table>
           )}
-
-          {selectedStudent && (
-            <div className={styles.modal_overlay}>
-              <div className={styles.modal_content}>
-                <StudentForm
-                  student={selectedStudent}
-                  classrooms={classrooms}
-                  parents={parents}
-                  onCancel={() => setSelectedStudent(null)}
-                  onSave={saveUpdatedStudent}
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
+
+      {selectedStudent && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_content}>
+            <StudentForm
+              student={selectedStudent}
+              classrooms={classrooms}
+              parents={parents}
+              onCancel={() => setSelectedStudent(null)}
+              onSave={saveUpdatedStudent}
+            />
+          </div>
+        </div>
+      )}
     </main>
   );
 };

@@ -26,11 +26,11 @@ class ParentRepository {
         p.genre AS parentGenre,
         p.first_name AS firstName,
         p.last_name AS lastName
-      FROM parent AS p
-      JOIN student AS s ON p.id = s.parent_id
-      JOIN classroom AS c ON c.id = s.classroom_id
-      JOIN school AS sch ON sch.id = c.school_id
-      WHERE sch.id = ?`,
+     FROM parent AS p
+     JOIN student AS s ON p.id = s.parent_id
+     JOIN classroom AS c ON c.id = s.classroom_id
+     JOIN school AS sch ON sch.id = c.school_id
+     WHERE sch.id = ?`,
       [schoolId],
     );
 

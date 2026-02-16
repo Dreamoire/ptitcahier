@@ -37,7 +37,7 @@ function Home() {
         const [schoolData, tickets] = await Promise.all([
           fetch(`${import.meta.env.VITE_API_URL}/api/schools/me`, { headers }),
           fetch(
-            `${import.meta.env.VITE_API_URL}/api/schools/me/tickets?limit=7`,
+            `${import.meta.env.VITE_API_URL}/api/schools/me/tickets?limit=6`,
             { headers },
           ),
         ]);
@@ -91,11 +91,23 @@ function Home() {
   };
 
   useEffect(() => {
-    if (userRole === "school" || totalSlides <= 1 || isCarouselPaused) return;
+    if (
+      userRole === "school" ||
+      totalSlides <= 1 ||
+      isCarouselPaused ||
+      announcements.length === 0
+    )
+      return;
 
     const autoPlayTimer = setInterval(showNextAnnouncement, 7000);
     return () => clearInterval(autoPlayTimer);
-  }, [totalSlides, isCarouselPaused, showNextAnnouncement, userRole]);
+  }, [
+    totalSlides,
+    isCarouselPaused,
+    showNextAnnouncement,
+    userRole,
+    announcements.length,
+  ]);
 
   const renderTicketsList = () => (
     <ul className={styles.ticket_list}>
@@ -236,7 +248,10 @@ function Home() {
                       className={styles.carousel_item}
                       aria-hidden={index !== activeSlideIndex}
                     >
-                      <AnnouncementCard announcement={announcement} />
+                      <AnnouncementCard
+                        announcement={announcement}
+                        variant="dashboard"
+                      />
                     </li>
                   ))}
                 </ul>

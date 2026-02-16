@@ -22,7 +22,6 @@
   grid-column: 1;
   grid-row: 1;
   display: grid;
-  /* gap: 1rem; */
   justify-items: center;
 }
 
@@ -50,7 +49,7 @@
 
 .mainImage {
   width: 100%;
-  height: 250px;
+  height: auto;
   object-fit: cover;
   border-radius: 0.75rem;
   display: block;
@@ -268,12 +267,12 @@
 }
 
 .fullSizeImage {
-  max-width: 90vw;
-  max-height: 80vh;
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 0.5rem;
-  margin: auto;
+  display: block;
+  margin: 0 auto;
 }
-
 .closeButton {
   position: absolute;
   top: -40px;
@@ -287,6 +286,11 @@
 
 .modalWrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 80vh;
 }
 
 .imageTrigger {
@@ -329,25 +333,6 @@
   text-align: center;
 }
 
-/*.classroomList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}*/
-
-/*.classroomBadge {
-  background-color: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-  padding: 0.4rem 0.8rem;
-  border-radius: 0.5rem;
-  font-size: 0.8rem;
-  text-align: center;
-}$*/
-
 .dateLabel {
   display: block;
   margin-top: 1rem;
@@ -356,26 +341,66 @@
   color: #9ca3af;
 }
 
+.imageModal {
+  border: none;
+  background: transparent;
+}
+.imageModal::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+.fullSizeImage {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 0.5rem;
+  display: block;
+  margin: 0 auto;
+}
+.card_dashboard {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  padding: 1.2rem;
+  height: 410px;
+  width: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card_dashboard .imageTrigger img {
+  height: 120px;
+}
+
+.card_dashboard .text {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 @media (max-width: 640px) {
+  .content_card {
+    display: contents;
+    width: auto;
+  }
+  .mainImage {
+    width: 100%;
+    height: 100%;
+  }
+  .imageTrigger {
+    margin: 15px;
+    width: 100%;
+    height: auto;
+    justify-self: center;
+  }
   .ann_card {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto auto auto;
     padding: 1rem;
   }
 
-  .badgeSidebar {
-    order: 1;
-    grid-column: 1;
-    grid-row: 2;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .tagList {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+  .title {
+    font-family: var(--font-family-text);
+    margin: 0;
+    font-size: 0.80rem;
   }
 
   .text,
@@ -383,6 +408,7 @@
     grid-column: 1;
     grid-row: 3;
     width: 100%;
+    padding-bottom: 5px;
   }
 
   .dateLabel {
@@ -397,38 +423,62 @@
     flex-wrap: wrap;
   }
 
-  .an_badge_school_life,
-  .an_badge_admin,
-  .an_badge_event,
-  .an_badge_default,
-  .an_student_tag,
-  .an_badge_class,
-  .an_count_tag,
-  .an_badge_all_school {
-    max-width: 12rem;
+  .card_dashboard {
+    padding: 0.5rem;
+    height: 310px;
+    width: 250px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card_dashboard .imageTrigger img {
+    height: 50px;
+    margin-bottom: 5px;
+    margin-top: 0;
+    padding: 0;
+  }
+  .card_dashboard .text {
+    font-size: 0.7rem;
+    line-clamp: 2;
+    overflow: hidden;
+    padding-bottom: 15px;
   }
 }
 
-.imageModal {
-  border: none;
-  background: transparent;
+.imageModal[open] {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
 }
-.imageModal::backdrop {
-  background: rgba(0, 0, 0, 0.85);
+
+.imageModal:not([open]) {
+  display: none;
 }
-.fullSizeImage {
+
+.imageModal[open] .modalWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   max-width: 90vw;
   max-height: 80vh;
-  border-radius: 0.5rem;
 }
-.card_dashboard {
-  width: 320px; /* Ajuste cette largeur selon tes besoins */
-  max-width: 320px;
-  height: 520px; /* Fixer une hauteur permet d'aligner toutes les cartes */
-  margin-right: 20px; /* Espace entre les cartes du carrousel */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+.imageModal[open] .fullSizeImage {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
 }
-.card_dashboard .mainImage {
-  height: 120px; /* On réduit un peu l'image pour laisser de la place au texte */
-  object-fit: cover;
+
+@media (max-width: 480px) {
+  .mainImage {
+    height: auto;
+  }
 }
