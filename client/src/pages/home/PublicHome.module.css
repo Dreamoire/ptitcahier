@@ -133,7 +133,7 @@
 
 @media (max-width: 900px) {
   .heroContent {
-    flex-direction: column; /* Repasse l'un sous l'autre */
+    flex-direction: column;
     text-align: center;
     padding-top: 2rem;
   }
