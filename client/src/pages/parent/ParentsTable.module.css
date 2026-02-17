@@ -8,16 +8,21 @@
   padding-inline: clamp(14px, 2vw, 24px);
 }
 
-.logo {
-  width: 7.5rem;
-}
-
 .header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 2rem;
 }
+
+.logo {
+  width: 7.5rem;
+}
+
+/* .addParentButton {
+  align-self: flex-start;
+  margin-top: 10px;
+} */
 
 .students-table_table {
   width: 100%;
@@ -43,28 +48,20 @@
 .classroomBadge {
   display: inline-flex;
   align-items: center;
-
   padding: 6px 14px;
-
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--blue) 12%, var(--background-white)),
     color-mix(in srgb, var(--dark-blue) 6%, var(--background-white))
   );
-
   color: var(--primary-color-title);
-
   font-family: var(--font-family-card-title);
   font-size: 0.85rem;
   font-weight: 600;
-
   border-radius: 999px;
-
   border: 1px solid color-mix(in srgb, var(--blue) 18%, transparent);
-
   box-shadow: 0 2px 6px rgba(15, 23, 41, 0.06), inset 0 1px 0
     rgba(255, 255, 255, 0.6);
-
   white-space: nowrap;
 }
 
@@ -212,16 +209,6 @@
     gap: 14px;
   }
 
-  .button_label {
-    display: none;
-  }
-  .edit_button,
-  .delete_button {
-    padding: 0.5rem;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-  }
   .header {
     flex-direction: column;
     align-items: flex-start;
@@ -232,7 +219,7 @@
     width: 6.25rem;
   }
 
-  /* .addButton {
+  /* .addParentButton {
     align-self: stretch;
     margin-top: 0;
   } */
@@ -267,11 +254,15 @@
     font-size: 0.8rem;
   }
 
+  .edit_button,
   .delete_button {
-    width: 36px;
-    height: 36px;
+    padding: 0.5rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
   }
 
+  .edit_icon,
   .delete_icon {
     width: 18px;
     height: 18px;
@@ -286,10 +277,12 @@
       transform: none;
     }
 
+    .edit_button,
     .delete_button {
       transition: none;
     }
 
+    .edit_button:hover,
     .delete_button:hover {
       transform: none;
     }

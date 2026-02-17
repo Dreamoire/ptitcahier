@@ -99,6 +99,7 @@
   font-size: 0.85rem;
   font-style: italic;
   color: #9ca3af;
+  font-family: var(--font-family-text);
 }
 
 .footer_actions {

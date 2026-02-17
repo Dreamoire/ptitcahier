@@ -2,19 +2,15 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
-import StudentForm from "../../components/StudentForm/StudentForm";
-import type { Classroom } from "../../types/Classroom";
+import ParentForm from "../../components/ParentForm/ParentForm";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
 import type { Parent } from "../../types/Parent";
-import type { Student } from "../../types/Student";
-import styles from "./StudentsTable.module.css";
+import styles from "./ParentsTable.module.css";
 
-const StudentsTable = () => {
-  const [students, setStudents] = useState<Student[]>([]);
+const ParentsTable = () => {
   const [parents, setParents] = useState<Parent[]>([]);
-  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [loadingError, setLoadingError] = useState<boolean>(false);
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
   const { auth } = useOutletContext<OutletAuthContext>();
 
   useEffect(() => {
@@ -25,8 +21,6 @@ const StudentsTable = () => {
     };
 
     const endpoints = [
-      `${import.meta.env.VITE_API_URL}/api/schools/me/students`,
-      `${import.meta.env.VITE_API_URL}/api/schools/me/classrooms`,
       `${import.meta.env.VITE_API_URL}/api/schools/me/parents`,
     ];
 
@@ -40,24 +34,20 @@ const StudentsTable = () => {
         }),
       ),
     )
-      .then(([studentsData, classroomsData, parentsData]) => {
-        const sortedStudents = (studentsData as Student[]).sort(
-          (a, b) => (a.classroomId || 0) - (b.classroomId || 0),
+      .then(([parents]) => {
+        const sortedParents = (parents as Parent[]).sort((a, b) =>
+          a.lastName.localeCompare(b.lastName),
         );
-        setStudents(sortedStudents);
-        setClassrooms(classroomsData as Classroom[]);
-        setParents(parentsData as Parent[]);
+        setParents(sortedParents as Parent[]);
       })
       .catch(() => {
         setLoadingError(true);
       });
   }, [auth]);
 
-  const deleteStudent = (studentId: number) => {
-    if (!window.confirm("Voulez-vous vraiment supprimer cet élève ?")) return;
-
+  const deleteParent = (parentId: number) => {
     fetch(
-      `${import.meta.env.VITE_API_URL}/api/schools/me/students/${studentId}`,
+      `${import.meta.env.VITE_API_URL}/api/schools/me/parents/${parentId}`,
       {
         method: "DELETE",
         headers: {
@@ -66,38 +56,38 @@ const StudentsTable = () => {
         },
       },
     ).then(() => {
-      setStudents((prev) => prev.filter((student) => student.id !== studentId));
+      setParents((prev) => prev.filter((parent) => parent.id !== parentId));
     });
   };
 
-  const saveUpdatedStudent = (updatedStudent: Partial<Student>) => {
-    if (!selectedStudent) return;
+  const saveUpdatedParent = (updatedParent: Partial<Parent>) => {
+    if (!selectedParent) return;
 
     fetch(
-      `${import.meta.env.VITE_API_URL}/api/schools/me/students/${selectedStudent.id}`,
+      `${import.meta.env.VITE_API_URL}/api/schools/me/parents/${selectedParent.id}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth?.token}`,
         },
-        body: JSON.stringify(updatedStudent),
+        body: JSON.stringify(updatedParent),
       },
     )
       .then((res) => {
         if (!res.ok) throw new Error("Erreur lors de la mise à jour");
         return res.json();
       })
-      .then((fullUpdatedStudent: Student) => {
-        setStudents((prev) =>
-          prev.map((s) =>
-            s.id === fullUpdatedStudent.id ? fullUpdatedStudent : s,
+      .then((fullUpdatedParent: Parent) => {
+        setParents((prev) =>
+          prev.map((p) =>
+            p.id === fullUpdatedParent.id ? fullUpdatedParent : p,
           ),
         );
-        setSelectedStudent(null);
+        setSelectedParent(null);
       })
       .catch(() => {
-        alert("Impossible de mettre à jour l'étudiant. Réessayez.");
+        alert("Impossible de mettre à jour le parent. Réessayez.");
       });
   };
 
@@ -111,14 +101,14 @@ const StudentsTable = () => {
               alt="Le P'tit Cahier"
               className={styles.logo}
             />
-            <h1 className="primary-title">Gestion des élèves</h1>
+            <h1 className="primary-title">Gestion des parents</h1>
           </header>
 
           <button
             type="button"
-            className={`primary-button ${styles.addButton}`}
+            className={`primary-button ${styles.addParentButton}`}
           >
-            + Nouveau élève
+            + Nouveau parent
           </button>
 
           {loadingError ? (
@@ -129,46 +119,45 @@ const StudentsTable = () => {
             <table className={styles["students-table_table"]}>
               <thead>
                 <tr>
-                  <th>Classe</th>
+                  <th>Mail</th>
+                  <th>Civilité </th>
                   <th>Nom</th>
                   <th>Prénom</th>
-                  <th>Parent</th>
-                  <th aria-label="Actions" />
+                  <th />
                 </tr>
               </thead>
+
               <tbody>
-                {students.map((student) => (
-                  <tr key={student.id} className={styles["students-table_row"]}>
-                    <td className={styles.classroomColumn}>
-                      <span className={styles.classroomBadge}>
-                        {student.classroomName}
-                      </span>
-                    </td>
-                    <td>{student.lastName}</td>
-                    <td>{student.firstName}</td>
-                    <td>
-                      {student.parentLastName && student.parentFirstName
-                        ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentFirstName} ${student.parentLastName}`
-                        : ""}
-                    </td>
+                {parents.map((parent) => (
+                  <tr key={parent.id} className={styles["students-table_row"]}>
+                    <td>{parent.email}</td>
+                    <td>{parent.genre === "M" ? "M." : "Mme"}</td>
+                    <td>{parent.lastName}</td>
+                    <td>{parent.firstName}</td>
                     <td>
                       <div className={styles.row_actions}>
                         <button
                           type="button"
                           className={styles.edit_button}
-                          onClick={() => setSelectedStudent(student)}
-                          title="Modifier"
+                          onClick={() => setSelectedParent(parent)}
+                          aria-label="Modifier le parent"
                         >
-                          <Pencil className={styles.edit_icon} />
+                          <Pencil
+                            className={styles.edit_icon}
+                            aria-hidden="true"
+                          />
                         </button>
 
                         <button
                           type="button"
                           className={styles.delete_button}
-                          onClick={() => deleteStudent(student.id)}
-                          title="Supprimer"
+                          onClick={() => deleteParent(parent.id)}
+                          aria-label="Supprimer le parent"
                         >
-                          <Trash2 className={styles.delete_icon} />
+                          <Trash2
+                            className={styles.delete_icon}
+                            aria-hidden="true"
+                          />
                         </button>
                       </div>
                     </td>
@@ -180,15 +169,13 @@ const StudentsTable = () => {
         </div>
       </div>
 
-      {selectedStudent && (
+      {selectedParent && (
         <div className={styles.modal_overlay}>
           <div className={styles.modal_content}>
-            <StudentForm
-              student={selectedStudent}
-              classrooms={classrooms}
-              parents={parents}
-              onCancel={() => setSelectedStudent(null)}
-              onSave={saveUpdatedStudent}
+            <ParentForm
+              parent={selectedParent}
+              onCancel={() => setSelectedParent(null)}
+              onSave={saveUpdatedParent}
             />
           </div>
         </div>
@@ -197,4 +184,4 @@ const StudentsTable = () => {
   );
 };
 
-export default StudentsTable;
+export default ParentsTable;

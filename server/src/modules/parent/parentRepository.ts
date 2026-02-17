@@ -1,5 +1,5 @@
 import databaseClient from "../../../database/client";
-import type { Rows } from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
 import type { Parent } from "../../types/express/Parent";
 
 class ParentRepository {
@@ -7,7 +7,7 @@ class ParentRepository {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT 
         p.id,
-        p.genre AS parentGenre,
+        p.genre,
         p.first_name AS firstName,
         p.last_name AS lastName,
         photo_url AS photoUrl
@@ -23,10 +23,12 @@ class ParentRepository {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT DISTINCT
         p.id,
-        p.genre AS parentGenre,
+        p.genre,
         p.first_name AS firstName,
-        p.last_name AS lastName
+        p.last_name AS lastName,
+        u.email
      FROM parent AS p
+     JOIN user AS u ON u.id = p.user_id
      JOIN student AS s ON p.id = s.parent_id
      JOIN classroom AS c ON c.id = s.classroom_id
      JOIN school AS sch ON sch.id = c.school_id
@@ -44,6 +46,41 @@ class ParentRepository {
     );
 
     return (rows[0] as Parent) ?? null;
+  }
+
+  async update(parentId: number, parentData: Partial<Parent>) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM parent WHERE id = ?",
+      [parentId],
+    );
+
+    if (!rows.length) return null;
+
+    await databaseClient.query<Result>(
+      `UPDATE parent
+      SET
+        first_name = ?,
+        last_name = ?,
+        genre = ?
+      WHERE id = ?
+    `,
+      [parentData.firstName, parentData.lastName, parentData.genre, parentId],
+    );
+
+    const [updatedRows] = await databaseClient.query<Rows>(
+      `SELECT 
+        p.id,
+        p.genre,
+        p.first_name AS firstName,
+        p.last_name AS lastName,
+        u.email
+      FROM parent AS p
+      JOIN user AS u ON u.id = p.user_id
+      WHERE p.id = ?`,
+      [parentId],
+    );
+
+    return (updatedRows[0] as Parent) ?? null;
   }
 }
 
