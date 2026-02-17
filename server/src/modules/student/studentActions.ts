@@ -1,5 +1,8 @@
 import type { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import joi from "joi";
+import classroomRepository from "../classroom/classroomRepository";
+import parentRepository from "../parent/parentRepository";
 import studentRepository from "./studentRepository";
 
 const browseByParent: RequestHandler = async (req, res, next) => {
@@ -50,4 +53,77 @@ const destroy: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseByParent, browseBySchool, destroy };
+const validate: RequestHandler = async (req, res, next) => {
+  try {
+    const updatedStudent = joi.object({
+      firstName: joi.string().max(120).required(),
+      lastName: joi.string().max(120).required(),
+      classroomId: joi.number().integer().positive().required(),
+      parentId: joi.number().integer().positive().allow(null),
+    });
+
+    const { error, value } = updatedStudent.validate(req.body);
+
+    if (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Les données envoyées sont invalides" });
+      return;
+    }
+
+    const schoolId = Number(req.auth.sub);
+    const classroom = await classroomRepository.readById(value.classroomId);
+
+    if (!classroom || classroom.school_id !== schoolId) {
+      res
+        .status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .json({ error: "Classe introuvable ou non autorisée" });
+      return;
+    }
+
+    if (value.parentId !== null && value.parentId !== undefined) {
+      const parent = await parentRepository.readById(value.parentId);
+      if (!parent) {
+        res.status(StatusCodes.NOT_FOUND).json({ error: "Parent introuvable" });
+        return;
+      }
+    }
+
+    req.body = value;
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+const update: RequestHandler = async (req, res, next) => {
+  try {
+    const studentId = Number(req.params.id);
+    const schoolId = Number(req.auth.sub);
+
+    const { firstName, lastName, classroomId, parentId } = req.body;
+
+    const updatedStudent = await studentRepository.update(
+      studentId,
+      {
+        firstName,
+        lastName,
+        classroomId,
+        parentId,
+      },
+      schoolId,
+    );
+
+    if (!updatedStudent) {
+      res.status(StatusCodes.NOT_FOUND).json({ error: "Étudiant introuvable" });
+      return;
+    }
+
+    res.status(StatusCodes.OK).json(updatedStudent);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browseByParent, browseBySchool, destroy, validate, update };

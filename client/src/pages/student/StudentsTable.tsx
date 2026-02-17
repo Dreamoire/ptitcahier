@@ -1,50 +1,56 @@
-// import { Pencil, Trash2 } from "lucide-react";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
-// import StudentForm from "../../components/StudentForm/StudentForm";
-// import type { Classroom } from "../../types/Classroom";
+import StudentForm from "../../components/StudentForm/StudentForm";
+import type { Classroom } from "../../types/Classroom";
 import type { OutletAuthContext } from "../../types/OutletAuthContext";
-// import type { Parent } from "../../types/Parent";
+import type { Parent } from "../../types/Parent";
 import type { Student } from "../../types/Student";
 import styles from "./StudentsTable.module.css";
 
 const StudentsTable = () => {
   const [students, setStudents] = useState<Student[]>([]);
-  //   const [parents, setParents] = useState<Parent[]>([]);
-  //   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  const [parents, setParents] = useState<Parent[]>([]);
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [loadingError, setLoadingError] = useState<boolean>(false);
-  //   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const { auth } = useOutletContext<OutletAuthContext>();
-  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!auth?.token) return;
+
     const headers = {
-      Authorization: `Bearer ${auth?.token}`,
+      Authorization: `Bearer ${auth.token}`,
     };
 
     const endpoints = [
       `${import.meta.env.VITE_API_URL}/api/schools/me/students`,
-      //   `${import.meta.env.VITE_API_URL}/api/schools/me/classrooms`,
-      //   `${import.meta.env.VITE_API_URL}/api/schools/me/parents`,
+      `${import.meta.env.VITE_API_URL}/api/schools/me/classrooms`,
+      `${import.meta.env.VITE_API_URL}/api/schools/me/parents`,
     ];
 
     Promise.all(
       endpoints.map((endpoint) =>
         fetch(endpoint, { headers }).then((response) => {
           if (!response.ok) {
-            setLoadingError(true);
-            return undefined;
+            throw new Error("Échec lors de la récupération des données");
           }
           return response.json();
         }),
       ),
-    ).then(([students]) => {
-      setStudents(students as Student[]);
-      //   setClassrooms(classrooms as Classroom[]);
-      //   setParents(parents as Parent[]);
-    });
+    )
+      .then(([students, classrooms, parents]) => {
+        const sortedStudents = (students as Student[]).sort(
+          (a, b) => (a.classroomId || 0) - (b.classroomId || 0),
+        );
+        setStudents(sortedStudents as Student[]);
+        setClassrooms(classrooms as Classroom[]);
+        setParents(parents as Parent[]);
+      })
+      .catch(() => {
+        setLoadingError(true);
+      });
   }, [auth]);
 
   const deleteStudent = (studentId: number) => {
@@ -62,28 +68,36 @@ const StudentsTable = () => {
     });
   };
 
-  //   const handleSave = (updatedStudent: Partial<Student>) => {
-  //     if (!selectedStudent) return;
+  const saveUpdatedStudent = (updatedStudent: Partial<Student>) => {
+    if (!selectedStudent) return;
 
-  //     fetch(
-  //       `${import.meta.env.VITE_API_URL}/api/students/${selectedStudent.id}`,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${auth?.token}`,
-  //         },
-  //         body: JSON.stringify(updatedStudent),
-  //       },
-  //     ).then(() => {
-  //       setStudents((prev) =>
-  //         prev.map((s) =>
-  //           s.id === selectedStudent.id ? { ...s, ...updatedStudent } : s,
-  //         ),
-  //       );
-  //       setSelectedStudent(null); // close modal
-  //     });
-  //   };
+    fetch(
+      `${import.meta.env.VITE_API_URL}/api/schools/me/students/${selectedStudent.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth?.token}`,
+        },
+        body: JSON.stringify(updatedStudent),
+      },
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la mise à jour");
+        return res.json();
+      })
+      .then((fullUpdatedStudent: Student) => {
+        setStudents((prev) =>
+          prev.map((s) =>
+            s.id === fullUpdatedStudent.id ? fullUpdatedStudent : s,
+          ),
+        );
+        setSelectedStudent(null);
+      })
+      .catch(() => {
+        alert("Impossible de mettre à jour l'étudiant. Réessayez.");
+      });
+  };
 
   return (
     <main>
@@ -98,13 +112,20 @@ const StudentsTable = () => {
             <h1 className="primary-title">Gestion des étudiants</h1>
           </header>
 
-          <button
-            type="button"
-            className="primary-button"
-            onClick={() => navigate("/school/parents/new")}
-          >
-            + Nouveau parent
-          </button>
+          <div className={styles.buttons_container}>
+            <button
+              type="button"
+              className={`primary-button ${styles.addParentButton}`}
+            >
+              + Nouveau parent
+            </button>
+            <button
+              type="button"
+              className={`primary-button ${styles.addStudentButton}`}
+            >
+              + Nouveau étudiant
+            </button>
+          </div>
 
           {loadingError ? (
             <p className="general_error_message">
@@ -124,17 +145,20 @@ const StudentsTable = () => {
               <tbody>
                 {students.map((student) => (
                   <tr key={student.id} className={styles["students-table_row"]}>
-                    <td>{student.classroomName || "N/A"}</td>
-                    {/* fix */}
+                    <td className={styles.classroomColumn}>
+                      <span className={styles.classroomBadge}>
+                        {student.classroomName}
+                      </span>
+                    </td>
                     <td>{student.lastName}</td>
                     <td>{student.firstName}</td>
                     <td>
                       {student.parentLastName && student.parentFirstName
-                        ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentLastName} ${student.parentFirstName}`
+                        ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentFirstName} ${student.parentLastName}`
                         : ""}
                     </td>
                     <td>
-                      {/* <button
+                      <button
                         type="button"
                         className={styles.edit_button}
                         onClick={() => setSelectedStudent(student)}
@@ -144,7 +168,7 @@ const StudentsTable = () => {
                           className={styles.edit_icon}
                           aria-hidden="true"
                         />
-                      </button> */}
+                      </button>
 
                       <button
                         type="button"
@@ -163,23 +187,22 @@ const StudentsTable = () => {
               </tbody>
             </table>
           )}
-
-          {/* Modal */}
-          {/* {selectedStudent && (
-            <div className={styles.modal_overlay}>
-              <div className={styles.modal_content}>
-                <StudentForm
-                  student={selectedStudent}
-                  classrooms={classrooms}
-                  parents={parents}
-                  onCancel={() => setSelectedStudent(null)}
-                  onSave={handleSave}
-                />
-              </div>
-            </div>
-          )} */}
         </div>
       </div>
+
+      {selectedStudent && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_content}>
+            <StudentForm
+              student={selectedStudent}
+              classrooms={classrooms}
+              parents={parents}
+              onCancel={() => setSelectedStudent(null)}
+              onSave={saveUpdatedStudent}
+            />
+          </div>
+        </div>
+      )}
     </main>
   );
 };

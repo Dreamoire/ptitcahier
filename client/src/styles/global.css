@@ -82,6 +82,9 @@
 
 .non-primary-button,
 .primary-button {
+  display: inline-flex;
+  width: fit-content;
+  min-width: 120px;
   justify-content: center;
   align-items: center;
   background: linear-gradient(
@@ -93,7 +96,7 @@
   color: var(--white);
   font-family: var(--font-family-button);
   font-size: var(--font-size-button);
-  padding: 0.5em 1em;
+  padding: 0.6em 1.5em;
   border: none;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -137,4 +140,13 @@
   font-size: var(--font-size-card-title);
   text-align: center;
   padding: 2rem;
+}
+
+@media (max-width: 600px) {
+  .non-primary-button,
+  .primary-button {
+    align-self: center;
+    width: fit-content;
+    padding: 0.5em 1.2em;
+  }
 }
