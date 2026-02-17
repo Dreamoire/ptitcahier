@@ -308,6 +308,7 @@ function Tickets() {
           ticket={selectedTicket}
           onCloseComplete={() => setSelectedTicket(null)}
           processTicket={processTicket}
+          canProcess={userRole === "school"}
         />
       )}
     </main>

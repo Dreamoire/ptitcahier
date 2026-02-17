@@ -35,10 +35,10 @@ const ParentsTable = () => {
       ),
     )
       .then(([parents]) => {
-        // const sortedParents = (parents as Parent[]).sort(
-        //   (a, b) => (a.lastName || 0) - (b.lastName || 0),
-        // );
-        setParents(parents as Parent[]);
+        const sortedParents = (parents as Parent[]).sort((a, b) =>
+          a.lastName.localeCompare(b.lastName),
+        );
+        setParents(sortedParents as Parent[]);
       })
       .catch(() => {
         setLoadingError(true);
@@ -60,36 +60,36 @@ const ParentsTable = () => {
     });
   };
 
-  //   const saveUpdatedStudent = (updatedStudent: Partial<Student>) => {
-  //     if (!selectedStudent) return;
+  const saveUpdatedParent = (updatedParent: Partial<Parent>) => {
+    if (!selectedParent) return;
 
-  //     fetch(
-  //       `${import.meta.env.VITE_API_URL}/api/schools/me/students/${selectedStudent.id}`,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${auth?.token}`,
-  //         },
-  //         body: JSON.stringify(updatedStudent),
-  //       },
-  //     )
-  //       .then((res) => {
-  //         if (!res.ok) throw new Error("Erreur lors de la mise à jour");
-  //         return res.json();
-  //       })
-  //       .then((fullUpdatedStudent: Student) => {
-  //         setStudents((prev) =>
-  //           prev.map((s) =>
-  //             s.id === fullUpdatedStudent.id ? fullUpdatedStudent : s,
-  //           ),
-  //         );
-  //         setSelectedStudent(null);
-  //       })
-  //       .catch(() => {
-  //         alert("Impossible de mettre à jour l'étudiant. Réessayez.");
-  //       });
-  //   };
+    fetch(
+      `${import.meta.env.VITE_API_URL}/api/schools/me/parents/${selectedParent.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth?.token}`,
+        },
+        body: JSON.stringify(updatedParent),
+      },
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la mise à jour");
+        return res.json();
+      })
+      .then((fullUpdatedParent: Parent) => {
+        setParents((prev) =>
+          prev.map((p) =>
+            p.id === fullUpdatedParent.id ? fullUpdatedParent : p,
+          ),
+        );
+        setSelectedParent(null);
+      })
+      .catch(() => {
+        alert("Impossible de mettre à jour le parent. Réessayez.");
+      });
+  };
 
   return (
     <main>
@@ -130,8 +130,8 @@ const ParentsTable = () => {
               <tbody>
                 {parents.map((parent) => (
                   <tr key={parent.id} className={styles["students-table_row"]}>
-                    <td>fix</td>
-                    <td>{parent.parentGenre === "M" ? "M." : "Mme"}</td>
+                    <td>{parent.email}</td>
+                    <td>{parent.genre === "M" ? "M." : "Mme"}</td>
                     <td>{parent.lastName}</td>
                     <td>{parent.firstName}</td>
                     <td>
@@ -175,7 +175,7 @@ const ParentsTable = () => {
             <ParentForm
               parent={selectedParent}
               onCancel={() => setSelectedParent(null)}
-              //   onSave={saveUpdatedParent}
+              onSave={saveUpdatedParent}
             />
           </div>
         </div>

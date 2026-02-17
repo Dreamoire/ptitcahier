@@ -26,7 +26,7 @@ CREATE TABLE school (
     name VARCHAR(120) NOT NULL,
     photo_url VARCHAR(255) NULL,
     user_id INT UNSIGNED NOT NULL UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE parent (
@@ -36,7 +36,7 @@ CREATE TABLE parent (
     genre ENUM('M', 'F') NOT NULL,
     photo_url VARCHAR(255) NULL,
     user_id INT UNSIGNED NOT NULL UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE classroom (
@@ -64,7 +64,7 @@ CREATE TABLE student (
     classroom_id INT unsigned NOT NULL,
     parent_id INT unsigned NULL,
     FOREIGN KEY (classroom_id) REFERENCES classroom(id),
-    FOREIGN KEY (parent_id) REFERENCES parent(id)
+    FOREIGN KEY (parent_id) REFERENCES parent(id) ON DELETE SET NULL
 );
 
 CREATE TABLE announcement_student (
@@ -80,9 +80,9 @@ CREATE TABLE ticket (
     content VARCHAR(1000) NOT NULL,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     processed TINYINT(1) NOT NULL DEFAULT 0,
-    parent_id INT UNSIGNED NOT NULL,
+    parent_id INT UNSIGNED NULL,
     ticket_category_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (parent_id) REFERENCES parent(id),
+    FOREIGN KEY (parent_id) REFERENCES parent(id) ON DELETE SET NULL,
     FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id)
 );
 
@@ -90,7 +90,7 @@ CREATE TABLE ticket_student (
     ticket_id INT UNSIGNED NOT NULL,
     student_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (ticket_id, student_id),
-    FOREIGN KEY (ticket_id) REFERENCES ticket(id),
+    FOREIGN KEY (ticket_id) REFERENCES ticket(id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE CASCADE
 );
 
