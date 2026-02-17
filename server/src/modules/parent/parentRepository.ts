@@ -48,6 +48,31 @@ class ParentRepository {
     return (rows[0] as Parent) ?? null;
   }
 
+  async create(newParent: Parent) {
+    const [result] = await databaseClient.query<Result>(
+      "INSERT INTO parent (first_name, last_name, genre, user_id) values (?, ?, ?, ?)",
+      [
+        newParent.firstName,
+        newParent.lastName,
+        newParent.genre,
+        newParent.user_id,
+      ],
+    );
+
+    const [rows] = await databaseClient.query<Rows>(
+      `SELECT 
+        p.id,
+        p.genre,
+        p.first_name AS firstName,
+        p.last_name AS lastName,
+     FROM parent AS p
+     WHERE p.id = ?`,
+      [result.insertId],
+    );
+
+    return rows[0];
+  }
+
   async update(parentId: number, parentData: Partial<Parent>) {
     const [rows] = await databaseClient.query<Rows>(
       "SELECT * FROM parent WHERE id = ?",

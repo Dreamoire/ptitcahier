@@ -59,8 +59,8 @@ CREATE TABLE announcement (
 
 CREATE TABLE student (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    last_name VARCHAR(100) NOT NULL,
-    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(120) NOT NULL,
+    first_name VARCHAR(120) NOT NULL,
     classroom_id INT unsigned NOT NULL,
     parent_id INT unsigned NULL,
     FOREIGN KEY (classroom_id) REFERENCES classroom(id),

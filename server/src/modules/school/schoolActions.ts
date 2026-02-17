@@ -47,6 +47,9 @@ const add: RequestHandler = async (req, res, next) => {
     );
 
     res.status(StatusCodes.CREATED).json({ newSchoolId });
+
+    req.schoolId = newSchoolId;
+    next();
   } catch (err) {
     next(err);
   }

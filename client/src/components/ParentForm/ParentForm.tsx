@@ -42,7 +42,7 @@ const ParentForm = ({ parent, onCancel, onSave, newParentForm }: Props) => {
       lastName,
       // email,
       genre,
-      user_id: 99,
+      // user_id: 99,
     });
   };
 

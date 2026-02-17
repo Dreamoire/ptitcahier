@@ -20,6 +20,7 @@ router.post(
   authActions.hashPassword,
   userActions.add,
   schoolActions.add,
+  classroomActions.add,
 );
 
 router.use(authActions.verifyToken);
@@ -64,6 +65,8 @@ schoolRouter.put(
   studentActions.validate,
   studentActions.update,
 );
+// schoolRouter.post("/me/parents", parentActions.validate, parentActions.add);
+// schoolRouter.post("/me/parents", parentActions.add);
 schoolRouter.delete("/me/parents/:id", parentActions.destroy);
 schoolRouter.put(
   "/me/parents/:id",

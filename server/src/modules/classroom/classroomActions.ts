@@ -12,4 +12,12 @@ const browseBySchool: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseBySchool };
+const add: RequestHandler = async (req, res, next) => {
+  try {
+    await classroomRepository.create(req.schoolId);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { add, browseBySchool };
