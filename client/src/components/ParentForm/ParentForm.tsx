@@ -3,16 +3,18 @@ import type { Parent } from "../../types/Parent";
 import styles from "./ParentForm.module.css";
 
 type Props = {
-  parent: Parent;
+  parent: Partial<Parent>;
   onCancel: () => void;
   onSave: (updatedParent: Partial<Parent>) => void;
+  newParentForm?: boolean;
 };
 
-const ParentForm = ({ parent, onCancel, onSave }: Props) => {
-  const [firstName, setFirstName] = useState<string>(parent.firstName);
-  const [lastName, setLastName] = useState<string>(parent.lastName);
-  // const [email, setEmail] = useState<string>(parent.email);
-  const [genre, setGenre] = useState<"M" | "F">(parent.genre);
+const ParentForm = ({ parent, onCancel, onSave, newParentForm }: Props) => {
+  const [firstName, setFirstName] = useState<string>(parent.firstName ?? "");
+  const [lastName, setLastName] = useState<string>(parent.lastName ?? "");
+  // const [email, setEmail] = useState<string>(parent.email ?? "");
+  const [genre, setGenre] = useState<"M" | "F">(parent.genre ?? "M");
+  const [validateWarning, setValidateWarning] = useState<boolean>(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -22,28 +24,29 @@ const ParentForm = ({ parent, onCancel, onSave }: Props) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onCancel]);
 
-  useEffect(() => {
-    setFirstName(parent.firstName);
-    setLastName(parent.lastName);
-    // setEmail(parent.email);
-    setGenre(parent.genre);
-  }, [parent]);
-
   const isUnchanged =
     firstName === parent.firstName &&
     lastName === parent.lastName &&
     // email === parent.email &&
     genre === parent.genre;
 
-  const updateParent = (e: React.FormEvent) => {
-    e.preventDefault();
+  const updateParent = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!firstName.trim() || !lastName.trim() || !genre) {
+      setValidateWarning(true);
+      return;
+    }
     onSave({
       firstName,
       lastName,
       // email,
       genre,
+      user_id: 99,
     });
   };
+
+  const formTitle = newParentForm ? "Nouveau parent" : "Modifier le parent";
 
   return (
     <form
@@ -62,7 +65,7 @@ const ParentForm = ({ parent, onCancel, onSave }: Props) => {
         ✕
       </button>
 
-      <h2 className={styles.form_title}>Modifier le parent</h2>
+      <h2 className={styles.form_title}>{formTitle}</h2>
 
       {/* <label className={styles.form_label}>
         Email
@@ -76,7 +79,7 @@ const ParentForm = ({ parent, onCancel, onSave }: Props) => {
       </label> */}
 
       <fieldset className={styles.form_label}>
-        <legend>Civilité</legend>
+        <legend>Civilité* :</legend>
         <label>
           <input
             type="radio"
@@ -100,7 +103,7 @@ const ParentForm = ({ parent, onCancel, onSave }: Props) => {
       </fieldset>
 
       <label className={styles.form_label}>
-        Nom
+        Nom* :
         <input
           type="text"
           value={lastName}
@@ -111,7 +114,7 @@ const ParentForm = ({ parent, onCancel, onSave }: Props) => {
       </label>
 
       <label className={styles.form_label}>
-        Prénom
+        Prénom* :
         <input
           type="text"
           value={firstName}
@@ -129,6 +132,12 @@ const ParentForm = ({ parent, onCancel, onSave }: Props) => {
           Enregistrer
         </button>
       </div>
+
+      {validateWarning && (
+        <p className={styles.warning} role="alert" aria-live="polite">
+          Veuillez remplir tous les champs obligatoires (indiqués par *).
+        </p>
+      )}
     </form>
   );
 };

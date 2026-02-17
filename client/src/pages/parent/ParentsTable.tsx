@@ -11,34 +11,26 @@ const ParentsTable = () => {
   const [parents, setParents] = useState<Parent[]>([]);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
+  const [newParentForm, setNewParentForm] = useState<boolean>(false);
+  const [formError, setFormError] = useState<boolean>(false);
   const { auth } = useOutletContext<OutletAuthContext>();
 
   useEffect(() => {
-    if (!auth?.token) return;
-
-    const headers = {
-      Authorization: `Bearer ${auth.token}`,
-    };
-
-    const endpoints = [
-      `${import.meta.env.VITE_API_URL}/api/schools/me/parents`,
-    ];
-
-    Promise.all(
-      endpoints.map((endpoint) =>
-        fetch(endpoint, { headers }).then((response) => {
-          if (!response.ok) {
-            throw new Error("Échec lors de la récupération des données");
-          }
-          return response.json();
-        }),
-      ),
-    )
-      .then(([parents]) => {
-        const sortedParents = (parents as Parent[]).sort((a, b) =>
-          a.lastName.localeCompare(b.lastName),
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/parents`, {
+      headers: {
+        Authorization: `Bearer ${auth?.token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Échec lors de la récupération des données");
+        }
+        return response.json();
+      })
+      .then((parents: Parent[]) => {
+        setParents(
+          parents.sort((a, b) => a.lastName.localeCompare(b.lastName)),
         );
-        setParents(sortedParents as Parent[]);
       })
       .catch(() => {
         setLoadingError(true);
@@ -91,6 +83,35 @@ const ParentsTable = () => {
       });
   };
 
+  const newParent: Partial<Parent> = {
+    // email: "",
+    firstName: "",
+    lastName: "",
+    genre: "M",
+  };
+
+  const createNewParent = (newParent: Partial<Parent>) => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/parents/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth?.token}`,
+      },
+      body: JSON.stringify(newParent),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la création du parent");
+        return res.json();
+      })
+      .then((createdParent: Parent) => {
+        setParents((prev) => [...prev, createdParent]);
+        setNewParentForm(false);
+      })
+      .catch(() => {
+        setFormError(true);
+      });
+  };
+
   return (
     <main>
       <div className="school-background">
@@ -98,7 +119,7 @@ const ParentsTable = () => {
           <header className={styles.header}>
             <img
               src={ptit_cahier_logo_original}
-              alt="Le P'tit Cahier"
+              alt="P'tit Cahier"
               className={styles.logo}
             />
             <h1 className="primary-title">Gestion des parents</h1>
@@ -107,6 +128,7 @@ const ParentsTable = () => {
           <button
             type="button"
             className={`primary-button ${styles.addParentButton}`}
+            onClick={() => setNewParentForm(true)}
           >
             + Nouveau parent
           </button>
@@ -177,6 +199,24 @@ const ParentsTable = () => {
               onCancel={() => setSelectedParent(null)}
               onSave={saveUpdatedParent}
             />
+          </div>
+        </div>
+      )}
+
+      {newParentForm && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_content}>
+            <ParentForm
+              parent={newParent}
+              onCancel={() => setNewParentForm(false)}
+              onSave={createNewParent}
+              newParentForm
+            />
+            {formError && (
+              <p className={styles.warning} role="alert" aria-live="polite">
+                Une erreur est survenue. Veuillez renvoyer votre demande.
+              </p>
+            )}
           </div>
         </div>
       )}

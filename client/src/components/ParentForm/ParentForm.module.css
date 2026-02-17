@@ -27,6 +27,14 @@
   }
 }
 
+.warning {
+  color: var(--red);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  text-align: center;
+  margin: 0 auto;
+}
+
 .form_container {
   display: flex;
   flex-direction: column;

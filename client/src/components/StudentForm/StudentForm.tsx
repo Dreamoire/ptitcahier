@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import type { Classroom } from "../../types/Classroom";
 import type { Parent } from "../../types/Parent";
 import type { Student } from "../../types/Student";
 import styles from "./StudentForm.module.css";
 
 type Props = {
   student: Partial<Student>;
-  classrooms: { id: number; name: string }[];
+  classrooms: Classroom[];
   parents: Parent[];
   onCancel: () => void;
   onSave: (student: Partial<Student>) => void;
@@ -26,6 +27,7 @@ const StudentForm = ({
     student.classroomId ?? 0,
   );
   const [parentId, setParentId] = useState<number>(student.parentId ?? 0);
+  const [validateWarning, setValidateWarning] = useState<boolean>(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -41,8 +43,13 @@ const StudentForm = ({
     classroomId === student.classroomId &&
     parentId === (student.parentId ?? 0);
 
-  const updateStudent = (e: React.FormEvent) => {
-    e.preventDefault();
+  const updateStudent = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!firstName.trim() || !lastName.trim() || classroomId <= 0) {
+      setValidateWarning(true);
+      return;
+    }
     onSave({
       firstName,
       lastName,
@@ -51,7 +58,7 @@ const StudentForm = ({
     });
   };
 
-  const formTitle = newStudentForm ? "Nouveau élève" : "Modifier l'élève";
+  const formTitle = newStudentForm ? "Nouvel élève" : "Modifier l'élève";
 
   return (
     <form
@@ -73,10 +80,11 @@ const StudentForm = ({
       <h2 className={styles.form_title}>{formTitle}</h2>
 
       <label className={styles.form_label}>
-        Nom
+        Nom* :
         <input
           type="text"
           value={lastName}
+          maxLength={120}
           onChange={(e) => setLastName(e.target.value)}
           className={styles.form_input}
           required
@@ -84,10 +92,11 @@ const StudentForm = ({
       </label>
 
       <label className={styles.form_label}>
-        Prénom
+        Prénom* :
         <input
           type="text"
           value={firstName}
+          maxLength={120}
           onChange={(e) => setFirstName(e.target.value)}
           className={styles.form_input}
           required
@@ -95,27 +104,29 @@ const StudentForm = ({
       </label>
 
       <label className={styles.form_label}>
-        Classe
+        Classe* :
         <select
           value={classroomId}
           onChange={(e) => setClassroomId(Number(e.target.value))}
           className={styles.form_input}
           required
         >
-          {classrooms.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
+          <option value={0}>Classe non attribuée</option>
+          {classrooms.map((classroom) => (
+            <option key={classroom.id} value={classroom.id}>
+              {classroom.name}
             </option>
           ))}
         </select>
       </label>
 
       <label className={styles.form_label}>
-        Parent
+        Parent :
         <select
           value={parentId}
           onChange={(e) => setParentId(Number(e.target.value))}
           className={styles.form_input}
+          required
         >
           <option value={0}>Parent non attribué</option>
           {parents.map((p) => (
@@ -134,6 +145,12 @@ const StudentForm = ({
           Enregistrer
         </button>
       </div>
+
+      {validateWarning && (
+        <p className={styles.warning} role="alert" aria-live="polite">
+          Veuillez remplir tous les champs obligatoires (indiqués par *).
+        </p>
+      )}
     </form>
   );
 };

@@ -104,7 +104,7 @@ const StudentsTable = () => {
   const newStudent: Partial<Student> = {
     firstName: "",
     lastName: "",
-    classroomId: 1,
+    classroomId: undefined,
     parentId: null,
   };
 
