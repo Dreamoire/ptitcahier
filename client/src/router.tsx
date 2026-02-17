@@ -58,10 +58,6 @@ const router = createBrowserRouter([
             path: "students",
             element: <StudentsTable />,
           },
-          // {
-          //   path: "students/modify/:id",
-          //   element: <StudentForm />,
-          // },
         ],
       },
     ],
