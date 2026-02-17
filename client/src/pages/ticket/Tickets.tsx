@@ -18,9 +18,7 @@ function Tickets() {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-
   const navigate = useNavigate();
-
   const { auth } = useOutletContext<OutletAuthContext>();
 
   const userRole = auth?.role;
