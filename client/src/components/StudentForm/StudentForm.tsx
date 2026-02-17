@@ -23,7 +23,6 @@ const StudentForm = ({
   const [classroomId, setClassroomId] = useState<number>(student.classroomId);
   const [parentId, setParentId] = useState<number>(student.parentId ?? 0);
 
-  // 1. Закрытие по клавише Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onCancel();

@@ -40,13 +40,13 @@ const StudentsTable = () => {
         }),
       ),
     )
-      .then(([students, classrooms, parents]) => {
-        const sortedStudents = (students as Student[]).sort(
+      .then(([studentsData, classroomsData, parentsData]) => {
+        const sortedStudents = (studentsData as Student[]).sort(
           (a, b) => (a.classroomId || 0) - (b.classroomId || 0),
         );
-        setStudents(sortedStudents as Student[]);
-        setClassrooms(classrooms as Classroom[]);
-        setParents(parents as Parent[]);
+        setStudents(sortedStudents);
+        setClassrooms(classroomsData as Classroom[]);
+        setParents(parentsData as Parent[]);
       })
       .catch(() => {
         setLoadingError(true);
@@ -54,6 +54,8 @@ const StudentsTable = () => {
   }, [auth]);
 
   const deleteStudent = (studentId: number) => {
+    if (!window.confirm("Voulez-vous vraiment supprimer cet élève ?")) return;
+
     fetch(
       `${import.meta.env.VITE_API_URL}/api/schools/me/students/${studentId}`,
       {
@@ -131,7 +133,7 @@ const StudentsTable = () => {
                   <th>Nom</th>
                   <th>Prénom</th>
                   <th>Parent</th>
-                  <th />
+                  <th aria-label="Actions" />
                 </tr>
               </thead>
               <tbody>
@@ -150,29 +152,25 @@ const StudentsTable = () => {
                         : ""}
                     </td>
                     <td>
-                      <button
-                        type="button"
-                        className={styles.edit_button}
-                        onClick={() => setSelectedStudent(student)}
-                        aria-label="Modifier l'élève"
-                      >
-                        <Pencil
-                          className={styles.edit_icon}
-                          aria-hidden="true"
-                        />
-                      </button>
+                      <div className={styles.row_actions}>
+                        <button
+                          type="button"
+                          className={styles.edit_button}
+                          onClick={() => setSelectedStudent(student)}
+                          title="Modifier"
+                        >
+                          <Pencil className={styles.edit_icon} />
+                        </button>
 
-                      <button
-                        type="button"
-                        className={styles.delete_button}
-                        onClick={() => deleteStudent(student.id)}
-                        aria-label="Supprimer l'élève"
-                      >
-                        <Trash2
-                          className={styles.delete_icon}
-                          aria-hidden="true"
-                        />
-                      </button>
+                        <button
+                          type="button"
+                          className={styles.delete_button}
+                          onClick={() => deleteStudent(student.id)}
+                          title="Supprimer"
+                        >
+                          <Trash2 className={styles.delete_icon} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
