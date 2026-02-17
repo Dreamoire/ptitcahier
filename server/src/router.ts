@@ -63,6 +63,12 @@ schoolRouter.put(
   studentActions.validate,
   studentActions.update,
 );
+schoolRouter.delete("/me/parents/:id", parentActions.destroy);
+schoolRouter.put(
+  "/me/parents/:id",
+  // parentActions.validate,
+  parentActions.update,
+);
 
 router.use("/parents", parentRouter);
 router.use("/schools", schoolRouter);

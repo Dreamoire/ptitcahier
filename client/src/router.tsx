@@ -8,11 +8,11 @@ import Home from "./pages/home/Home";
 import PublicHome from "./pages/home/PublicHome";
 import Login from "./pages/login/Login";
 import Register from "./pages/login/Register";
+import ParentsTable from "./pages/parent/ParentsTable";
 import Redirection from "./pages/redirection/Redirection";
 import StudentsTable from "./pages/student/StudentsTable";
 import TicketNew from "./pages/ticket/TicketNew";
 import Tickets from "./pages/ticket/Tickets";
-// import StudentForm from "./components/StudentForm/StudentForm";
 
 const router = createBrowserRouter([
   {
@@ -58,10 +58,10 @@ const router = createBrowserRouter([
             path: "students",
             element: <StudentsTable />,
           },
-          // {
-          //   path: "students/modify/:id",
-          //   element: <StudentForm />,
-          // },
+          {
+            path: "parents",
+            element: <ParentsTable />,
+          },
         ],
       },
     ],

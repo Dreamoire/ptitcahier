@@ -72,7 +72,7 @@ const StudentForm = ({
         ✕
       </button>
 
-      <h2 className={styles.form_title}>Modifier l'étudiant</h2>
+      <h2 className={styles.form_title}>Modifier l'élève</h2>
 
       <label className={styles.form_label}>
         Nom
@@ -122,7 +122,7 @@ const StudentForm = ({
           <option value={0}>Parent non attribué</option>
           {parents.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.parentGenre === "M" ? "M." : "Mme"} {p.lastName} {p.firstName}
+              {p.genre === "M" ? "M." : "Mme"} {p.lastName} {p.firstName}
             </option>
           ))}
         </select>
