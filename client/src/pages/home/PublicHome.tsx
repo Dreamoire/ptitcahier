@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router";
 import styles from "./PublicHome.module.css";
 
-import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
-import icon_parent from "../../assets/images/icon_parent.png";
 import icon_journal from "../../assets/images/icon_journal.png";
 import icon_mobil from "../../assets/images/icon_mobil.png";
+import icon_parent from "../../assets/images/icon_parent.png";
+import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import Smartphone from "../../assets/images/smartphone.png";
 
 interface FeatureCardProps {
