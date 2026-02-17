@@ -122,7 +122,7 @@ const StudentForm = ({
           <option value={0}>Parent non attribué</option>
           {parents.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.parentGenre === "M" ? "M." : "Mme"} {p.lastName} {p.firstName}
+              {p.genre === "M" ? "M." : "Mme"} {p.lastName} {p.firstName}
             </option>
           ))}
         </select>
