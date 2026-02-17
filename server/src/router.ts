@@ -57,6 +57,7 @@ schoolRouter.put(
   announcementActions.update,
 );
 schoolRouter.patch("/tickets/:id/status", ticketActions.editStatus);
+schoolRouter.post("/me/students", studentActions.validate, studentActions.add);
 schoolRouter.delete("/me/students/:id", studentActions.destroy);
 schoolRouter.put(
   "/me/students/:id",
@@ -66,7 +67,7 @@ schoolRouter.put(
 schoolRouter.delete("/me/parents/:id", parentActions.destroy);
 schoolRouter.put(
   "/me/parents/:id",
-  // parentActions.validate,
+  parentActions.validate,
   parentActions.update,
 );
 

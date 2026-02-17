@@ -55,7 +55,7 @@ const validate: RequestHandler = async (req, res, next) => {
     const updatedParent = joi.object({
       firstName: joi.string().max(120).required(),
       lastName: joi.string().max(120).required(),
-      email: joi.string().email().max(255).lowercase().required(),
+      // email: joi.string().email().max(255).lowercase().required(),
       genre: joi.string().valid("M", "F").required(),
     });
 

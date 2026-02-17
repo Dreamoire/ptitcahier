@@ -85,7 +85,7 @@ function Register() {
         <div className={styles.login_container}>
           <img
             src={ptit_cahier_logo_original}
-            alt="Le P'tit Cahier"
+            alt="P'tit Cahier"
             className={styles.logo}
           />
           <div className={styles.form}>
@@ -106,7 +106,7 @@ function Register() {
           <header className={styles.title}>
             <img
               src={ptit_cahier_logo_original}
-              alt="Le P'tit Cahier"
+              alt="P'tit Cahier"
               className={styles.logo_small}
             />
             <h1 className="primary-title">Inscription École</h1>
