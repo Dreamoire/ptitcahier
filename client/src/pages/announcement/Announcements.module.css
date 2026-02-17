@@ -1,20 +1,22 @@
 .logo {
-  width: 7.5rem;
+  width: clamp(5rem, 10vw, 7.5rem);
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .container {
-  max-width: 800px;
+  width: min(100%, 820px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 0 auto;
+  padding: 0 1rem 2rem;
   gap: 1rem;
 }
 
@@ -26,20 +28,18 @@
 
 .filters_container {
   background-color: var(--white);
-  /* color? */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
   flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem;
   width: 100%;
-  max-width: 800px;
   border-radius: var(--border-radius);
 }
 
 .filter_individual {
   display: flex;
-  margin: auto;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
@@ -75,7 +75,6 @@
   font-family: var(--font-family-text);
   font-weight: bold;
   color: var(--dark-blue);
-  margin-right: 0.5rem;
 }
 
 .filter_button {
@@ -96,24 +95,19 @@
   color: var(--dark-blue);
 }
 
-.button_add_ann {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: var(--green);
-  color: white;
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: var(--font-family-text);
-  font-family: var(--font-family-text);
-}
-
 .active {
   background-color: var(--dark-blue);
   color: white;
   box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 640px) {
+  .header {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .filters_container {
+    justify-content: flex-start;
+  }
 }
