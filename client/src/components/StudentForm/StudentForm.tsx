@@ -4,11 +4,12 @@ import type { Student } from "../../types/Student";
 import styles from "./StudentForm.module.css";
 
 type Props = {
-  student: Student;
+  student: Partial<Student>;
   classrooms: { id: number; name: string }[];
   parents: Parent[];
   onCancel: () => void;
-  onSave: (updatedStudent: Partial<Student>) => void;
+  onSave: (student: Partial<Student>) => void;
+  newStudentForm?: boolean;
 };
 
 const StudentForm = ({
@@ -17,13 +18,15 @@ const StudentForm = ({
   parents,
   onCancel,
   onSave,
+  newStudentForm,
 }: Props) => {
-  const [firstName, setFirstName] = useState<string>(student.firstName);
-  const [lastName, setLastName] = useState<string>(student.lastName);
-  const [classroomId, setClassroomId] = useState<number>(student.classroomId);
+  const [firstName, setFirstName] = useState<string>(student.firstName ?? "");
+  const [lastName, setLastName] = useState<string>(student.lastName ?? "");
+  const [classroomId, setClassroomId] = useState<number>(
+    student.classroomId ?? 0,
+  );
   const [parentId, setParentId] = useState<number>(student.parentId ?? 0);
 
-  // 1. Закрытие по клавише Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onCancel();
@@ -31,13 +34,6 @@ const StudentForm = ({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onCancel]);
-
-  useEffect(() => {
-    setFirstName(student.firstName);
-    setLastName(student.lastName);
-    setClassroomId(student.classroomId);
-    setParentId(student.parentId ?? 0);
-  }, [student]);
 
   const isUnchanged =
     firstName === student.firstName &&
@@ -54,6 +50,8 @@ const StudentForm = ({
       parentId: parentId === 0 ? null : parentId,
     });
   };
+
+  const formTitle = newStudentForm ? "Nouveau élève" : "Modifier l'élève";
 
   return (
     <form
@@ -72,7 +70,7 @@ const StudentForm = ({
         ✕
       </button>
 
-      <h2 className={styles.form_title}>Modifier l'élève</h2>
+      <h2 className={styles.form_title}>{formTitle}</h2>
 
       <label className={styles.form_label}>
         Nom

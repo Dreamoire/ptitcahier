@@ -18,9 +18,7 @@ function Tickets() {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-
   const navigate = useNavigate();
-
   const { auth } = useOutletContext<OutletAuthContext>();
 
   const userRole = auth?.role;
@@ -153,7 +151,7 @@ function Tickets() {
         <header className={styles.header}>
           <img
             src={ptit_cahier_logo_original}
-            alt="Le P'tit Cahier"
+            alt="P'tit Cahier"
             className={styles.logo}
           />
           <h1 className="primary-title">{titleText}</h1>

@@ -13,15 +13,15 @@ const StudentsTable = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [parents, setParents] = useState<Parent[]>([]);
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  const [newStudentForm, setNewStudentForm] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<boolean>(false);
+  const [formError, setFormError] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const { auth } = useOutletContext<OutletAuthContext>();
 
   useEffect(() => {
-    if (!auth?.token) return;
-
     const headers = {
-      Authorization: `Bearer ${auth.token}`,
+      Authorization: `Bearer ${auth?.token}`,
     };
 
     const endpoints = [
@@ -42,9 +42,9 @@ const StudentsTable = () => {
     )
       .then(([students, classrooms, parents]) => {
         const sortedStudents = (students as Student[]).sort(
-          (a, b) => (a.classroomId || 0) - (b.classroomId || 0),
+          (a, b) => a.classroomId - b.classroomId,
         );
-        setStudents(sortedStudents as Student[]);
+        setStudents(sortedStudents);
         setClassrooms(classrooms as Classroom[]);
         setParents(parents as Parent[]);
       })
@@ -54,6 +54,8 @@ const StudentsTable = () => {
   }, [auth]);
 
   const deleteStudent = (studentId: number) => {
+    if (!window.confirm("Voulez-vous vraiment supprimer cet élève ?")) return;
+
     fetch(
       `${import.meta.env.VITE_API_URL}/api/schools/me/students/${studentId}`,
       {
@@ -95,7 +97,36 @@ const StudentsTable = () => {
         setSelectedStudent(null);
       })
       .catch(() => {
-        alert("Impossible de mettre à jour l'étudiant. Réessayez.");
+        setFormError(true);
+      });
+  };
+
+  const newStudent: Partial<Student> = {
+    firstName: "",
+    lastName: "",
+    classroomId: 1,
+    parentId: null,
+  };
+
+  const createNewStudent = (newStudent: Partial<Student>) => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth?.token}`,
+      },
+      body: JSON.stringify(newStudent),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la création de l'élève");
+        return res.json();
+      })
+      .then((createdStudent: Student) => {
+        setStudents((prev) => [...prev, createdStudent]);
+        setNewStudentForm(false);
+      })
+      .catch(() => {
+        setFormError(true);
       });
   };
 
@@ -106,7 +137,7 @@ const StudentsTable = () => {
           <header className={styles.header}>
             <img
               src={ptit_cahier_logo_original}
-              alt="Le P'tit Cahier"
+              alt="P'tit Cahier"
               className={styles.logo}
             />
             <h1 className="primary-title">Gestion des élèves</h1>
@@ -115,6 +146,7 @@ const StudentsTable = () => {
           <button
             type="button"
             className={`primary-button ${styles.addButton}`}
+            onClick={() => setNewStudentForm(true)}
           >
             + Nouveau élève
           </button>
@@ -131,11 +163,11 @@ const StudentsTable = () => {
                   <th>Nom</th>
                   <th>Prénom</th>
                   <th>Parent</th>
-                  <th />
+                  <th aria-label="Actions" />
                 </tr>
               </thead>
               <tbody>
-                {students.map((student) => (
+                {students.map((student: Student) => (
                   <tr key={student.id} className={styles["students-table_row"]}>
                     <td className={styles.classroomColumn}>
                       <span className={styles.classroomBadge}>
@@ -150,29 +182,25 @@ const StudentsTable = () => {
                         : ""}
                     </td>
                     <td>
-                      <button
-                        type="button"
-                        className={styles.edit_button}
-                        onClick={() => setSelectedStudent(student)}
-                        aria-label="Modifier l'élève"
-                      >
-                        <Pencil
-                          className={styles.edit_icon}
-                          aria-hidden="true"
-                        />
-                      </button>
+                      <div className={styles.row_actions}>
+                        <button
+                          type="button"
+                          className={styles.edit_button}
+                          onClick={() => setSelectedStudent(student)}
+                          title="Modifier"
+                        >
+                          <Pencil className={styles.edit_icon} />
+                        </button>
 
-                      <button
-                        type="button"
-                        className={styles.delete_button}
-                        onClick={() => deleteStudent(student.id)}
-                        aria-label="Supprimer l'élève"
-                      >
-                        <Trash2
-                          className={styles.delete_icon}
-                          aria-hidden="true"
-                        />
-                      </button>
+                        <button
+                          type="button"
+                          className={styles.delete_button}
+                          onClick={() => deleteStudent(student.id)}
+                          title="Supprimer"
+                        >
+                          <Trash2 className={styles.delete_icon} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -192,6 +220,26 @@ const StudentsTable = () => {
               onCancel={() => setSelectedStudent(null)}
               onSave={saveUpdatedStudent}
             />
+          </div>
+        </div>
+      )}
+
+      {newStudentForm && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_content}>
+            <StudentForm
+              student={newStudent}
+              classrooms={classrooms}
+              parents={parents}
+              onCancel={() => setNewStudentForm(false)}
+              onSave={createNewStudent}
+              newStudentForm
+            />
+            {formError && (
+              <p className={styles.warning} role="alert" aria-live="polite">
+                Une erreur est survenue. Veuillez renvoyer votre demande.
+              </p>
+            )}
           </div>
         </div>
       )}

@@ -135,29 +135,31 @@ const ParentsTable = () => {
                     <td>{parent.lastName}</td>
                     <td>{parent.firstName}</td>
                     <td>
-                      <button
-                        type="button"
-                        className={styles.edit_button}
-                        onClick={() => setSelectedParent(parent)}
-                        aria-label="Modifier le parent"
-                      >
-                        <Pencil
-                          className={styles.edit_icon}
-                          aria-hidden="true"
-                        />
-                      </button>
+                      <div className={styles.row_actions}>
+                        <button
+                          type="button"
+                          className={styles.edit_button}
+                          onClick={() => setSelectedParent(parent)}
+                          aria-label="Modifier le parent"
+                        >
+                          <Pencil
+                            className={styles.edit_icon}
+                            aria-hidden="true"
+                          />
+                        </button>
 
-                      <button
-                        type="button"
-                        className={styles.delete_button}
-                        onClick={() => deleteParent(parent.id)}
-                        aria-label="Supprimer parent"
-                      >
-                        <Trash2
-                          className={styles.delete_icon}
-                          aria-hidden="true"
-                        />
-                      </button>
+                        <button
+                          type="button"
+                          className={styles.delete_button}
+                          onClick={() => deleteParent(parent.id)}
+                          aria-label="Supprimer le parent"
+                        >
+                          <Trash2
+                            className={styles.delete_icon}
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
