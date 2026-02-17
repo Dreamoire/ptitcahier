@@ -72,7 +72,7 @@ const StudentForm = ({
         ✕
       </button>
 
-      <h2 className={styles.form_title}>Modifier l'étudiant</h2>
+      <h2 className={styles.form_title}>Modifier l'élève</h2>
 
       <label className={styles.form_label}>
         Nom

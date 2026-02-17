@@ -18,7 +18,7 @@
   width: 7.5rem;
 }
 
-/* .addButton {
+/* .addParentButton {
   align-self: flex-start;
   margin-top: 10px;
 } */
@@ -171,7 +171,7 @@
     width: 6.25rem;
   }
 
-  /* .addButton {
+  /* .addParentButton {
     align-self: stretch;
     margin-top: 0;
   } */

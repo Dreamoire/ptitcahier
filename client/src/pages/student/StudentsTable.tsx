@@ -109,23 +109,15 @@ const StudentsTable = () => {
               alt="Le P'tit Cahier"
               className={styles.logo}
             />
-            <h1 className="primary-title">Gestion des étudiants</h1>
+            <h1 className="primary-title">Gestion des élèves</h1>
           </header>
 
-          <div className={styles.buttons_container}>
-            <button
-              type="button"
-              className={`primary-button ${styles.addParentButton}`}
-            >
-              + Nouveau parent
-            </button>
-            <button
-              type="button"
-              className={`primary-button ${styles.addStudentButton}`}
-            >
-              + Nouveau étudiant
-            </button>
-          </div>
+          <button
+            type="button"
+            className={`primary-button ${styles.addButton}`}
+          >
+            + Nouveau élève
+          </button>
 
           {loadingError ? (
             <p className="general_error_message">
