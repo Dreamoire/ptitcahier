@@ -16,15 +16,18 @@
   padding-inline: clamp(14px, 2vw, 24px);
 }
 
-.logo {
-  width: 7.5rem;
-}
-
 .header {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 2rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.logo {
+  width: 7.5rem;
 }
 
 .students-table_table {
