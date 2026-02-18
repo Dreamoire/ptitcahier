@@ -1,3 +1,11 @@
+.warning {
+  color: var(--red);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  text-align: center;
+  margin: 0 auto;
+}
+
 .container {
   width: 100%;
   max-width: 800px;

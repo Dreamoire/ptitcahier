@@ -97,6 +97,18 @@ const validate: RequestHandler = async (req, res, next) => {
   }
 };
 
+const add: RequestHandler = async (req, res, next) => {
+  try {
+    const newStudent = req.body;
+
+    const createdStudent = await studentRepository.create(newStudent);
+
+    res.status(StatusCodes.CREATED).json(createdStudent);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const update: RequestHandler = async (req, res, next) => {
   try {
     const studentId = Number(req.params.id);
@@ -126,4 +138,11 @@ const update: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browseByParent, browseBySchool, destroy, validate, update };
+export default {
+  add,
+  browseByParent,
+  browseBySchool,
+  destroy,
+  validate,
+  update,
+};

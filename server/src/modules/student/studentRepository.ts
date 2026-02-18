@@ -3,6 +3,38 @@ import type { Result, Rows } from "../../../database/client";
 import type { Student } from "../../types/express/Student";
 
 class StudentRepository {
+  async create(newStudent: Student) {
+    const [result] = await databaseClient.query<Result>(
+      "INSERT INTO student (first_name, last_name, parent_id, classroom_id) values (?, ?, ?, ?)",
+      [
+        newStudent.firstName,
+        newStudent.lastName,
+        newStudent.parentId,
+        newStudent.classroomId,
+      ],
+    );
+
+    const [rows] = await databaseClient.query<Rows>(
+      `SELECT
+      s.id,
+      s.first_name AS firstName,
+      s.last_name AS lastName,
+      c.id AS classroomId,
+      c.name AS classroomName,
+      p.id AS parentId,
+      p.genre AS parentGenre,
+      p.first_name AS parentFirstName,
+      p.last_name AS parentLastName
+     FROM student s
+     JOIN classroom c ON c.id = s.classroom_id
+     LEFT JOIN parent p ON p.id = s.parent_id
+     WHERE s.id = ?`,
+      [result.insertId],
+    );
+
+    return rows[0];
+  }
+
   async readAllByParent(parentId: number) {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT
@@ -35,7 +67,7 @@ class StudentRepository {
       [studentId],
     );
 
-    return (rows[0] as Student) ?? null;
+    return rows[0];
   }
 
   async readAllBySchool(schoolId: number) {
@@ -58,7 +90,7 @@ class StudentRepository {
       [schoolId],
     );
 
-    return rows as Student[];
+    return rows;
   }
 
   async delete(studentId: number) {

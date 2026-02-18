@@ -13,15 +13,15 @@ const StudentsTable = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [parents, setParents] = useState<Parent[]>([]);
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  const [newStudentForm, setNewStudentForm] = useState<boolean>(false);
   const [loadingError, setLoadingError] = useState<boolean>(false);
+  const [formError, setFormError] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const { auth } = useOutletContext<OutletAuthContext>();
 
   useEffect(() => {
-    if (!auth?.token) return;
-
     const headers = {
-      Authorization: `Bearer ${auth.token}`,
+      Authorization: `Bearer ${auth?.token}`,
     };
 
     const endpoints = [
@@ -40,13 +40,13 @@ const StudentsTable = () => {
         }),
       ),
     )
-      .then(([studentsData, classroomsData, parentsData]) => {
-        const sortedStudents = (studentsData as Student[]).sort(
-          (a, b) => (a.classroomId || 0) - (b.classroomId || 0),
+      .then(([students, classrooms, parents]) => {
+        const sortedStudents = (students as Student[]).sort(
+          (a, b) => a.classroomId - b.classroomId,
         );
         setStudents(sortedStudents);
-        setClassrooms(classroomsData as Classroom[]);
-        setParents(parentsData as Parent[]);
+        setClassrooms(classrooms as Classroom[]);
+        setParents(parents as Parent[]);
       })
       .catch(() => {
         setLoadingError(true);
@@ -97,7 +97,36 @@ const StudentsTable = () => {
         setSelectedStudent(null);
       })
       .catch(() => {
-        alert("Impossible de mettre à jour l'étudiant. Réessayez.");
+        setFormError(true);
+      });
+  };
+
+  const newStudent: Partial<Student> = {
+    firstName: "",
+    lastName: "",
+    classroomId: 1,
+    parentId: null,
+  };
+
+  const createNewStudent = (newStudent: Partial<Student>) => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/schools/me/students/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth?.token}`,
+      },
+      body: JSON.stringify(newStudent),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la création de l'élève");
+        return res.json();
+      })
+      .then((createdStudent: Student) => {
+        setStudents((prev) => [...prev, createdStudent]);
+        setNewStudentForm(false);
+      })
+      .catch(() => {
+        setFormError(true);
       });
   };
 
@@ -108,7 +137,7 @@ const StudentsTable = () => {
           <header className={styles.header}>
             <img
               src={ptit_cahier_logo_original}
-              alt="Le P'tit Cahier"
+              alt="P'tit Cahier"
               className={styles.logo}
             />
             <h1 className="primary-title">Gestion des élèves</h1>
@@ -117,6 +146,7 @@ const StudentsTable = () => {
           <button
             type="button"
             className={`primary-button ${styles.addButton}`}
+            onClick={() => setNewStudentForm(true)}
           >
             + Nouveau élève
           </button>
@@ -137,7 +167,7 @@ const StudentsTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {students.map((student) => (
+                {students.map((student: Student) => (
                   <tr key={student.id} className={styles["students-table_row"]}>
                     <td className={styles.classroomColumn}>
                       <span className={styles.classroomBadge}>
@@ -190,6 +220,26 @@ const StudentsTable = () => {
               onCancel={() => setSelectedStudent(null)}
               onSave={saveUpdatedStudent}
             />
+          </div>
+        </div>
+      )}
+
+      {newStudentForm && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_content}>
+            <StudentForm
+              student={newStudent}
+              classrooms={classrooms}
+              parents={parents}
+              onCancel={() => setNewStudentForm(false)}
+              onSave={createNewStudent}
+              newStudentForm
+            />
+            {formError && (
+              <p className={styles.warning} role="alert" aria-live="polite">
+                Une erreur est survenue. Veuillez renvoyer votre demande.
+              </p>
+            )}
           </div>
         </div>
       )}

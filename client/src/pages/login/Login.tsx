@@ -90,7 +90,7 @@ function Login() {
       <div className={styles.login_container}>
         <img
           src={ptit_cahier_logo_original}
-          alt="Le P'tit Cahier"
+          alt="P'tit Cahier"
           className={styles.logo}
         />
 

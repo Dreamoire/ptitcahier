@@ -1,5 +1,5 @@
 .logo {
-  width: 7.5rem;
+  width: clamp(5rem, 10vw, 7.5rem);
 }
 
 .header {
@@ -13,7 +13,7 @@
 }
 
 .container {
-  max-width: 800px;
+  width: min(100%, 820px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,7 +63,6 @@
 
 .filter_individual {
   display: flex;
-  margin: auto;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
@@ -114,7 +113,6 @@
   font-family: var(--font-family-text);
   font-weight: bold;
   color: var(--dark-blue);
-  margin-right: 0.5rem;
 }
 
 .button_add_ann {

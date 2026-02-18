@@ -129,11 +129,15 @@ function NavBar() {
             className={styles.footerLogoLink}
             aria-label="Accueil"
           >
-            <img src={siteLogo} alt="Logo" className={styles.footerLogo} />
+            <img
+              src={siteLogo}
+              alt="P'tit Cahier"
+              className={styles.footerLogo}
+            />
           </NavLink>
 
           {!isCollapsed && (
-            <p className={styles.footerText}>Le P'tit Cahier © 2026</p>
+            <p className={styles.footerText}>P'tit Cahier © 2026</p>
           )}
         </div>
       </aside>

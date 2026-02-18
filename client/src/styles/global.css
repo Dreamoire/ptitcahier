@@ -26,7 +26,7 @@
 .school-background {
   background-color: var(--background-grey);
   min-height: 100vh;
-  padding-top: 2rem;
+  padding: 2rem 0;
 }
 
 .non-primary-button,
