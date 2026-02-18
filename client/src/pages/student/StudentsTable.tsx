@@ -148,7 +148,7 @@ const StudentsTable = () => {
             className={`primary-button ${styles.addButton}`}
             onClick={() => setNewStudentForm(true)}
           >
-            + Nouveau élève
+            + Nouvel élève
           </button>
 
           {loadingError ? (

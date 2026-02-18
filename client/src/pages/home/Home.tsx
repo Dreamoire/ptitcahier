@@ -162,7 +162,7 @@ function Home() {
           <section className={styles.left_column}>
             {userRole === "school" ? (
               <article className={styles.stats_section}>
-                <h2 className={styles.section_title}>Indicateurs clés</h2>
+                {/* <h2 className={styles.section_title}>Indicateurs clés</h2> */}
                 <dl className={styles.stats_list}>
                   {[
                     {
