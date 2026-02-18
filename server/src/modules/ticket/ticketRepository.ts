@@ -70,7 +70,8 @@ class TicketRepository {
     SELECT
       t.id,
       t.content,
-      t.created_at AS createdAt,        
+      t.created_at AS createdAt,
+      t.processed AS processed,       
       tc.name AS ticketCategoryName,
       p.genre,
       p.first_name AS parentFirstName,
