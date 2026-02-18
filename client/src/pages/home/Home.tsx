@@ -185,7 +185,10 @@ function Home() {
               </article>
             ) : (
               <section aria-labelledby="messages-title">
-                <h2 id="messages-title" className={styles.section_title}>
+                <h2
+                  id="messages-title"
+                  className={styles.secondary_section_title}
+                >
                   Derniers messages
                 </h2>
                 {renderTicketsList()}
@@ -202,7 +205,11 @@ function Home() {
             className={styles.right_column}
             aria-labelledby="right-col-title"
           >
-            <h2 id="right-col-title" className={styles.section_title}>
+            <h2
+              id="right-col-title"
+              className="primary-title"
+              style={{ textAlign: "center", marginBottom: "2rem" }}
+            >
               {userRole === "school"
                 ? "Derniers Tickets Reçus"
                 : "Fil d'actualité"}

@@ -31,47 +31,51 @@
 
 .non-primary-button,
 .primary-button {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(
-    135deg,
-    var(--dark-blue),
-    var(--parent-blue),
-    var(--blue)
-  );
-  color: var(--white);
+  gap: 0.5rem;
+  border-radius: 12px;
+
+  padding: 0.7rem 1.8rem;
   font-family: var(--font-family-button);
   font-size: var(--font-size-button);
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  font-weight: 600;
   cursor: pointer;
-  transition: all 180ms ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  width: fit-content;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--dark-blue), var(--parent-blue));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(15, 23, 41, 0.15);
 }
 
 .primary-button:hover {
-  background: linear-gradient(135deg, #06405a, #165f9e, #0b8fd1);
-  transform: translateY(-3px);
-  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 41, 0.25);
+  filter: brightness(1.1);
 }
 
 .primary-button:active {
-  background: linear-gradient(135deg, #05344b, #144f7b, #096a9c);
   transform: translateY(0);
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.5);
+  filter: brightness(0.9);
 }
 
 .non-primary-button {
   background: var(--white);
   color: var(--dark-grey);
   border: 1px solid var(--light-grey);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .non-primary-button:hover {
   border-color: var(--dark-grey);
-  transform: translateY(-3px);
-  box-shadow: var(--box-shadow-hover);
+  background-color: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .non-primary-button:active {
@@ -82,11 +86,15 @@
 
 .non-primary-button,
 .primary-button {
-  display: inline-flex;
-  width: fit-content;
+  display: flex;
+  width: 90%;
+  max-width: 700px;
   min-width: 120px;
+  margin-left: auto;
+  margin-right: auto;
   justify-content: center;
   align-items: center;
+
   background: linear-gradient(
     135deg,
     var(--dark-blue),
@@ -145,8 +153,9 @@
 @media (max-width: 600px) {
   .non-primary-button,
   .primary-button {
+    width: 100%;
+    max-width: 400px;
     align-self: center;
-    width: fit-content;
-    padding: 0.5em 1.2em;
+    padding: 0.8rem 1.2rem;
   }
 }
