@@ -1,0 +1,202 @@
+.form {
+  background: rgba(248, 250, 252, 0.8);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.form h1 {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.form_instructions {
+  color: var(--primary-color-text);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  text-align: center;
+  margin: -1.2rem auto 0;
+  padding: 0.5rem;
+  width: 100%;
+  border-bottom: 1px solid var(--dark-blue);
+}
+
+.fieldset_categories {
+  border: none;
+  width: 100%;
+}
+
+.fieldset_categories ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.fieldset_categories li {
+  flex: 0 0 calc(50% - 0.4rem);
+}
+
+.form_label {
+  color: var(--primary-color-title);
+  font-family: var(--font-family-primary-title);
+  font-size: var(--font-size-form-label);
+  padding-bottom: 0.4rem;
+}
+
+.fieldset_names {
+  border: none;
+  width: 100%;
+}
+
+.fieldset_names_wrapper {
+  padding-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.fieldset_names_wrapper legend {
+  padding-bottom: 0;
+}
+
+.checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fieldset_names ul {
+  gap: 0.8rem;
+  display: flex;
+}
+
+.checkbox_label {
+  display: inline-block;
+  background: var(--white);
+  color: var(--dark-grey);
+  border: 1px solid var(--light-grey);
+  font-family: var(--font-family-button);
+  font-size: var(--font-size-form-label);
+  padding: 0.3em 0.5em;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.checkbox_label:hover {
+  border: 1px solid var(--parent-blue);
+  color: var(--parent-blue);
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.checkbox:checked + .checkbox_label {
+  border: 1px solid var(--parent-blue);
+  background: #c2d9f0;
+  color: var(--black);
+}
+
+.fieldset_message {
+  border: none;
+  width: 100%;
+}
+
+.textarea {
+  width: 100%;
+  height: 120px;
+  padding: 0.8rem;
+  resize: none;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
+  line-height: 1.4;
+  border: 1px solid var(--light-grey);
+  border-radius: var(--border-radius);
+  color: var(--black);
+  background-color: var(--white);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+}
+
+.textarea_wrapper {
+  position: relative;
+}
+
+.charcter_counter {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  color: var(--dark-grey);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+}
+
+.ticket_buttons_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.ticket_buttons_container button {
+  flex: 1;
+  max-width: 280px;
+}
+
+.warning {
+  color: var(--red);
+  font-family: var(--font-family-text);
+  font-size: var(--font-size-text);
+  text-align: center;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .form {
+    width: 95%;
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    padding: 0.8rem;
+  }
+
+  .fieldset_categories ul {
+    gap: 0.4rem;
+  }
+
+  .fieldset_categories li {
+    flex: 1 1 0;
+    max-width: calc(50% - 0.2rem);
+  }
+
+  .fieldset_names_wrapper {
+    gap: 0.4rem;
+  }
+
+  .ticket_buttons_container {
+    flex-direction: column-reverse;
+  }
+
+  .ticket_buttons_container button {
+    flex: 1;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .form {
+    width: 100%;
+    padding: 0.4rem;
+  }
+}

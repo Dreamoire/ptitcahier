@@ -1,0 +1,156 @@
+import databaseClient from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
+import type { Announcement } from "../../types/express/Announcement";
+import type { AnnouncementNew } from "../../types/express/AnnouncementNew";
+
+class AnnouncementRepository {
+  async create(newAnnouncement: AnnouncementNew, schoolId: number) {
+    const { title, content, announcementCategoryId, studentIds } =
+      newAnnouncement;
+
+    const [result] = await databaseClient.query<Result>(
+      `INSERT INTO announcement (title, content, announcement_category_id, school_id)
+			VALUES (?, ?, ?, ?)`,
+      [title, content, announcementCategoryId, schoolId],
+    );
+
+    const newAnnouncementId = result.insertId;
+
+    const announcementStudentValues = studentIds.map((studentId) => [
+      newAnnouncementId,
+      studentId,
+    ]);
+
+    await databaseClient.query<Result>(
+      "INSERT INTO announcement_student (announcement_id, student_id) VALUES ?",
+      [announcementStudentValues],
+    );
+
+    return newAnnouncementId;
+  }
+
+  async delete(announcementId: number, schoolId: number) {
+    await databaseClient.query<Result>(
+      "DELETE FROM announcement_student WHERE announcement_id = ?",
+      [announcementId],
+    );
+
+    const [result] = await databaseClient.query<Result>(
+      "DELETE FROM announcement WHERE id = ? AND school_id = ?",
+      [announcementId, schoolId],
+    );
+
+    return result.affectedRows;
+  }
+
+  async updateContent(
+    announcementId: number,
+    content: string,
+    schoolId: number,
+  ) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT id FROM announcement WHERE id = ? AND school_id = ?",
+      [announcementId, schoolId],
+    );
+
+    if (rows.length === 0) {
+      return 0;
+    }
+
+    const [result] = await databaseClient.query<Result>(
+      "UPDATE announcement SET content = ? WHERE id = ?",
+      [content, announcementId],
+    );
+
+    return result.affectedRows;
+  }
+
+  async readAllByParent(
+    parentId: number,
+    categoryId?: number,
+    studentId?: number,
+    limit?: number,
+  ) {
+    let sql = `
+    SELECT 
+      a.id,
+      a.title,
+      a.content,
+      a.created_at AS createdAt,
+      ac.name AS announcementCategoryName,
+      GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
+    FROM announcement AS a
+    JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
+    JOIN announcement_student AS ann_stu ON a.id = ann_stu.announcement_id
+    JOIN student AS s ON ann_stu.student_id = s.id
+    WHERE s.parent_id = ?
+  `;
+
+    const sqlParams: (number | string)[] = [parentId];
+
+    if (categoryId) {
+      sql += " AND a.announcement_category_id = ? ";
+      sqlParams.push(categoryId);
+    }
+
+    if (studentId) {
+      sql += " AND s.id = ? ";
+      sqlParams.push(studentId);
+    }
+
+    sql += `
+    GROUP BY a.id, ac.name, a.created_at
+    ORDER BY a.created_at DESC
+  `;
+
+    if (limit) {
+      sql += " LIMIT ?";
+      sqlParams.push(limit);
+    }
+
+    const [rows] = await databaseClient.query<Rows>(sql, sqlParams);
+    return rows as Announcement[];
+  }
+
+  async readAllBySchool(schoolId: number, categoryId?: number) {
+    let sql = `
+    SELECT 
+      a.id, 
+      a.title, 
+      a.content, 
+      a.created_at AS createdAt,
+      ac.name AS announcementCategoryName,
+      COUNT(DISTINCT s.id) AS studentCount,
+      (
+        SELECT COUNT(*) 
+        FROM student s2 
+        JOIN classroom c2 ON s2.classroom_id = c2.id 
+        WHERE c2.school_id = ?
+      ) AS totalStudents,
+      GROUP_CONCAT(DISTINCT CONCAT(s.first_name, ' ', s.last_name) SEPARATOR ', ') AS studentNames,
+      GROUP_CONCAT( c.name SEPARATOR ',') AS classroomNames
+    FROM announcement AS a
+    JOIN announcement_category AS ac ON a.announcement_category_id = ac.id
+    LEFT JOIN announcement_student AS ans ON ans.announcement_id = a.id
+    LEFT JOIN student AS s ON ans.student_id = s.id
+    LEFT JOIN classroom AS c ON s.classroom_id = c.id
+    WHERE a.school_id = ?`;
+
+    const queryParams: (number | string)[] = [schoolId, schoolId];
+
+    if (categoryId !== undefined && categoryId !== null) {
+      sql += " AND a.announcement_category_id = ?";
+      queryParams.push(categoryId);
+    }
+
+    sql += `
+    GROUP BY a.id, ac.name, a.created_at
+    ORDER BY a.created_at DESC
+  `;
+
+    const [rows] = await databaseClient.query<Rows>(sql, queryParams);
+    return rows as Announcement[];
+  }
+}
+
+export default new AnnouncementRepository();

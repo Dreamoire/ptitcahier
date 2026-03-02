@@ -1,0 +1,255 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--background-white) 35%, transparent);
+  backdrop-filter: blur(25px) saturate(160%);
+  -webkit-backdrop-filter: blur(25px) saturate(160%);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 10px 0 40px rgba(15, 23, 41, 0.05);
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 420ms ease,
+    background 420ms ease;
+}
+
+.profile,
+.navLink,
+.footer {
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.collapsed .linkLabel,
+.collapsed .footer {
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+}
+
+.expanded .linkLabel,
+.expanded .footer {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.expanded {
+  width: 300px;
+}
+.collapsed {
+  width: 88px;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 14px;
+  right: -16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--parent-blue);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  z-index: 1010;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 220ms
+    cubic-bezier(0.4, 0, 0.2, 1), background 220ms ease, color 220ms ease;
+}
+
+.toggleButton:hover {
+  transform: translateY(-2px) scale(1.06);
+  background: linear-gradient(
+    135deg,
+    var(--parent-blue) 0%,
+    color-mix(in srgb, var(--parent-blue) 70%, white) 100%
+  );
+  color: var(--white);
+  box-shadow: 0 10px 25px rgba(30, 108, 176, 0.35), 0 0 0 4px
+    rgba(30, 108, 176, 0.15);
+}
+
+.toggleButton:hover .toggleIcon {
+  transform: scale(1.1);
+}
+
+.toggleIcon {
+  transition: transform 200ms ease, color 200ms ease;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 130px;
+  padding: 22px 16px 18px;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  object-fit: cover;
+}
+
+.displayName {
+  font-family: var(--font-family-card-title);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--parent-blue);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav {
+  flex: 1;
+  padding: 40px 10px;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.navLink {
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  color: var(--parent-blue);
+  transition: all 200ms ease;
+}
+
+.navLink:hover {
+  background: var(--white);
+  transform: translateY(-1px);
+}
+
+.active {
+  background: var(--parent-blue) !important;
+  border-color: var(--parent-blue) !important;
+  color: var(--white) !important;
+  box-shadow: 0 8px 20px rgba(30, 108, 176, 0.2);
+}
+
+.active .icon {
+  color: var(--white) !important;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  color: var(--parent-blue);
+  flex-shrink: 0;
+}
+
+.linkLabel {
+  font-family: var(--font-family-text);
+  font-weight: 500;
+}
+
+/* FOOTER */
+.footer {
+  padding: 14px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.footerLogo {
+  width: 50px;
+  height: auto;
+}
+
+.footerText {
+  font-size: 0.8rem;
+  color: var(--dark-grey);
+  font-family: var(--font-family-text);
+}
+
+.mobileNavParent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 950;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .mobileNavParent {
+    display: block;
+    padding: 10px 10px clamp(15px, 4vh, 25px);
+    background: color-mix(in srgb, var(--background-white) 35%, transparent);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobileRow {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .mobileLink,
+  .mobileHome {
+    width: clamp(38px, 11vw, 48px);
+    height: clamp(38px, 11vw, 48px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    border-radius: clamp(8px, 2vw, 14px);
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+    color: var(--parent-blue);
+  }
+
+  .mobileLink.active {
+    background: var(--parent-blue);
+    color: var(--white);
+  }
+
+  .mobileLink.active .icon {
+    color: var(--white);
+  }
+
+  .mobileLogo {
+    width: clamp(26px, 8vw, 34px);
+    height: auto;
+  }
+
+  .icon {
+    width: clamp(18px, 5.5vw, 24px);
+    height: clamp(18px, 5.5vw, 24px);
+  }
+}
