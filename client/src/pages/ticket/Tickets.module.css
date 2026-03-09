@@ -21,10 +21,12 @@
 .container {
   width: 100%;
   max-width: 800px;
-
   display: flex;
   flex-direction: column;
   gap: 18px;
+  padding-inline: 16px;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .contentArea {
@@ -222,6 +224,8 @@ fieldset {
 
   .container {
     gap: 14px;
+    padding-inline: clamp(12px, 4vw, 16px);
+    padding-bottom: 70px;
   }
 
   .filters {
