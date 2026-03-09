@@ -57,7 +57,7 @@ function Announcements() {
       endpoint = `${import.meta.env.VITE_API_URL}/api/parents/me/announcements`;
     }
 
-    const url = new URL(endpoint);
+    const url = new URL(endpoint, window.location.origin);
 
     if (selectedCategory !== 0)
       url.searchParams.append("category", String(selectedCategory));
