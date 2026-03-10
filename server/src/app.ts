@@ -62,6 +62,17 @@ app.use(express.json());
 // Import the API router
 import router from "./router";
 
+// Mode démo: bloquer toutes les mutations
+if (process.env.DEMO_MODE === "true") {
+  app.use((req, _res, next) => {
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
+      _res.status(403).json({ error: "Mode démo : modifications désactivées" });
+      return;
+    }
+    next();
+  });
+}
+
 // Mount the API router under the "/api" endpoint
 app.use("/api", router);
 

@@ -112,9 +112,10 @@ function AnnouncementNew() {
               .then((response) => response.ok)
               .then((ok) => {
                 if (!ok) {
-                  setError(
-                    "Une erreur est survenue. Veuillez renvoyer votre demande.",
-                  );
+                  setError("Mode démo: modifications désactivées");
+                  setFormSent(true);
+                  setIsSubmitting(false);
+                  return;
                 }
                 setFormSent(true);
                 setIsSubmitting(false);
