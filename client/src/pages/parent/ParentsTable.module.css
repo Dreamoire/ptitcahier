@@ -1,11 +1,24 @@
 .container {
   width: 100%;
   max-width: 800px;
+  min-width: 0;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding-inline: clamp(12px, 2vw, 24px);
+  gap: clamp(14px, 2vw, 18px);
+  padding-inline: clamp(14px, 2vw, 24px);
+  padding-bottom: 84px;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+.table_wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius);
 }
 
 .header {
@@ -30,13 +43,9 @@
   margin: 0 auto;
 }
 
-/* .addParentButton {
-  align-self: flex-start;
-  margin-top: 10px;
-} */
-
-.students-table_table {
+.parents-table_table {
   width: 100%;
+  min-width: 720px;
   border-collapse: separate;
   border-spacing: 0;
   background-color: var(--background-white);
@@ -46,34 +55,14 @@
   overflow: hidden;
 }
 
-.students-table_table th:first-child,
-.students-table_table td:first-child {
-  padding-left: 24px;
+.parents-table_table th:first-child,
+.parents-table_table td:first-child {
+  padding-left: 16px;
 }
 
-.students-table_table th:last-child,
-.students-table_table td:last-child {
-  padding-right: 24px;
-}
-
-.classroomBadge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--blue) 12%, var(--background-white)),
-    color-mix(in srgb, var(--dark-blue) 6%, var(--background-white))
-  );
-  color: var(--primary-color-title);
-  font-family: var(--font-family-card-title);
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--blue) 18%, transparent);
-  box-shadow: 0 2px 6px rgba(15, 23, 41, 0.06), inset 0 1px 0
-    rgba(255, 255, 255, 0.6);
-  white-space: nowrap;
+.parents-table_table th:last-child,
+.parents-table_table td:last-child {
+  padding-right: 16px;
 }
 
 .row_actions {
@@ -153,7 +142,7 @@
   transform: scale(1.1);
 }
 
-.students-table_table th {
+.parents-table_table th {
   background-color: #f1f5f9;
   color: var(--dark-blue);
   font-family: var(--font-family-button);
@@ -161,13 +150,13 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-size: 0.85rem;
-  padding: 16px 20px;
+  padding: clamp(12px, 1.5vw, 16px) clamp(14px, 2vw, 20px);
   border-bottom: 2px solid var(--light-grey);
   text-align: left;
 }
 
-.students-table_table td {
-  padding: 14px 20px;
+.parents-table_table td {
+  padding: clamp(10px, 1.5vw, 14px) clamp(14px, 2vw, 20px);
   color: var(--primary-color-text);
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
@@ -175,16 +164,16 @@
   vertical-align: middle;
 }
 
-.students-table_row:last-child td {
+.parents-table_row:last-child td {
   border-bottom: none;
 }
 
-.students-table_row {
+.parents-table_row {
   transition: transform 180ms ease, box-shadow 180ms ease, background-color
     180ms ease;
 }
 
-.students-table_row:hover {
+.parents-table_row:hover {
   background-color: rgba(13, 162, 231, 0.04);
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(15, 23, 41, 0.08);
@@ -212,8 +201,40 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   position: relative;
 }
+
 .modal_content input[type="radio"] {
   margin-right: 6px;
+}
+
+@media (max-width: 960px) {
+  .container {
+    max-width: 720px;
+    padding-inline: clamp(12px, 3vw, 18px);
+    padding-bottom: 84px;
+  }
+
+  .parents-table_table {
+    min-width: 680px;
+  }
+
+  .parents-table_table th,
+  .parents-table_table td {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .row_actions {
+    gap: 0.5rem;
+    padding-right: 0;
+  }
+
+  .edit_button,
+  .delete_button {
+    width: 38px;
+    height: 38px;
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -221,51 +242,37 @@
     width: 100%;
     padding-inline: 12px;
     gap: 14px;
+    padding-bottom: 70px;
   }
 
   .header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    text-align: center;
+    margin-bottom: 1.25rem;
   }
 
   .logo {
-    width: 6.25rem;
+    width: clamp(72px, 22vw, 96px);
   }
 
-  /* .addParentButton {
-    align-self: stretch;
-    margin-top: 0;
-  } */
-
-  .buttons_container {
-    flex-direction: column;
-  }
-
-  .buttons_container button {
-    flex: 1;
-    max-width: 100%;
-  }
-
-  .students-table_table {
+  .parents-table_table {
+    min-width: 640px;
     border-radius: 12px;
     box-shadow: 0 10px 22px rgba(15, 23, 41, 0.12);
   }
 
-  .students-table_table th {
+  .parents-table_table th {
     padding: 12px 12px;
     font-size: 0.75rem;
     letter-spacing: 0.08em;
   }
 
-  .students-table_table td {
+  .parents-table_table td {
     padding: 12px 12px;
     font-size: 1rem;
-  }
-
-  .classroomBadge {
-    padding: 5px 10px;
-    font-size: 0.8rem;
   }
 
   .edit_button,
@@ -282,12 +289,17 @@
     height: 18px;
   }
 
+  .row_actions {
+    gap: 0.5rem;
+    padding-right: 0;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .students-table_row {
+    .parents-table_row {
       transition: none;
     }
 
-    .students-table_row:hover {
+    .parents-table_row:hover {
       transform: none;
     }
 

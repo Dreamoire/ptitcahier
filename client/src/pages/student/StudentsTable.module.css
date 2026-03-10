@@ -6,14 +6,33 @@
   margin: 0 auto;
 }
 
+.table_wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius);
+}
+
+.page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .container {
   width: 100%;
   max-width: 800px;
+  min-width: 0;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: clamp(14px, 2vw, 18px);
   padding-inline: clamp(14px, 2vw, 24px);
+  padding-bottom: 84px;
+  box-sizing: border-box;
+  overflow-x: clip;
 }
 
 .header {
@@ -32,6 +51,7 @@
 
 .students-table_table {
   width: 100%;
+  min-width: 720px;
   border-collapse: separate;
   border-spacing: 0;
   background-color: var(--background-white);
@@ -43,12 +63,12 @@
 
 .students-table_table th:first-child,
 .students-table_table td:first-child {
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .students-table_table th:last-child,
 .students-table_table td:last-child {
-  padding-right: 24px;
+  padding-right: 16px;
 }
 
 .classroomBadge {
@@ -164,13 +184,13 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-size: 0.85rem;
-  padding: 16px 20px;
+  padding: clamp(12px, 1.5vw, 16px) clamp(14px, 2vw, 20px);
   border-bottom: 2px solid var(--light-grey);
   text-align: left;
 }
 
 .students-table_table td {
-  padding: 14px 20px;
+  padding: clamp(10px, 1.5vw, 14px) clamp(14px, 2vw, 20px);
   color: var(--primary-color-text);
   font-family: var(--font-family-text);
   font-size: var(--font-size-text);
@@ -216,48 +236,60 @@
   position: relative;
 }
 
+@media (max-width: 960px) {
+  .container {
+    max-width: 720px;
+    padding-inline: clamp(12px, 3vw, 18px);
+    padding-bottom: 84px;
+  }
+
+  .students-table_table {
+    min-width: 680px;
+  }
+
+  .students-table_table th,
+  .students-table_table td {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .row_actions {
+    gap: 0.5rem;
+    padding-right: 0;
+  }
+
+  .edit_button,
+  .delete_button {
+    width: 38px;
+    height: 38px;
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     width: 100%;
     padding-inline: 12px;
     gap: 14px;
+    padding-bottom: 70px;
   }
 
-  .button_label {
-    display: none;
-  }
-  .edit_button,
-  .delete_button {
-    padding: 0.5rem;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-  }
   .header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    text-align: center;
+    margin-bottom: 1.25rem;
   }
 
   .logo {
-    width: 6.25rem;
-  }
-
-  /* .addButton {
-    align-self: stretch;
-    margin-top: 0;
-  } */
-
-  .buttons_container {
-    flex-direction: column;
-  }
-
-  .buttons_container button {
-    flex: 1;
-    max-width: 100%;
+    width: clamp(72px, 22vw, 96px);
   }
 
   .students-table_table {
+    min-width: 640px;
     border-radius: 12px;
     box-shadow: 0 10px 22px rgba(15, 23, 41, 0.12);
   }
@@ -278,14 +310,23 @@
     font-size: 0.8rem;
   }
 
+  .edit_button,
   .delete_button {
-    width: 36px;
-    height: 36px;
+    padding: 0.5rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
   }
 
-  .delete_icon {
+  .delete_icon,
+  .edit_icon {
     width: 18px;
     height: 18px;
+  }
+
+  .row_actions {
+    gap: 0.5rem;
+    padding-right: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -297,11 +338,13 @@
       transform: none;
     }
 
-    .delete_button {
+    .delete_button,
+    .edit_button {
       transition: none;
     }
 
-    .delete_button:hover {
+    .delete_button:hover,
+    .edit_button:hover {
       transform: none;
     }
   }

@@ -140,55 +140,60 @@ const ParentsTable = () => {
               Échec de la récupération de vos données
             </p>
           ) : (
-            <table className={styles["students-table_table"]}>
-              <thead>
-                <tr>
-                  <th>Mail</th>
-                  <th>Civilité </th>
-                  <th>Nom</th>
-                  <th>Prénom</th>
-                  <th />
-                </tr>
-              </thead>
-
-              <tbody>
-                {parents.map((parent) => (
-                  <tr key={parent.id} className={styles["students-table_row"]}>
-                    <td>{parent.email}</td>
-                    <td>{parent.genre === "M" ? "M." : "Mme"}</td>
-                    <td>{parent.lastName}</td>
-                    <td>{parent.firstName}</td>
-                    <td>
-                      <div className={styles.row_actions}>
-                        <button
-                          type="button"
-                          className={styles.edit_button}
-                          onClick={() => setSelectedParent(parent)}
-                          aria-label="Modifier le parent"
-                        >
-                          <Pencil
-                            className={styles.edit_icon}
-                            aria-hidden="true"
-                          />
-                        </button>
-
-                        <button
-                          type="button"
-                          className={styles.delete_button}
-                          onClick={() => deleteParent(parent.id)}
-                          aria-label="Supprimer le parent"
-                        >
-                          <Trash2
-                            className={styles.delete_icon}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </div>
-                    </td>
+            <div className={styles.table_wrapper}>
+              <table className={styles["parents-table_table"]}>
+                <thead>
+                  <tr>
+                    <th>Mail</th>
+                    <th>Civilité </th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th />
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {parents.map((parent) => (
+                    <tr
+                      key={parent.id}
+                      className={styles["parents-table_table"]}
+                    >
+                      <td>{parent.email}</td>
+                      <td>{parent.genre === "M" ? "M." : "Mme"}</td>
+                      <td>{parent.lastName}</td>
+                      <td>{parent.firstName}</td>
+                      <td>
+                        <div className={styles.row_actions}>
+                          <button
+                            type="button"
+                            className={styles.edit_button}
+                            onClick={() => setSelectedParent(parent)}
+                            aria-label="Modifier le parent"
+                          >
+                            <Pencil
+                              className={styles.edit_icon}
+                              aria-hidden="true"
+                            />
+                          </button>
+
+                          <button
+                            type="button"
+                            className={styles.delete_button}
+                            onClick={() => deleteParent(parent.id)}
+                            aria-label="Supprimer le parent"
+                          >
+                            <Trash2
+                              className={styles.delete_icon}
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
