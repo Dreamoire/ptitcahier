@@ -156,56 +156,61 @@ const StudentsTable = () => {
               Échec de la récupération de vos données
             </p>
           ) : (
-            <table className={styles["students-table_table"]}>
-              <thead>
-                <tr>
-                  <th>Classe</th>
-                  <th>Nom</th>
-                  <th>Prénom</th>
-                  <th>Parent</th>
-                  <th aria-label="Actions" />
-                </tr>
-              </thead>
-              <tbody>
-                {students.map((student: Student) => (
-                  <tr key={student.id} className={styles["students-table_row"]}>
-                    <td className={styles.classroomColumn}>
-                      <span className={styles.classroomBadge}>
-                        {student.classroomName}
-                      </span>
-                    </td>
-                    <td>{student.lastName}</td>
-                    <td>{student.firstName}</td>
-                    <td>
-                      {student.parentLastName && student.parentFirstName
-                        ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentFirstName} ${student.parentLastName}`
-                        : ""}
-                    </td>
-                    <td>
-                      <div className={styles.row_actions}>
-                        <button
-                          type="button"
-                          className={styles.edit_button}
-                          onClick={() => setSelectedStudent(student)}
-                          title="Modifier"
-                        >
-                          <Pencil className={styles.edit_icon} />
-                        </button>
-
-                        <button
-                          type="button"
-                          className={styles.delete_button}
-                          onClick={() => deleteStudent(student.id)}
-                          title="Supprimer"
-                        >
-                          <Trash2 className={styles.delete_icon} />
-                        </button>
-                      </div>
-                    </td>
+            <div className={styles.table_wrapper}>
+              <table className={styles["students-table_table"]}>
+                <thead>
+                  <tr>
+                    <th>Classe</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Parent</th>
+                    <th aria-label="Actions" />
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {students.map((student: Student) => (
+                    <tr
+                      key={student.id}
+                      className={styles["students-table_row"]}
+                    >
+                      <td className={styles.classroomColumn}>
+                        <span className={styles.classroomBadge}>
+                          {student.classroomName}
+                        </span>
+                      </td>
+                      <td>{student.lastName}</td>
+                      <td>{student.firstName}</td>
+                      <td>
+                        {student.parentLastName && student.parentFirstName
+                          ? `${student.parentGenre === "M" ? "M." : "Mme"} ${student.parentFirstName} ${student.parentLastName}`
+                          : ""}
+                      </td>
+                      <td>
+                        <div className={styles.row_actions}>
+                          <button
+                            type="button"
+                            className={styles.edit_button}
+                            onClick={() => setSelectedStudent(student)}
+                            title="Modifier"
+                          >
+                            <Pencil className={styles.edit_icon} />
+                          </button>
+
+                          <button
+                            type="button"
+                            className={styles.delete_button}
+                            onClick={() => deleteStudent(student.id)}
+                            title="Supprimer"
+                          >
+                            <Trash2 className={styles.delete_icon} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

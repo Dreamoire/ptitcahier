@@ -6,13 +6,29 @@
   grid-template-rows: auto 1fr auto;
   column-gap: 2rem;
   row-gap: var(--card-gap);
-  padding: var(--card-padding);
-  border-radius: 1rem;
-  border: 1px solid #f0f0f0;
-  background-color: var(--background-white, #ffffff);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: clamp(1rem, 4vw, 2rem);
+  border-radius: calc(var(--border-radius) + 4px);
+  border: 1px solid rgba(7, 85, 120, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(238, 242, 247, 0.75) 0%,
+    rgba(246, 249, 252, 0.92) 45%,
+    rgba(248, 250, 252, 1) 100%
+  );
+  box-shadow: 0 14px 38px rgba(15, 23, 41, 0.1), inset 0 1px 0
+    rgba(255, 255, 255, 0.7);
   width: 100%;
   align-items: start;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms
+    ease;
+  transform-origin: center;
+}
+
+.ann_card:hover,
+.ann_card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 48px rgba(15, 23, 41, 0.16), 0 6px 18px
+    rgba(15, 23, 41, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .content_card {
@@ -33,10 +49,11 @@
 }
 
 .title {
-  font-family: var(--font-family-text);
-  margin: 0;
-  font-size: 1.5rem;
-  color: #1a1a1a;
+  font-family: var(--font-family-card-title);
+  font-weight: 900;
+  color: var(--dark-blue);
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.05rem, 2.5vw, 1.5rem);
   text-align: center;
 }
 
@@ -351,24 +368,51 @@
 
 @media (max-width: 900px) {
   .ann_card {
+    --content-width: min(100%, 560px);
     grid-template-columns: 1fr;
     column-gap: 1rem;
   }
 
+  .media_block {
+    display: contents;
+  }
+
+  .media_block header,
+  .badgeSidebar,
+  .imageTrigger,
+  .text,
+  .edit_block,
+  .dateLabel,
+  .footer_actions {
+    width: var(--content-width);
+    justify-self: center;
+  }
+
+  .media_block header {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   .badgeSidebar {
     grid-column: 1;
-    grid-row: auto;
+    grid-row: 2;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
   }
 
+  .imageTrigger {
+    grid-column: 1;
+    grid-row: 3;
+    width: var(--content-width);
+  }
+
   .tagList {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    width: auto;
+    width: 100%;
   }
 
   .an_badge_school_life,
@@ -383,38 +427,26 @@
     max-width: none;
   }
 
-  .footer_actions {
-    grid-column: 1;
-    justify-self: start;
-    margin-left: 0;
-  }
-}
-
-@media (min-width: 425px) and (max-width: 900px) {
-  .badgeSidebar {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .media_block {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
   .text,
   .edit_block {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .dateLabel {
     grid-column: 1;
     grid-row: 4;
   }
 
-  .footer_actions {
+  .dateLabel {
     grid-column: 1;
     grid-row: 5;
+  }
+
+  .footer_actions {
+    grid-column: 1;
+    grid-row: 6;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    line-height: 1.25;
+    text-align: center;
   }
 }
 
@@ -422,52 +454,5 @@
   .ann_card {
     --card-gap: 1rem;
     --card-padding: 1rem;
-  }
-
-  .badgeSidebar {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .media_block {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .title {
-    font-size: 1.15rem;
-    text-align: left;
-  }
-
-  .text,
-  .edit_block {
-    grid-column: 1;
-    grid-row: 3;
-    width: 100%;
-  }
-
-  .imageTrigger {
-    width: 100%;
-  }
-
-  .dateLabel {
-    grid-column: 1;
-    grid-row: 4;
-  }
-
-  .footer_actions {
-    grid-column: 1;
-    grid-row: 5;
-  }
-
-  .card_dashboard {
-    padding: 0.85rem;
-    min-height: 300px;
-  }
-
-  .card_dashboard .text {
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    font-size: 0.9rem;
   }
 }
