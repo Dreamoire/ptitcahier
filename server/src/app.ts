@@ -65,7 +65,10 @@ import router from "./router";
 // Mode démo: bloquer toutes les mutations
 if (process.env.DEMO_MODE === "true") {
   app.use((req, _res, next) => {
-    if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
+    if (
+      ["POST", "PUT", "PATCH", "DELETE"].includes(req.method) &&
+      req.path !== "/api/login"
+    ) {
       _res.status(403).json({ error: "Mode démo : modifications désactivées" });
       return;
     }
