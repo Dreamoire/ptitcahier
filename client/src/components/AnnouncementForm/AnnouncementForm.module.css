@@ -299,32 +299,35 @@
   text-align: center;
   margin: 0 auto;
 }
-
 @media (max-width: 768px) {
   .form {
     width: 96%;
     padding: 1rem;
+    padding-bottom: 84px;
   }
 }
 
 @media (max-width: 600px) {
   .form {
     padding: 0.75rem;
+    padding-bottom: 84px;
     gap: 1rem;
   }
 
+  /*Grid au lieu de flex → 2 colonnes stables même avec 4 éléments */
   .fieldset_categories ul {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
   }
 
   .fieldset_categories li {
-    flex: 1 1 0;
-    max-width: calc(50% - 0.25rem);
+    flex: unset;
+    max-width: unset;
   }
 
   .category_button {
+    width: 100%;
     height: auto;
     min-height: 50px;
   }
@@ -366,5 +369,10 @@
   .form {
     width: 100%;
     padding: 0.5rem;
+    padding-bottom: 84px;
+  }
+
+  .category_name {
+    font-size: 0.7rem;
   }
 }
