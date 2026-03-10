@@ -93,9 +93,9 @@ function TicketNew() {
               .then((response) => response.ok)
               .then((ok) => {
                 if (!ok) {
-                  setError(
-                    "Une erreur est survenue. Veuillez renvoyer votre demande.",
-                  );
+                  setError("Mode démo — données non enregistrées.");
+                  setFormSent(true);
+                  return;
                 }
                 setFormSent(true);
               });
