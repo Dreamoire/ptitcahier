@@ -30,7 +30,7 @@ function Register() {
   const clearWarnings = () => {
     setSubmitValidationWarning(false);
     setSubmitValidationWarning(false);
-    setSubmitValidationWarning(false);
+    setRegisterErrorWarning(false);
   };
 
   const registerSchool: FormEventHandler = async (event) => {
@@ -149,7 +149,7 @@ function Register() {
                 id="email"
                 type="email"
                 value={email}
-                maxLength={225}
+                maxLength={250}
                 autoComplete="email"
                 onChange={(event) => {
                   setEmail(event.target.value);

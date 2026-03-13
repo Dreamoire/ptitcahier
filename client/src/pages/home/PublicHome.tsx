@@ -33,7 +33,7 @@ const FeatureItem = ({
       )}
     </div>
     <h3>{title}</h3>
-    <p>{description}</p>
+    <p>{description}</p>logo
   </article>
 );
 export default function PublicHome() {
@@ -76,7 +76,7 @@ export default function PublicHome() {
         <div className={styles.logoContainer}>
           <img
             src={ptit_cahier_logo_original}
-            alt="Retour à l'accueil Le P'tit Cahier"
+            alt="Logo Le P'tit Cahier"
             className={styles.logo}
           />
         </div>

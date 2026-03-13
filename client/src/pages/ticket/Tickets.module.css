@@ -55,7 +55,8 @@
   flex-wrap: wrap;
 }
 
-fieldset {
+.statusFilters,
+.categoryFilters {
   border: none;
   margin: 0;
   padding: 0;

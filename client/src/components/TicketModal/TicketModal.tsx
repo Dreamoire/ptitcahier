@@ -85,7 +85,8 @@ function TicketModal({
         className={`${styles.modal} ${isOpen ? styles.modalOpen : ""}`}
         data-type={ticketType}
         open
-        aria-label="Détails du ticket"
+        aria-modal="true"
+        aria-labelledby="ticket-modal-title"
         onTransitionEnd={(event) => {
           const isDialogTransition = event.target === dialogRef.current;
           if (isDialogTransition && !isOpen) {
@@ -102,8 +103,12 @@ function TicketModal({
             </div>
 
             <div className={styles.headerText}>
-              <h2 className={styles.title}>{parentFullName}</h2>
-              <time className={styles.subTitle}>{createdAtLabel}</time>
+              <h2 id="ticket-modal-title" className={styles.title}>
+                {parentFullName}
+              </h2>
+              <time className={styles.subTitle} dateTime={ticket.createdAt}>
+                {createdAtLabel}
+              </time>
             </div>
           </div>
 

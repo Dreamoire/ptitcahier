@@ -123,7 +123,7 @@ function Home() {
           </li>
         ))
       ) : (
-        <p className={styles.empty_message}>Aucun ticket récent.</p>
+        <li className={styles.empty_message}>Aucun ticket récent.</li>
       )}
     </ul>
   );

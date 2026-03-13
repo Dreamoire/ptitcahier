@@ -29,26 +29,6 @@
   padding: 2rem 0;
 }
 
-.non-primary-button,
-.primary-button {
-  /* min-width: 120px;
-  max-width: 350px; */
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 12px;
-
-  padding: 0.7rem 1.8rem;
-  font-family: var(--font-family-button);
-  font-size: var(--font-size-button);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  width: fit-content;
-}
-
 .primary-button {
   background: linear-gradient(135deg, var(--dark-blue), var(--parent-blue));
   color: var(--white);
@@ -152,7 +132,7 @@
   padding: 2rem;
 }
 
-/* @media (max-width: 600px) {
+@media (max-width: 600px) {
   .non-primary-button,
   .primary-button {
     width: 100%;
@@ -160,4 +140,4 @@
     align-self: center;
     padding: 0.8rem 1.2rem;
   }
-} */
+}

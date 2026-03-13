@@ -31,12 +31,6 @@
   padding-left: 10px;
 }
 
-.main_content_grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
-}
-
 .ba_card {
   background: white;
   border-radius: 12px;
@@ -54,8 +48,6 @@
 
 .card_title {
   font-family: var(--font-family-card-title);
-}
-.card_title {
   background: rgba(255, 255, 255, 0.481);
   padding: 10px 20px;
   text-align: center;
@@ -66,9 +58,9 @@
 }
 
 .main_content_grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
 }
 
 .left_column,
@@ -110,7 +102,7 @@
 }
 
 .stat_group dt {
-  font-size: 1 rem;
+  font-size: 1rem;
   color: var(--dark-blue);
   font-family: var(--font-family-text);
   font-weight: 500;
@@ -132,8 +124,6 @@
   overflow: hidden;
   border-radius: 18px;
   cursor: grab;
-  width: 100%;
-  max-width: 100%;
   padding: 10px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid color-mix(in srgb, var(--light-grey) 70%, transparent);
@@ -224,7 +214,8 @@
     margin-right: 0;
     max-width: 100%;
   }
-  dashboard_container {
+
+  .dashboard_container {
     padding: 0 1rem;
     gap: 1.5rem;
   }

@@ -100,7 +100,8 @@ input:focus,
 textarea:focus,
 select:focus,
 button:focus {
-  outline: none;
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
 }
 
 /* Reset inputs specifiques */

@@ -36,6 +36,7 @@ function Tickets() {
         ? `${import.meta.env.VITE_API_URL}/api/schools/me/tickets`
         : `${import.meta.env.VITE_API_URL}/api/parents/me/tickets`;
 
+    // Fetch all tickets for the current user role
     fetch(endpoint, { headers })
       .then((response) => {
         if (!response.ok) {
@@ -47,6 +48,11 @@ function Tickets() {
       .then((tickets: Ticket[] | undefined) => {
         if (!tickets) return;
         setTickets(tickets);
+      })
+      // Error boundary for network failures
+      .catch((error) => {
+        console.error("Fetch tickets error:", error);
+        setLoadingError(true);
       });
   }, [userRole, auth]);
 
@@ -84,6 +90,10 @@ function Tickets() {
       )
       .then((ticket) => {
         updateProcessedStatus(ticket.processed);
+      })
+      // Error boundary for network failures
+      .catch((error) => {
+        console.error("Update ticket status error:", error);
       });
   };
 
