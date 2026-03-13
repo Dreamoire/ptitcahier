@@ -129,23 +129,6 @@
   color: var(--dark-blue);
 }
 
-.button_add_ann {
-  display: flex;
-  align-self: center;
-  justify-content: center;
-  margin: 0 auto;
-  gap: 0.5rem;
-  background-color: var(--green);
-  color: white;
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: var(--font-family-text);
-  font-family: var(--font-family-text);
-}
-
 @media (max-width: 780px) {
   .page {
     padding: 24px 16px;
@@ -219,11 +202,5 @@
 
   .logo {
     width: clamp(72px, 22vw, 96px);
-  }
-
-  .sortButton {
-    width: 100%;
-    justify-content: center;
-    margin-left: 0;
   }
 }

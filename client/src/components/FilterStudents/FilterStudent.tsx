@@ -62,7 +62,7 @@ const FilterStudent = ({
         }}
       >
         <header>
-          <h2 className="primary-title">Elèves concernés</h2>
+          <h2 className="primary-title">Élèves concernés</h2>
         </header>
 
         <section className={styles.filter_body}>

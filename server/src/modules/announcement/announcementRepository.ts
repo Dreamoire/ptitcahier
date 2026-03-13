@@ -76,6 +76,7 @@ class AnnouncementRepository {
       a.id,
       a.title,
       a.content,
+      a.image_url AS imageUrl,
       a.created_at AS createdAt,
       ac.name AS announcementCategoryName,
       GROUP_CONCAT(s.first_name SEPARATOR ', ') AS studentNames
@@ -118,6 +119,7 @@ class AnnouncementRepository {
       a.id, 
       a.title, 
       a.content, 
+      a.image_url AS imageUrl,
       a.created_at AS createdAt,
       ac.name AS announcementCategoryName,
       COUNT(DISTINCT s.id) AS studentCount,

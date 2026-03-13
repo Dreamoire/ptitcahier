@@ -74,7 +74,7 @@ function TicketNew() {
         </div>
       ) : loadingError ? (
         <p className="general_error_message">
-          Échec de la chargement du formulaire
+          Échec du chargement du formulaire
         </p>
       ) : (
         <TicketForm

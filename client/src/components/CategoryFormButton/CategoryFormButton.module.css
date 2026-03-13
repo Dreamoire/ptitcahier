@@ -30,6 +30,12 @@
   background-color: #c2d9f0;
 }
 
+/* Keyboard focus indicator on custom radio labels */
+.radio_button:focus-visible + .radio_button_label {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 .icon_wrapper {
   flex-shrink: 0;
   width: 80px;

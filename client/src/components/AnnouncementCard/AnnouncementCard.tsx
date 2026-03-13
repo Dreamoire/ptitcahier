@@ -153,7 +153,10 @@ function AnnouncementCard({
             onClick={() => setIsImageOpen(true)}
           >
             <img
-              src={`https://picsum.photos/seed/${announcement.id}/800/600`}
+              src={
+                announcement.imageUrl ||
+                `https://picsum.photos/seed/${announcement.id}/800/600`
+              }
               alt="Illustration"
               className={styles.mainImage}
             />
@@ -280,7 +283,10 @@ function AnnouncementCard({
             &times;
           </button>
           <img
-            src={`https://picsum.photos/seed/${announcement.id}/1200/800`}
+            src={
+              announcement.imageUrl ||
+              `https://picsum.photos/seed/${announcement.id}/1200/800`
+            }
             alt="Zoom"
             className={styles.fullSizeImage}
           />

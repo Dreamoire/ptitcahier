@@ -10,13 +10,6 @@
   text-align: center;
 }
 
-.navigationBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4rem;
-}
-
 .logoContainer {
   gap: 1rem;
   display: flex;

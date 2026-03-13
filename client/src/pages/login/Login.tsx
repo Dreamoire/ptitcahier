@@ -115,7 +115,7 @@ function Login() {
           <>
             <form className={styles.form} onSubmit={loginUser}>
               <fieldset className={styles.fieldset_user}>
-                <legend className="sr-only">User type</legend>
+                <legend className="sr-only">Type d’utilisateur</legend>
 
                 <input
                   type="radio"

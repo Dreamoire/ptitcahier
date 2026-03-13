@@ -47,8 +47,14 @@
 }
 
 .overlayButton:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
+  outline: none;
+}
+
+.overlayButton:focus-visible ~ .body,
+.card:has(.overlayButton:focus-visible) {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: var(--border-radius);
 }
 
 .statusBadge {
