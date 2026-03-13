@@ -50,19 +50,22 @@ CREATE TABLE announcement (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(120) NOT NULL,
     content VARCHAR(1000) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        
+    image_url VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     announcement_category_id INT UNSIGNED NOT NULL,
     school_id INT UNSIGNED NOT NULL,
+    classroom_id INT UNSIGNED NULL,
     FOREIGN KEY (announcement_category_id) REFERENCES announcement_category(id),
-    FOREIGN KEY (school_id) REFERENCES school(id)
+    FOREIGN KEY (school_id) REFERENCES school(id),
+    FOREIGN KEY (classroom_id) REFERENCES classroom(id)
 );
 
 CREATE TABLE student (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     last_name VARCHAR(120) NOT NULL,
     first_name VARCHAR(120) NOT NULL,
-    classroom_id INT unsigned NOT NULL,
-    parent_id INT unsigned NULL,
+    classroom_id INT UNSIGNED NOT NULL,
+    parent_id INT UNSIGNED NULL,
     FOREIGN KEY (classroom_id) REFERENCES classroom(id),
     FOREIGN KEY (parent_id) REFERENCES parent(id) ON DELETE SET NULL
 );
@@ -71,13 +74,14 @@ CREATE TABLE announcement_student (
     announcement_id INT UNSIGNED NOT NULL,
     student_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (announcement_id, student_id),
-    FOREIGN KEY (announcement_id) REFERENCES announcement(id),
+    FOREIGN KEY (announcement_id) REFERENCES announcement(id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE CASCADE
 );
 
 CREATE TABLE ticket (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    content VARCHAR(1000) NOT NULL,    
+    title VARCHAR(120) NOT NULL DEFAULT 'Sans titre',
+    content VARCHAR(1000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     processed TINYINT(1) NOT NULL DEFAULT 0,
     parent_id INT UNSIGNED NULL,
@@ -86,7 +90,7 @@ CREATE TABLE ticket (
     FOREIGN KEY (ticket_category_id) REFERENCES ticket_category(id)
 );
 
-CREATE TABLE ticket_student ( 
+CREATE TABLE ticket_student (
     ticket_id INT UNSIGNED NOT NULL,
     student_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (ticket_id, student_id),
@@ -102,16 +106,16 @@ VALUES
 
 INSERT INTO announcement_category (id, name, description, color, icon)
 VALUES
-(1, "Vie de l'école", 
- "Actualités et moments de vie de l'école (Projets, activités, sorties...)", 
+(1, "Vie de l'école",
+ "Actualités et moments de vie de l'école (Projets, activités, sorties...)",
  "6d5bd0", "School"),
 
-(2, "Administratif", 
- "Communications administratives (Bulletins, absences, rappels…)", 
+(2, "Administratif",
+ "Communications administratives (Bulletins, absences, rappels…)",
  "16a249", "ClipboardList"),
 
-(3, "Evénement", 
- "Événements et temps forts à venir (Fêtes, spectacles…)", 
+(3, "Evénement",
+ "Événements et temps forts à venir (Fêtes, spectacles…)",
  "0da2e7", "CalendarDays");
 
 INSERT INTO ticket_category (id, name, description, color, icon)
@@ -135,7 +139,7 @@ VALUES
 ("CP Les Petits Dauphins", 1),
 ("CE1 Les Explorateurs", 1),
 ("CE2 Les Artistes", 1),
-("CM1 Les Genies", 1),
+("CM1 Les Génies", 1),
 ("CM2 Les Aventuriers", 1);
 
 INSERT INTO student (last_name, first_name, classroom_id, parent_id)
