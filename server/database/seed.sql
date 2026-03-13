@@ -1,4 +1,4 @@
-USE ptit_cahier;
+USE ptitcahier;
 
 SET NAMES utf8mb4;
 SET CHARACTER SET utf8mb4;
