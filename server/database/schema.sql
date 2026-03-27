@@ -56,8 +56,7 @@ CREATE TABLE announcement (
     school_id INT UNSIGNED NOT NULL,
     classroom_id INT UNSIGNED NULL,
     FOREIGN KEY (announcement_category_id) REFERENCES announcement_category(id),
-    FOREIGN KEY (school_id) REFERENCES school(id),
-    FOREIGN KEY (classroom_id) REFERENCES classroom(id)
+    FOREIGN KEY (school_id) REFERENCES school(id),   
 );
 
 CREATE TABLE student (

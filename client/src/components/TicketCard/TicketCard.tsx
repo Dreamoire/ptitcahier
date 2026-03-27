@@ -17,6 +17,8 @@ const getTicketIconType = (categoryName: string): TicketIconType => {
       return "urgent";
     case "Absence":
       return "events";
+    case "Divers":
+      return "news";
     case "Autorisation":
       return "notice";
     default:
