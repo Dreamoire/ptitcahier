@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import ptit_cahier_logo_original from "../../assets/images/ptit_cahier_logo_original.png";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import CalendarCard from "../../components/CalendarCard/CalendarCard";
@@ -210,9 +210,16 @@ function Home() {
               className="primary-title"
               style={{ textAlign: "center", marginBottom: "2rem" }}
             >
-              {userRole === "school"
-                ? "Derniers Tickets Reçus"
-                : "Fil d'actualité"}
+              {userRole === "school" ? (
+                "Derniers Tickets Reçus"
+              ) : (
+                <Link
+                  to={`/${userRole}/announcements`}
+                  className="news-feed-link"
+                >
+                  Fil d'actualité
+                </Link>
+              )}
             </h2>
 
             {userRole === "school" ? (
